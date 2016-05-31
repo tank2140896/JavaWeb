@@ -1,0 +1,112 @@
+<div id="topScroll" infinite-scroll='loadMore()' infinite-scroll-distance='0'><!-- 距离[0][1][2][3]...数字越小表示间隔越小 -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">主页</h1>
+        </div>
+    </div>
+    <div class="row">
+    	<div align="center">
+	        <div>在线聊天室</div>
+	        <div style="float:left;">
+	        	<!-- 采用这种写法这里莫名的会有极大的延迟,原因不明,因此这里禁用
+	    		<div ng-bind-html="chatMessage" style="width:800px;height:300px;background-color:#DDDDDD;"></div>
+	        	-->
+	        	<div id="chatMessage" style="width:800px;height:300px;background-color:#DDDDDD;overflow:auto;"></div>
+	        	<br/>
+	        	<input type="text" ng-keydown="keyDownSendMessage($event)" ng-model="messageInfo"/><button ng-click="sendMessage()">发送</button>
+	        </div>
+	        <div style="float:left;margin-left:100px;">
+	        	<div>
+	        		<span>当前在线人数:{{onlineNum}}</span>
+	        		<div ng-bind-html="onlineDetails"></div>
+	        	</div>
+	        </div>
+    	</div>
+    </div>
+    <div class="row">
+	    <div>
+			<h1>其它操作演示</h1>
+			<div>
+				<hr/>
+		    	<h5>文件上传示例</h5>
+		    	<input type="file" ng-model="myFile" id="myFile" ngf-select="onFileSelect($files)" multiple="multiple">
+		    	<button ng-click="uploadFile()">上传文件</button>
+		    	<hr/>
+			</div>
+			<div>
+				<hr/>
+				<h5>图片上传示例1</h5>
+		    	<input type="file" ng-model="myPic" id="myPic" multiple="multiple" ng-change="onPicChange()" ngf-select="onFileSelect($files)">
+				<span id="picPreView">图片预览</span><br/>
+				<div ng-repeat="pic in pics">
+					<img alt="{{pic.alt}}" ng-src="{{pic.picSrc}}" style="width:100px;height:100px;"/>
+					进度:<span id='{{pic.fileIndex}}'>0%</span>
+				</div>
+		    	<button ng-click="uploadPic()">上传图片</button>
+		    	<hr/>
+			</div>
+			<div>
+				<hr/>
+				<h5>图片上传示例2</h5>
+				<input id="fileDemo" name="myFile" type="file" multiple class="file-loading">
+				<hr/>
+			</div>
+			<div>
+				<hr/>
+		    	<h5>文件下载示例</h5>
+		    	<a ng-href="{{downloadLink}}">下载</a>
+		    	<hr/>
+			</div>
+			<div>
+				<hr/>
+				<h5>视频演示</h5>
+				<video controls="controls">
+					<source src="../resources/video/测试.mp4">
+				</video>
+				<hr/>
+			</div>
+			<div>
+				<hr/>
+				<h5>下拉滚动自动刷新示例</h5>
+				<div id="scrollBar" style="height:300px;width:200px;overflow:auto;"></div>
+				<hr/>
+			</div>
+			<div>
+				<hr/>
+				<h5>二维码生成示例(带LOGO的这里就不再演示了,一样的)</h5>
+				<input type="text" style="width: 500px;" ng-model="QRCode" placeholder="请输入网址"/>
+				<button ng-click="createQRCode()">生成二维码</button><br/>
+				<img alt="此区域用于显示生成的二维码" ng-src="{{QRCodeImage}}">
+				<hr/>
+			</div>
+			<div>
+				<hr/>
+				<h5>树形结构下拉示例</h5>
+				<ul id="treeDemo" class="ztree"></ul>
+				<style type="text/css">
+			       .ztree li span.button.pIcon01_ico_open{
+			       	   margin-right:2px; 
+			       	   background: url(../app/bower_components/zTree/zTreeStyle/img/diy/1_open.png) no-repeat scroll 0 0 transparent; 
+			       	   vertical-align:top; 
+			       	   *vertical-align:middle
+			       }
+			   	</style>
+				<hr/>
+			</div>
+			<div>
+				<hr/>
+				<h5>打印预览示例(这里没用第三方插件,自己简单实现了,同时未作兼容,只有谷歌浏览器能起效)</h5>
+				<button ng-click="print()">点我打印预览</button>
+				<div ng-include="'../resources/html/print.html'"></div>
+			</div>
+		</div>
+		<div>
+			<div style="width:500px;height:500px;">
+		    	<canvas id="demo1" class="chart chart-line chart-xl" data="demo1.data" labels="demo1.labels" legend="true" click="demo1.onClick" series="demo1.series"></canvas>
+			</div>
+			<div style="width:500px;height:500px;">
+		    	<canvas id="demo2" class="chart chart-line chart-xl" data="demo2.data" labels="demo2.labels" legend="true" click="demo2.onClick" series="demo2.series"></canvas>
+			</div>
+	    </div>
+    </div>
+</div>

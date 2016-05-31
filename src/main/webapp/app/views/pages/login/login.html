@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+         		<!-- 这段语言切换只是个例子,真正项目需要的时候需要做一些改动,平时可以注释掉 start -->
+         		<!--  
+				<div style="float: right">
+					<span>语言选择</span>
+					<select ng-change="languageChange(x)" ng-model="x">
+						<option ng-repeat="l in language" value="{{l.shortName}}">{{l.name}}</option>
+					</select>
+					<span>{{showExample}}</span>
+				</div>
+				-->
+				<!-- 这段语言切换只是个例子,真正项目需要的时候需要做一些改动,平时可以注释掉 end -->
+                <div class="panel-heading">
+                    <h3 class="panel-title">登录</h3>
+                </div>
+                <div class="panel-body">
+                	<!-- 
+                		点击导航栏的超链接可以调到本页面指定的位置的写法 
+                		<a href="#module">xxx</a>
+                		<div id="module">xxx</div>
+                	-->
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                                                                                 用户名<input ng-model="user.username" class="form-control" placeholder="请输入用户名" name="username" type="text" autofocus>
+                            </div>
+                            <div class="form-group">
+                                                                                                密码<input ng-model="user.password" class="form-control" placeholder="请输入密码" name="password" type="password">
+                            </div>
+                            <div class="form-group">
+                            	<!-- 
+                            		如果访问的是本地路径下的文件,如图片,由于无权限时可以类似如下操作 
+                            		1.tomcat的server.xml加上:<Context path="/otherDir" docBase="C:/Users/Administrator/desktop"/>
+                            		2.html标签写为:<img alt="无" src="/otherDir/a.jpg">
+                            	-->
+                                                                                                验证码<input ng-model="user.code" class="form-control" placeholder="请输入验证码" name="code" type="text">
+                                <img alt="点击更换" ng-src="{{imageSrc}}" ng-click="changeCode()" />
+                            </div>
+                            <div class="form-group">
+                            	<font color="red">{{errorMessage}}</font>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                	<input id="rememberme" ng-click="checkRememberMe()" type="checkbox" />记住我
+                                </label>
+                            </div>
+                            <button ng-click="login();">登录</button>
+							<button ng-click="reset();">重置</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

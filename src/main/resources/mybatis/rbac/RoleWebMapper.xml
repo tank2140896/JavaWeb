@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.gloudtek.web.rbac.dao.RoleDao">
+	
+	<insert id="createRole" parameterType="com.gloudtek.entity.rbac.Role">
+		insert into role(roleid,rolename,parentid,fcode,level,createDate,updateDate,delflag)
+		values(#{roleid},#{rolename},#{parentid},#{fcode},${level},now(),null,0);
+	</insert>
+	
+	<update id="modifyRole" parameterType="com.gloudtek.entity.rbac.Role">
+		update role set rolename = #{rolename},
+						parentid = #{parentid},
+						fcode = #{fcode},
+						level = ${level},
+						updateDate = now()
+		where roleid = #{roleid}
+	</update>
+	
+	<delete id="deleteRole" parameterType="java.lang.String">
+		update role set delflag = 1,updateDate = now() where roleid = #{roleid}
+	</delete>
+	
+	<select id="getRoles" parameterType="java.util.Map" resultType="com.gloudtek.entity.rbac.Role">
+		select roleid,rolename,parentid,fcode,level,DATE_FORMAT(createDate,'%Y-%m-%d') as createDate
+		from role
+		<where>
+			delflag = 0
+	    	<if test="searchCondition.rolename != null and searchCondition.rolename != ''">and rolename like CONCAT('%',#{searchCondition.rolename},'%')</if>
+	    	<if test="searchCondition.startDate != null and searchCondition.startDate != ''
+	    	      and searchCondition.endDate != null and searchCondition.endDate != ''">
+	    	      and createDate &gt;= #{searchCondition.startDate} and createDate &lt;= #{searchCondition.endDate}
+	    	</if>
+		</where>	   
+   		order by roleid asc  
+   		limit ${page.currentCount},${page.pageSize}
+	</select>
+	
+	<select id="rolesCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1) from role
+		<where>
+			delflag = 0
+	    	<if test="searchCondition.rolename != null and searchCondition.rolename != ''">and rolename like CONCAT('%',#{searchCondition.rolename},'%')</if>
+	    	<if test="searchCondition.startDate != null and searchCondition.startDate != ''
+	    	      and searchCondition.endDate != null and searchCondition.endDate != ''">
+	    	      and createDate &gt;= #{searchCondition.startDate} and createDate &lt;= #{searchCondition.endDate}
+	    	</if>
+		</where>	   
+	</select>
+	
+	<select id="getAllRoles" resultType="com.gloudtek.entity.rbac.Role">
+		select roleid,rolename from role where delflag = 0
+	</select>
+	
+	<select id="getRolesByRoleName" resultType="com.gloudtek.entity.rbac.Role">
+		select roleid,rolename from role where delflag = 0 and rolename like CONCAT('%',#{rolename},'%')
+	</select>
+	
+	<insert id="allotRoleAuthority" parameterType="java.util.HashMap">
+		insert into role_module(id,roleid,moduleid) values
+		<foreach collection="list" index="index" item="item" open="" separator="," close="">   
+	        (UUID(),#{roleId},#{item})
+    	</foreach>
+	</insert>
+	
+	<delete id="deleteRoleAuthority" parameterType="java.lang.String">
+		delete from role_module where roleid = #{roleid}
+	</delete>
+	
+</mapper>

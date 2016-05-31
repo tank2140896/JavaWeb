@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.gloudtek.web.common.dao.CommonWebDao">
+
+	<!-- 在mybatis中#{}一般都是带上引号的字符串,${}一般都是不带引号直接使用的;而在jsp中${}表示立即计算；#{}表示延迟计算 -->
+
+	<select id="totalCount" parameterType="java.util.HashMap" resultType="java.lang.Long">
+		select count(1) from ${table} where delflag = 0
+	</select>
+	
+	<select id="descTable" parameterType="java.lang.String" resultType="com.gloudtek.view.common.TableStructureVO">
+		<!-- 单参数必须这么写 -->
+		desc ${_parameter}
+	</select>
+	
+	<select id="showTables" resultType="java.lang.String">
+		show TABLES
+	</select>
+	
+	<!-- 存储过程示例 
+	CREATE PROCEDURE test(IN modulename VARCHAR(22))  
+	BEGIN
+	SELECT * from `user`;
+	END
+	-->
+	<!-- mybatis接口写为 
+	public List<User> getAll(Map<String,String> map);
+	-->
+	<!-- mybatis的XML写为  
+	<select id="getAll" parameterType="java.util.Map" resultType="com.gloudtek.entity.rbac.User">
+		CALL test(#{modulename});  
+	</select>
+	-->
+	
+	<!-- JdbcTemplate存储过程示例
+	//调用存储过程(详细参考:http://www.open-open.com/lib/view/open1392606683850.html)
+	jdbcTemplate.execute("SET @@SESSION.max_sp_recursion_depth=10");
+	    List resultList = (List) jdbcTemplate.execute(   
+	    	new CallableStatementCreator() {   
+		        public CallableStatement createCallableStatement(Connection con) throws SQLException {   
+		           String storedProc = "{call p(?)}";   
+		           CallableStatement cs = con.prepareCall(storedProc);   
+		           cs.setString(1, "1");
+		           return cs;
+		        }   
+		     }, new CallableStatementCallback() {   
+		        public Object doInCallableStatement(CallableStatement cs) throws SQLException,DataAccessException {   
+		           List resultsMap = new ArrayList();   
+		           cs.execute(); 
+		           while(true){
+		        	   if(cs.getMoreResults()){
+		        		   ResultSet rs = cs.getResultSet();
+				           while (rs.next()) {
+				              Map rowMap = new HashMap();   
+				              rowMap.put("id", rs.getString("id"));   
+				              rowMap.put("name", rs.getString("name")); 
+				              rowMap.put("pid", rs.getString("pid")); 
+				              resultsMap.add(rowMap);   
+				           }   
+				           rs.close();   
+		        	   }else{
+		        		   break;
+		        	   }
+		           }
+		           return resultsMap;   
+		     }
+		});
+	-->
+	
+</mapper>

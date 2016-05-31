@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">数据库表</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+            	<permission fname="dbTable" aname="descTable">
+				<div ng-repeat="table in tables">
+					<span>表名：{{table.table}}</span>
+					<!-- 单表变色  
+					<table class="table table-bordered table-hover" style="background-color: {{tableRandomColor}}">
+					-->
+					<!-- 多表变色 -->
+					<table class="table table-bordered table-hover" style="background-color: {{table.tableRandomColor}}">
+						<tr>
+							<td>字段名</td>
+							<td>字段类型</td>
+							<td>是否允许为空</td>
+							<td>主键</td>
+							<td>默认值</td>
+							<td>其它</td>
+						</tr>
+						<tr ng-repeat="list in table.list">
+							<td>{{list.field}}</td>
+							<td>{{list.type}}</td>
+							<td ng-if="list.isNull=='YES'">是</td>
+							<td ng-if="list.isNull=='NO'">否</td>
+							<td>{{list.key}}</td>
+							<td>{{list.default}}</td>
+							<td>{{list.extra}}</td>
+						</tr>
+					</table>
+				</div>
+				</permission>
+            </div>
+        </div>
+    </div>
+</div>

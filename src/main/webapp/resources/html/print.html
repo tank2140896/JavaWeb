@@ -1,0 +1,20 @@
+<div ng-show="false" id="print">
+<div align="center">
+	<div>打印测试</div>
+	<div>你好{{personname}},你的用户名为:{{username}},下面是列表内容:</div>
+	<div>
+		<table border="1">
+			<tr>
+				<td>用户名</td>
+				<td>密码</td>
+				<td>用户姓名</td>
+			</tr>
+			<tr ng-repeat="user in users">
+				<td>{{user.username}}</td>
+				<td>{{user.password}}</td>
+				<td>{{user.personname}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+</div>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 不指定xsd版本号则相当于使用最新版本 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:websocket="http://www.springframework.org/schema/websocket"
+	   xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		                   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		                   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		                   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		                   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		                   http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		                   http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+    
+    <!-- 使用AOP请解注 
+    <aop:aspectj-autoproxy/>
+    -->
+    
+   	<context:component-scan base-package="com.gloudtek" />
+   	<mvc:annotation-driven/>
+   	<mvc:default-servlet-handler/>
+    
+	<!-- 对静态资源文件的访问 -->
+	<!--  
+	<mvc:resources mapping="/index.html" location="/index.html" />
+	<mvc:resources mapping="/noauthority.html" location="/noauthority.html" /> 
+	<mvc:resources mapping="/plugins/**" location="/plugins/" />
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	-->
+	
+	<!-- 访问拦截  --> 
+  	<mvc:interceptors>
+  		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" /> 
+		<mvc:interceptor>
+			<mvc:mapping path="/**/**"/>
+			<!-- 用这种交由spring管理的方式的话,LoginHandlerInterceptor及<mvc:resources/>就都不要配置了 strat -->
+			<mvc:exclude-mapping path="/index.html"/>
+			<mvc:exclude-mapping path="/i18n/**"/>
+			<mvc:exclude-mapping path="/app/**"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<mvc:exclude-mapping path="/checkSessionExist"/>
+			<mvc:exclude-mapping path="/logonOut"/>
+			<mvc:exclude-mapping path="/userWebLogin"/>
+          	<mvc:exclude-mapping path="/userWebGetCode"/>
+          	<!-- 用这种交由spring管理的方式的话,LoginHandlerInterceptor及<mvc:resources/>就都不要配置了 end -->
+			<bean class="com.gloudtek.interceptor.LoginHandlerInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+    <!-- SpringMVC国际化 -->                     
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	    <property name="basenames"> 
+	    	<list>
+                <value>config/props/message_zh_CN</value>
+                <value>config/props/message_en_US</value>
+            </list>  
+        </property>
+	    <property name="defaultEncoding" value="UTF-8"/>
+	    <property name="cacheSeconds" value="0" />
+	</bean> 
+	
+  	<!-- SpringMVC上传文件时,需要配置MultipartResolver处理器 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 可以在配置文件里限定,也可以在前端或controller里限定 -->
+        <!--  
+        <property name="maxUploadSize" value="104857600"/> 
+        <property name="maxInMemorySize" value="4096"/>   
+        -->
+   	</bean> 
+    
+	<!-- 配置SpringMVC的视图解析器 -->  
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+       <!-- 
+   		         如prefix写为/WEB-INF/page 
+   		   suffix写为.html
+   		   controller写为success
+   		         那么跳转寻找的页面就是/WEB-INF/page/success.html
+       -->
+       <property name="prefix" value="/WEB-INF/html/"/> 
+       <property name="suffix" value=".html"/>
+    </bean>
+    
+    <!-- 日志AOP -->
+    <!-- 使用日志请解注 
+    <bean id="logAspect" class="com.gloudtek.aspect.LogAspect"/> 
+    -->
+    
+    <!-- 多数据源AOP -->
+    <!-- 使用多数据源请解注 
+    <bean id="dataSourceAspect" class="com.gloudtek.aspect.DataSourceAspect"/>
+    --> 
+    
+    <!-- spring定时任务(现在一般都用注解形式的写法,这种写法将渐渐不用了) -->
+    <!--
+    <bean name="quartzJob" class="com.foomei.test.A" />
+	<bean id="quartzJobDetail"
+	     class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+	</bean>
+	<bean id="quartzJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="quartzJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>*/5 * * * * ?</value>//每5秒执行一次 
+			<value>0 0 0 * * ?</value>//每天24点执行一次
+		</property>
+	</bean>
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">
+		<property name="triggers">
+			<list>
+				<ref local="quartzJobTrigger" />
+			</list>
+		</property>
+	</bean>
+    -->  
+    
+</beans>

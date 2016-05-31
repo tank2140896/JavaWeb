@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 不指定xsd版本号则相当于使用最新版本 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:websocket="http://www.springframework.org/schema/websocket"
+	   xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		                   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		                   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		                   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		                   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		                   http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		                   http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+    
+   	<!-- 配置JDBC数据源,采用阿里巴巴druid -->
+   	<import resource="spring-dataSource.xml"/>
+	
+	<!-- 引入JDBC配置文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- 到classpath下寻找配置文件,用eclipse开发的话,在工程目录下有个.classpath文件 -->
+				<!-- 找output那段,可以看到它是去target/classes下去找 -->
+				<value>classpath:config/props/jdbc.properties</value>
+				<value>classpath:config/props/mongodb.properties</value>
+			</list>
+		</property>
+	</bean>
+    
+   	<!-- 配置事务管理器,这里没有采用tx切面形式统一管理,而是由各代码层面具体控制,提高灵活自由度 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="multipleDataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!--  
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception"/>
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<aop:config>
+		<aop:pointcut id="pc" expression="execution(* com.gloudtek.service..*(..))" />
+		<aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
+	</aop:config>
+	-->
+	
+	<!-- mongodb start -->
+	<!-- 暂时先不用mongodb,要用解注即可  
+	<mongo:mongo-client id="mongo" replica-set="${mongo.hostport}">
+		<mongo:client-options connect-timeout="${mongo.connectTimeout}"
+			connections-per-host="${mongo.connectionPerHost}" max-wait-time="${mongo.maxWaitTime}"
+			socket-keep-alive="${mongo.socketKeepAlive}" socket-timeout="${mongo.socketTimeout}" />
+	</mongo:mongo-client>
+	<mongo:db-factory dbname="${mongo.dbname}" mongo-ref="mongo"/>
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongo" />
+		<constructor-arg name="databaseName" value="${mongo.dbname}" />
+	</bean>
+	-->
+	<!-- mongodb end -->
+    
+    <!-- jdbcTemplate -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="multipleDataSource"></property>
+    </bean>
+	
+	<!-- Hibernate Session Factory -->
+	<!--  
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="multipleDataSource"/>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">false</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.gloudtek.web.domain.User</value>
+			</list>
+		</property>
+	</bean>
+	-->
+	
+	<!-- mybatis文件配置,扫描所有mapper文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="multipleDataSource"/>
+    	<property name="mapperLocations" value="classpath:mybatis/*/*.xml"/>
+    </bean>
+    <!-- spring与mybatis整合配置,扫描所有dao,接口代理,不用接口代理方式(无实现类)就注释掉 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="com.gloudtek.**.dao"/>
+    	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+    
+    <!-- 缓存管理器,使用Ehcache实现 -->  
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">  
+    	<property name="cacheManagerConfigFile" value="classpath:config/cache/ehcache.xml"/>  
+	</bean> 
+    
+    <!-- shiro start -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="ShiroRealm" />
+	</bean>
+		
+	<!-- 項目自定义的Realm -->
+	<bean id="ShiroRealm" class="com.gloudtek.interceptor.shiro.ShiroRealm" ></bean>
+		
+	<!-- Shiro Filter -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<!-- <property name="loginUrl" value="/index.html" /> --><!-- 没有登录跳转的地址 -->
+		<!-- <property name="successUrl" value="/web/main/mainIndex" /> --><!-- 登录成功后跳转的地址 -->
+		<!-- <property name="unauthorizedUrl" value="/noauthority.html" /> --><!-- 无权限跳转的地址 -->
+		<!--  
+		这里我不配置了,交由代码或spring框架处理
+		<property name="filterChainDefinitions">
+			<value>
+				/plugins/**                 = anon
+				/resources/**               = anon
+	           	/web/login/**               = anon
+	           	/**							= authc
+			</value>
+		</property>
+		-->
+	</bean>
+	<!-- shiro end -->
+	
+</beans>

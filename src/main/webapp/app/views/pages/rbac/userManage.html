@@ -1,0 +1,219 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">用户管理</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            	<permission fname="userManage" aname="getUsers">
+            		<div>
+	            		<span>用户名</span>
+	            		<div>
+		            		<input type="text" ng-model="username"/>
+	            		</div>
+            		</div>
+            		<div>
+	            		<span>开始日期</span>
+				        <div class="input-group date form_date col-md-2" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+				        	<input ng-model="startdate" class="form-control" size="16" type="text" value="" readonly>
+				            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				        </div>
+            		</div>
+            		<div>
+				    	<span>结束日期</span>
+				        <div class="input-group date form_date col-md-2" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+				        	<input ng-model="enddate" class="form-control" size="16" type="text" value="" readonly>
+				            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				        </div>
+            		</div>
+			        <div>
+		                <button ng-click="searchUser()" class="btn btn-sm">查询用户</button>
+			        </div>
+            	</permission>
+       	        <permission fname="userManage" aname="createUser">
+       	        	<div>
+	            		<button ng-click="createUser()" class="btn btn-sm btn-success" style="float: right">新增用户</button>
+       	        	</div>
+            	</permission>
+            </div>
+            <div class="panel-body">
+            	<div class="dataTable_wrapper" ng-if="users.length==0" align="center">无相关数据</div>
+                <div class="dataTable_wrapper" ng-if="users.length!=0">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>用户名</th>
+                                <th>用户姓名</th>
+                                <th>角色名</th>
+                                <th>邮箱</th>
+                                <th>电话号码</th>
+                                <th>注册日期</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <!-- 
+                        	em标签参考[http://fontawesome.io/] 
+                        	白色、浅蓝色、深蓝色、绿色、黄色、红色、黑色
+                        	btn、btn btn-default、btn-primary、btn btn-info、btn btn-success、btn btn-warning、btn btn-danger、btn btn-inverse
+                        -->
+                        <tbody>
+                            <tr class="gradeA" ng-repeat="user in users">
+                                <td>{{$index+1}}</td>
+                                <td>{{user.username}}</td>
+                                <td>{{user.personname}}</td>
+                                <td ng-if="user.rolename!=''">{{user.rolename}}</td>
+                                <td ng-if="user.rolename==''"><span style="color: red;">未分配角色</span></td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.phone}}</td>
+                                <td>{{user.createDate}}</td>
+                                <td>
+					            	<permission fname="userManage" aname="deleteUser">
+					            		<button ng-click="deleteUser(user.userid)" title="删除用户" class="btn btn-sm btn-danger">
+					            			<em class="fa fa-trash-o"></em>
+					            		</button>
+					            	</permission>
+            						<permission fname="userManage" aname="modifyUser">
+            							<button ng-click="modifyUser(user)" title="修改用户" class="btn btn-sm btn-warning">
+					            			<em class="fa fa-pencil"></em>
+					            		</button>
+					            	</permission>
+                               		<permission fname="userManage" aname="userDetail">
+                               			<button ng-click="userDetail(user)" title="用户详情" class="btn btn-sm btn-info">
+					            			<em class="fa fa-book"></em>
+					            		</button>
+            						</permission>
+            						<permission fname="userManage" aname="allotUserRole">
+                               			<button ng-click="allotUserRole(user)" title="用户角色分配" class="btn btn-sm btn-primary">
+					            			<em class="fa fa-cog"></em>
+					            		</button>
+            						</permission>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    	<div style="float:right;">
+    		<a class="btn btn-sm btn-default" ng-click="refreshTable(1,0)">首页</a>
+    		<a class="btn btn-sm btn-default" ng-if="currentPage>1" ng-click="refreshTable(currentPage,-1)">上一页</a>
+    		<!--  
+    		<span>
+    			<a class="btn btn-sm btn-default">1</a>
+    			<a class="btn btn-sm btn-default">2</a>
+    			<a class="btn btn-sm btn-default">3</a>
+    			<a class="btn btn-sm btn-default">4</a>
+    			<a class="btn btn-sm btn-default">5</a>
+    			<span class="btn btn-sm btn-default">…</span>
+    			<a class="btn btn-sm btn-default">10</a>
+    		</span>
+    		-->
+    		<a class="btn btn-sm btn-default" ng-if="totalPage>currentPage" ng-click="refreshTable(currentPage,1)">下一页</a>
+    		<a class="btn btn-sm btn-default" ng-if="totalPage!=currentPage" ng-click="refreshTable(totalPage,0)">末页</a>
+    		<span class="table">当前第{{currentPage}}页，共{{totalPage}}页</span>
+    	</div>
+    </div>
+</div>
+
+<!-- 
+弹出框居中设置:
+搜索bootstrap.js中的Modal.prototype.adjustDialog,在function的最后添加:
+var $modal_dialog = $(this.$element[0]).find('.modal-dialog');
+var m_top = ($(document).height()-$modal_dialog.height())/2;
+$modal_dialog.css({'margin':m_top+'px auto'});
+-->
+<!-- *******************************模态框起始处**************************************** -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class ="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	            <h4 class="modal-title" id="myModalLabel">
+	               {{modalTitle}}
+	            </h4>
+         	</div>
+         	<div class="modal-body" ng-show="show1">
+         		<form class="form-horizontal">
+         			<div class="form-group" ng-if="operationMark=='add'||operationMark=='detail'">
+					    <label class="col-sm-2 control-label">用户名</label>
+					    <div class="col-sm-10">
+					    	<input ng-model="user.username" type="text" ng-readonly="readOnly"/>
+					    </div>
+				  	</div>
+				  	<div class="form-group" ng-if="operationMark=='add'">
+					    <label class="col-sm-2 control-label">用户密码</label>
+					    <div class="col-sm-10">
+					    	<input ng-model="user.password" type="text" ng-readonly="readOnly"/>
+					    </div>
+				  	</div>
+				  	<div class="form-group">
+					    <label class="col-sm-2 control-label">用户姓名</label>
+					    <div class="col-sm-10">
+					    	<input ng-model="user.personname" type="text" ng-readonly="readOnly"/>
+					    </div>
+				  	</div>
+				  	<div class="form-group">
+					    <label class="col-sm-2 control-label">邮箱</label>
+					    <div class="col-sm-10">
+					    	<input ng-model="user.email" type="text" ng-readonly="readOnly"/>
+					    </div>
+				  	</div>
+				  	<div class="form-group">
+					    <label class="col-sm-2 control-label">号码</label>
+					    <div class="col-sm-10">
+					    	<input ng-model="user.phone" type="text" ng-readonly="readOnly"/>
+					    </div>
+				  	</div>
+				</form>
+         	</div>
+         	<div class="modal-body" ng-show="show2">
+         		<form class="form-horizontal">
+	        		<div class="form-group">
+					    <label class="col-sm-2 control-label">用户名</label>
+					    <div class="col-sm-10">
+					    	<input ng-model="userrole_username" type="text" ng-readonly="readOnly"/>
+					    </div>
+				  	</div>
+				  	<div class="form-group">
+					    <label class="col-sm-2 control-label">角色名</label>
+					    <div class="col-sm-10">
+					    	<select ng-model="userrole_rolename" id="roleNameSelect">
+								<option ng-value="url.roleid" ng-repeat="url in userRoleList" ng-selected="userrole_rolename == url.rolename">{{url.rolename}}</option>
+							</select>
+					    </div>
+				  	</div>
+         		</form>
+         	</div>
+         	<div class="modal-footer">
+	            <button type="button" class="btn btn-default" data-dismiss="modal">
+	               	取消
+	            </button>
+	            <button type="button" class="btn btn-primary" ng-click="submit()">
+	               	确认
+	            </button>
+         	</div>
+		</div>
+	</div>
+</div>
+<!-- *******************************模态框结束处**************************************** -->
+<!-- ******日期插件开始处****** -->
+<script type="text/javascript">
+$('.form_date').datetimepicker({
+    language:  'zh-CN',
+    format: 'yyyy-mm-dd',
+    weekStart: 1,
+    todayBtn:  1,
+	autoclose: 1,
+	todayHighlight: 1,
+	startView: 2,
+	minView: 2,
+	forceParse: 0
+});
+</script>
+<!-- ******日期插件结束处****** -->

@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">权限管理</h1>
+    </div>
+</div>
+<div class="row">
+	<permission fname="roleManage" aname="getModuleByRoleId">
+    <div class="col-lg-12">
+		<div class="panel panel-default">
+			<table>
+				<tr ng-repeat="authorities in authority">
+					<td><input type="checkbox" ng-checked="authorities.checkFlag" ng-click="updateSelection(authorities.moduleid,$event)">{{authorities.modulename}}</td>
+					<td>
+						<table>
+							<tr ng-repeat="authorities2 in authorities.moduleList">
+		                        <td><input type="checkbox" ng-checked="authorities2.checkFlag" ng-click="updateSelection(authorities2.moduleid,$event)">{{authorities2.modulename}}</td>
+								<td>
+									<table>
+										<tr ng-repeat="authorities3 in authorities2.moduleList">
+											<td><input type="checkbox" ng-checked="authorities3.checkFlag" ng-click="updateSelection(authorities3.moduleid,$event)">{{authorities3.modulename}}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</permission>
+	
+	<div>
+		<button type="button" class="btn btn-default" ng-click="cancel()">取消</button>
+	    <permission fname="roleManage" aname="allotRoleAuthority">
+	    <button type="button" class="btn btn-primary" ng-click="submit()">确认</button>
+	    </permission>
+	</div>
+</div>
+<style>
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+}
+table tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>

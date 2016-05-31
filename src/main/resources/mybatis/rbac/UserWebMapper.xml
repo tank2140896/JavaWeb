@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.gloudtek.web.rbac.dao.UserDao">
+
+	<!-- Mybatis操作BLOB start -->
+	<!--  
+	1.建表
+	DROP TABLE IF EXISTS `file`;
+	CREATE TABLE `file` (
+		`filename` varchar(255) NOT NULL,
+		`filecontent` longblob,
+		PRIMARY KEY (`filename`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	2.创建对应实体类
+	package com.gloudtek.entity.rbac;
+	public class File {
+		private String filename;
+		private byte[] filecontent;
+		public String getFilename() {
+			return filename;
+		}
+		public void setFilename(String filename) {
+			this.filename = filename;
+		}
+		public byte[] getFilecontent() {
+			return filecontent;
+		}
+		public void setFilecontent(byte[] filecontent) {
+			this.filecontent = filecontent;
+		}
+	}
+	3.Mybatis写BLOB
+	[public void insertBlob(Map<String,Object> map);]
+	File file = new File("C:\\Users\\abc\\Desktop\\测试.mp4");
+	InputStream blobis = new FileInputStream(file);
+	List<Byte> list = new ArrayList<>();
+	byte b[] = new byte[1];
+	while(blobis.read(b)!=-1){
+		list.add(b[0]);
+	}
+	blobis.close();
+	Map<String,Object> map = new HashMap<>();
+	map.put("filename", "文件2");
+	map.put("filecontent", list.toArray());
+	userDao.insertBlob(map);
+	<insert id="insertBlob" parameterType="Map">
+		insert into file(filename,filecontent) values(#{filename},#{filecontent})
+	</insert>
+	4.Mybatis读BLOB
+	[public List<File> selectBlob();]
+	List<com.gloudtek.entity.rbac.File> list = userDao.selectBlob();
+	com.gloudtek.entity.rbac.File file = list.get(0);
+	byte bytes[] = file.getFilecontent();
+	OutputStream outputStream = new FileOutputStream(new File("C:\\Users\\abc\\Desktop\\a.mp4"));
+	outputStream.write(bytes);
+	outputStream.close();
+	<select id="selectBlob" resultType="com.gloudtek.entity.rbac.File">
+		select filename,filecontent from file
+	</select>
+	-->
+	<!-- Mybatis操作BLOB end -->
+	
+	<!-- JdbcTemplate操作BLOB start -->
+	<!--  
+	1.建表
+	DROP TABLE IF EXISTS `file`;
+	CREATE TABLE `file` (
+		`filename` varchar(255) NOT NULL,
+		`filecontent` longblob,
+		PRIMARY KEY (`filename`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	2.JdbcTemplate写BLOB
+	File file = new File("C:\\Users\\abc\\Desktop\\测试.mp4");
+	LobHandler lobHandler = new DefaultLobHandler();
+	final InputStream blobis = new FileInputStream(file);
+	jdbcTemplate.execute("insert into file(filename,filecontent) values(?,?)", new AbstractLobCreatingPreparedStatementCallback(lobHandler) { 
+		protected void setValues(PreparedStatement ps, LobCreator lobCreator) throws SQLException {
+			ps.setString(1, "文件1");
+			lobCreator.setBlobAsBinaryStream(ps, 2, blobis, (int)file.length()); 
+		}
+	});
+	3.JdbcTemplate读BLOB
+	LobHandler lobHandler = new DefaultLobHandler();
+	List<Map<String, Object>> list = jdbcTemplate.query("select filename,filecontent from file",new RowMapper<Map<String, Object>>() {
+		        public Map<String, Object> mapRow(ResultSet rs, int i) throws SQLException {
+		        	Map<String, Object> results = new HashMap<String, Object>();
+		        	byte[] blobBytes = lobHandler.getBlobAsBytes(rs, "filecontent"); 
+		        	results.put("BLOB", blobBytes); 
+		        	return results; 
+		        } 
+	});
+	System.out.println(list.size());
+	byte[] blobBytes = (byte[]) list.get(0).get("BLOB");
+	OutputStream outputStream = new FileOutputStream(new File("C:\\Users\\abc\\Desktop\\a.mp4"));
+	outputStream.write(blobBytes);
+	outputStream.close();
+	-->
+	<!-- JdbcTemplate操作BLOB end -->
+
+	<!-- 建立SQL查询结果字段与实体属性的映射关系信息 
+	<select id="getUser" resultMap="myUser">
+    	SELECT ID, username, password FROM user
+	</select>
+	<resultMap id="myUser" type="com.company.User">
+  		<id property="id" column="ID"/>
+  		<result property="userName" column="username"/>
+  		<result property="passWord" column="password"/>
+	</resultMap>
+	-->
+	
+	<!-- 动态SQL片段 -->
+	<sql id="selectModuleByCondition" >
+		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias,moduletype
+		from module where moduleid in(
+		SELECT DISTINCT(moduleid) from role_module
+		where roleid in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        	#{item}
+    	</foreach>
+		)
+	</sql>
+	
+	<sql id="selectModuleWithoutCondition" >
+		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias,moduletype
+		from module where 1=1 
+	</sql>
+	
+	<select id="getUserByUsernameAndPassword" parameterType="Map" resultType="com.gloudtek.entity.rbac.User">
+		select userid,username,password,personname,email,phone,portrait from user
+		where username = #{username} and password = #{password} and delflag = 0
+	</select>
+	
+	<select id="getUserRoles" parameterType="java.lang.String" resultType="com.gloudtek.entity.rbac.Role">
+		select r.roleid,r.rolename from role r
+		where r.roleid = 
+		(select ur.roleid from user_role ur where ur.userid = #{userid})
+		and r.delflag = 0 
+	</select>
+	
+	<select id="getUserMenu" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+		<if test="adminFlag==0">
+			<include refid="selectModuleByCondition"></include>
+		</if>
+		<if test="adminFlag==1">
+			<include refid="selectModuleWithoutCondition"></include>
+		</if>
+		AND moduletype = 1 AND delflag = 0 ORDER BY levels asc
+	</select>
+	
+	<select id="getUserOperation" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+		<if test="adminFlag==0">
+			<include refid="selectModuleByCondition"></include>
+		</if>
+		<if test="adminFlag==1">
+			<include refid="selectModuleWithoutCondition"></include>
+		</if>
+		AND moduletype = 2 AND delflag = 0 ORDER BY levels asc
+	</select>
+	
+	<select id="getUserAllModule" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+		<if test="adminFlag==0">
+			<include refid="selectModuleByCondition"></include>
+		</if>
+		<if test="adminFlag==1">
+			<include refid="selectModuleWithoutCondition"></include>
+		</if>
+		AND moduletype in(1,2) AND delflag = 0 ORDER BY levels asc
+	</select>
+	
+	<insert id="createUser" parameterType="com.gloudtek.entity.rbac.User">
+		insert into user(userid,username,password,personname,email,phone,portrait,parentid,fcode,level,createDate,updateDate,delflag)
+		values(#{userid},#{username},#{password},#{personname},#{email},#{phone},#{portrait},#{parentid},#{fcode},${level},now(),null,0);
+	</insert>
+	
+	<select id="selectUserByUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1) from user where username = #{_parameter}
+	</select>
+	
+	<update id="modifyUser" parameterType="com.gloudtek.entity.rbac.User">
+		update user set personname = #{personname},
+						email = #{email},
+						phone = #{phone},
+						portrait = #{portrait},
+						parentid = #{parentid},
+						fcode = #{fcode},
+						level = ${level},
+						updateDate = now()
+		where userid = #{userid}
+	</update>
+	
+	<delete id="deleteUser" parameterType="java.lang.String">
+		update user set delflag = 1,updateDate = now() where userid = #{userid}
+	</delete>
+	
+	<select id="getUsers" parameterType="java.util.Map" resultType="com.gloudtek.view.rbac.UserVO">
+		select u.userid,u.username,u.password,u.personname,u.email,u.phone,u.portrait,u.parentid,u.fcode,
+		u.level,DATE_FORMAT(u.createDate,'%Y-%m-%d') as createDate,u.updateDate,r.rolename
+		from user u
+		LEFT JOIN user_role ur
+		ON u.userid = ur.userid
+		LEFT JOIN role r
+		on r.roleid = ur.roleid
+		<where>
+			u.delflag = 0
+	    	<if test="searchCondition.username != null and searchCondition.username != ''">and u.username like CONCAT('%',#{searchCondition.username},'%')</if>
+	    	<if test="searchCondition.email != null and searchCondition.email != ''">and u.email like CONCAT('%',#{searchCondition.email},'%')</if>
+	    	<if test="searchCondition.phone != null and searchCondition.phone != ''">and u.phone like CONCAT('%',#{searchCondition.phone},'%')</if>
+	    	<if test="searchCondition.startDate != null and searchCondition.startDate != ''
+	    	      and searchCondition.endDate != null and searchCondition.endDate != ''">
+	    	      and u.createDate &gt;= #{searchCondition.startDate} and u.createDate &lt;= #{searchCondition.endDate}
+	    	</if>
+		</where>	   
+   		order by userid asc  
+   		limit ${page.currentCount},${page.pageSize}
+	</select>
+	
+	<select id="usersCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1) from user
+		<where>
+			delflag = 0
+	    	<if test="searchCondition.username != null and searchCondition.username != ''">and username like CONCAT('%',#{searchCondition.username},'%')</if>
+	    	<if test="searchCondition.email != null and searchCondition.email != ''">and email like CONCAT('%',#{searchCondition.email},'%')</if>
+	    	<if test="searchCondition.phone != null and searchCondition.phone != ''">and phone like CONCAT('%',#{searchCondition.phone},'%')</if>
+	    	<if test="searchCondition.startDate != null and searchCondition.startDate != ''
+	    	      and searchCondition.endDate != null and searchCondition.endDate != ''">
+	    	      and createDate &gt;= #{searchCondition.startDate} and createDate &lt;= #{searchCondition.endDate}
+	    	</if>
+		</where>	   
+	</select>
+	
+	<insert id="allotUserRole" parameterType="java.util.HashMap">
+		insert into user_role(id,userid,roleid) values
+		<foreach collection="list" index="index" item="item" open="" separator="," close="">   
+	        (UUID(),#{userId},#{item})
+    	</foreach>
+	</insert>
+	
+	<delete id="deleteUserRoleByUserId" parameterType="java.util.HashMap">
+		delete from user_role where userid = #{userId}
+	</delete>
+	
+</mapper>

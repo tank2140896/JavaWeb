@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.gloudtek.web.rbac.dao.ScheduleDao">
+
+	<select id="getScheduleByDate" parameterType="Map" resultType="com.gloudtek.entity.rbac.CompanySchedule">
+		select companyScheduleId,companyName,companyDate,companyScheduleType
+		from company_schedule 
+		where companyDate &gt;= #{startDate} and companyDate&lt;= #{endDate}
+	</select>
+
+	<delete id="deleteScheduleByDate" parameterType="Map">
+		delete from company_schedule
+		where companyDate &gt;= #{startDate} and companyDate&lt;= #{endDate}
+	</delete>
+	
+	<!-- 也可以这么写 
+	<parameterMap type="com.gloudtek.entity.rbac.CompanySchedule" id="companyScheduleEntity"></parameterMap>
+	<insert id="saveScheduleByDate" parameterMap="companyScheduleEntity">
+	-->
+	<insert id="saveScheduleByDate" parameterType="List">
+		insert into company_schedule(companyScheduleId,companyName,companyDate,companyScheduleType) values 
+		<foreach collection="array" index="index" item="item" open="" separator="," close="">   
+	        (UUID(),'暂未定义公司名称',#{item.date},${item.scheduleType})
+    	</foreach>
+	</insert>
+	<!-- 注意区别,这么写效率较低下 
+	<insert id="saveScheduleByDate" parameterType="List">
+		<foreach collection="array" index="index" item="item" open="" separator=";" close="">   
+		insert into company_schedule(companyScheduleId,companyName,companyDate,companyScheduleType) values 
+	        (UUID(),'暂未定义公司名称',#{item.date},${item.scheduleType})
+    	</foreach>
+	</insert>
+	-->
+	
+</mapper>

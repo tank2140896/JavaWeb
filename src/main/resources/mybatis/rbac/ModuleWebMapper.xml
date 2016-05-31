@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.gloudtek.web.rbac.dao.ModuleDao">
+
+	<!-- 动态SQL片段 -->
+	<sql id="selectModuleIdByRoleIds" >
+		SELECT DISTINCT(moduleid) from role_module
+		where roleid in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        	#{item}
+    	</foreach>
+	</sql>
+	
+	<insert id="createModule" parameterType="com.gloudtek.entity.rbac.Module">
+		<!--  
+		<foreach collection="list" index="index" item="item" open="" separator=";" close="">
+		-->
+			insert into module(moduleid,modulename,moduleurl,parentid,fcode,levels,orders,moduletype,mark,alias,parentalias,createDate,updateDate,delflag) 
+			values(UUID(),#{modulename},#{moduleurl},#{parentid},#{fcode},${levels},${orders},${moduletype},#{mark},${alias},${parentalias},#{createDate},#{updateDate},${delflag})
+		<!--  
+		</foreach>
+		-->
+	</insert>
+	
+	<update id="modifyModule" parameterType="com.gloudtek.entity.rbac.Module">
+		update module set modulename = #{modulename},
+						  moduleurl = #{moduleurl},
+						  parentid = #{parentid},
+						  fcode = #{fcode},
+						  levels = ${levels},
+						  orders = ${orders},
+						  moduletype = ${moduletype},
+						  alias = #{alias},
+						  parentalias = #{parentalias},
+						  updateDate = now()
+		where moduleid = #{moduleid}
+	</update>
+	
+	<delete id="deleteModule" parameterType="java.lang.String">
+		update module set delflag = 1,updateDate = now() where moduleid = #{moduleid}
+	</delete>
+	
+	<select id="getAllModules" resultType="com.gloudtek.entity.rbac.Module">
+		SELECT moduleid,modulename,moduleurl,parentid,levels,mark,alias
+		from module where delflag = 0 ORDER BY levels asc
+	</select>
+	
+	<select id="getRoleModuleOperations" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias,parentalias
+		from module where parentid = #{moduleId}
+		<if test="adminFlag==0">
+			AND moduleid in
+			(
+			<include refid="selectModuleIdByRoleIds"></include>
+			)
+		</if>
+		AND moduletype = 2 AND delflag = 0 ORDER BY levels asc
+	</select>
+	
+	<select id="getModuleByModuleId" parameterType="java.lang.String" resultType="com.gloudtek.entity.rbac.Module">
+		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias
+		from module where moduleid = #{moduleId}
+	</select>
+	
+	<select id="getModules" parameterType="java.util.Map" resultType="com.gloudtek.entity.rbac.Module">
+		select moduleid,modulename,moduleurl,parentid,levels,moduletype,alias,parentalias,DATE_FORMAT(createDate,'%Y-%m-%d') as createDate
+		from module
+		<where>
+			delflag = 0
+	    	<if test="searchCondition.modulename != null and searchCondition.modulename != ''">and modulename like CONCAT('%',#{searchCondition.modulename},'%')</if>
+	    	<if test="searchCondition.startDate != null and searchCondition.startDate != ''
+	    	      and searchCondition.endDate != null and searchCondition.endDate != ''">
+	    	      and createDate &gt;= #{searchCondition.startDate} and createDate &lt;= #{searchCondition.endDate}
+	    	</if>
+		</where>	   
+   		order by moduleid asc  
+   		limit ${page.currentCount},${page.pageSize}
+	</select>
+	
+	<select id="modulesCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1) from module
+		<where>
+			delflag = 0
+	    	<if test="searchCondition.modulename != null and searchCondition.modulename != ''">and modulename like CONCAT('%',#{searchCondition.modulename},'%')</if>
+	    	<if test="searchCondition.startDate != null and searchCondition.startDate != ''
+	    	      and searchCondition.endDate != null and searchCondition.endDate != ''">
+	    	      and createDate &gt;= #{searchCondition.startDate} and createDate &lt;= #{searchCondition.endDate}
+	    	</if>
+		</where>	   
+	</select>
+	
+	<select id="getModuleByRoleId" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias,parentalias
+		from module where 1=1
+		<if test="adminFlag==0">
+			AND moduleid in(SELECT moduleid from role_module WHERE roleid = #{roleid})
+		</if>
+		AND delflag = 0 ORDER BY levels asc
+	</select>
+	
+</mapper>

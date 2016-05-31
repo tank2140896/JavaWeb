@@ -1,0 +1,229 @@
+<style type="text/css">
+   *{
+        margin: 0px;
+        padding: 0px;
+    }
+    .main{
+        width: 100%;
+        height: auto;
+        margin: auto;
+    }
+    .head{
+        width: 100%;
+        height: auto;
+    }
+    .title{
+        /*display: inline-block;*/
+        background-color: #99cdff;
+        list-style-type: none;
+        width: 100%;
+        height: 36px;
+        margin: auto;
+
+    }
+    .weekend{
+        float: left;
+        border: 1px solid #000000;
+        margin-left: 0.63%;
+        margin-right: 0.5%;
+        width: 13.1%;
+        height: 25px;
+        text-align: center;
+        line-height: 25px;
+        background-color: #ff6666;
+        margin-top: 4px;
+    }
+    .weekday{
+        float: left;
+        border: 1px solid #000000;
+        margin-left: 0.63%;
+        margin-right: 0.5%;
+        width: 13.1%;
+        height: 25px;
+        text-align: center;
+        line-height: 25px;
+        background-color: #878b8b;
+        margin-top: 4px;
+    }
+    .banner{
+        width: 100%;
+        height: auto;
+        margin-top: 25px;
+    }
+    .content{
+        display: inline-block;
+        width: 100%;
+        height: auto;
+        background-color: #99cdff;
+        list-style-type: none;
+    }
+    .dateEnd {
+        float: left;
+        border: 1px solid #000000;
+        margin-left: 0.63%;
+        margin-right: 0.5%;
+        width: 13.1%;
+        height: 98px;
+        text-align: center;
+        margin-top: 4px;
+        background-color: #ff6666;
+    }
+    .dateDay {
+        float: left;
+        border: 1px solid #000000;
+        margin-left: 0.63%;
+        margin-right: 0.5%;
+        width: 13.1%;
+        height: 98px;
+        text-align: center;
+        margin-top: 4px;
+        background-color: #ffffff
+    }
+    .hollyDay {
+        float: left;
+        border: 1px solid #000000;
+        margin-left: 0.63%;
+        margin-right: 0.5%;
+        width: 13.1%;
+        height: 98px;
+        text-align: center;
+        margin-top: 4px;
+        background-color: #f0ad4e
+    }
+    .restDay {
+        float: left;
+        border: 1px solid #000000;
+        margin-left: 0.63%;
+        margin-right: 0.5%;
+        width: 13.1%;
+        height: 98px;
+        text-align: center;
+        margin-top: 4px;
+        background-color: #5CB85C
+    }
+    td{
+       width: 7%;
+       height: 60px;
+       border-top: 1px solid #000000;
+    }
+    .caption {
+        background-color: #878b8b;
+    }
+    caption{
+    	text-align:center;
+    	color:#000
+    }
+    #scheduleId li:hover{
+        box-shadow: 0 0 3px 3px #2e6ca9;
+    }
+    .triangle-left{
+        width: 5px;
+        border-top: 7px solid transparent;
+        border-right: 14px solid #3a93e9;
+        border-bottom: 7px solid transparent;
+        float: left;
+        margin-top:7px;
+    }
+    .triangle-right{
+        width: 0px;
+        height: 0px;
+        border-top: 7px solid transparent;
+        border-left: 14px solid #3a93e9;
+        border-bottom: 7px solid transparent;
+        float: left;
+        margin-top:7px;
+    }
+    .show-date{
+    	float: left;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top:5px;
+	}
+</style>
+<script type="text/javascript">
+$(function(){
+    var left = $(".triangle-left");
+    left.mousedown(function(){
+        $(this).css("border-right","14px solid #c3cad0");
+    });
+    left.mouseup(function(){
+        $(this).css("border-right","14px solid #3a93e9");
+    });
+    var right = $(".triangle-right");
+    right.mousedown(function(){
+        $(this).css("border-left","14px solid #c3cad0");
+    });
+    right.mouseup(function(){
+        $(this).css("border-left","14px solid #3a93e9");
+    });
+});
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">日程管理</h1>
+    </div>
+</div>
+<div class="row" id="scheduleId">
+    <div class="col-lg-12">
+        <permission fname="scheduleManage" aname="getSchedules">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            	<div class="triangle-left" ng-click="preMonth()"></div>
+   				<div class="show-date">{{currentYearMonth}}</div>
+   				<div class="triangle-right" ng-click="nextMonth()"></div>
+   				<div>
+   					{{instruce}}
+   					<permission fname="scheduleManage" aname="saveSchedules">
+   					<button ng-click="scheduleSet()" ng-show="show1" class="btn btn-sm">日程设定</button>
+   					<button ng-click="scheduleSave()" ng-show="show2" class="btn btn-sm">保存</button>
+   					<button ng-click="scheduleCancel()" ng-show="show2" class="btn btn-sm">取消</button>
+   					</permission>
+   				</div>
+            </div>
+            <div class="panel-body">
+   				<div class="main">
+				    <div class="head">
+				        <ul class="title">
+				            <li class="weekend">星期天</li>
+				            <li class="weekday">星期一</li>
+				            <li class="weekday">星期二</li>
+				            <li class="weekday">星期三</li>
+				            <li class="weekday">星期四</li>
+				            <li class="weekday">星期五</li>
+				            <li class="weekend">星期六</li>
+				        </ul>
+				    </div>
+				    <div class="banner">
+				        <ul class="content">
+				        	<li ng-class="{1:'dateEnd',2:'dateDay',3:'hollyDay',4:'restDay'}[day.scheduleType]" ng-repeat="day in dateList">
+				        	<!-- <li ng-class='day.scheduleType==1?"dateEnd":"dateDay"' ng-repeat="day in dateList"> -->
+				                <table cellpadding="0" cellspacing="0">
+				                	<!-- <caption ng-class='day.weekendsFlag==0?"caption":""'>{{day.date}}</caption> -->
+				                    <caption>{{day.date}}</caption>
+				                    <!--  
+				                    <tr ng-if="day.scheduleType==1">
+				                        <td class="borderR" ng-click="change($event.target,$index)">周末</td>
+				                    </tr>
+				                    <tr ng-if="day.scheduleType==2">
+				                    	<td class="borderR" ng-click="change($event.target,$index)">正常</td>
+				                    </tr>
+				                    <tr ng-if="day.scheduleType==3">
+				                    	<td class="borderR" ng-click="change($event.target,$index)">节假日</td>
+				                    </tr>
+				                    <tr ng-if="day.scheduleType==4">
+				                    	<td class="borderR" ng-click="change($event.target,$index)">休假</td>
+				                    </tr>
+				                    -->
+				                    <tr ng-init="scheduleType=['周末','正常','节假日','休假']">
+				                    	<td class="borderR" ng-click="change($event.target,$index)" ng-bind="scheduleType[{{day.scheduleType-1}}]"></td>
+				                    </tr>
+				                </table>
+				            </li>
+				        </ul>
+			    	</div>
+				</div>
+        	</div>
+    	</div>
+        </permission>
+	</div>
+</div>

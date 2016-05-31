@@ -1,0 +1,68 @@
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav in" id="side-menu">
+        	<!-- 暂时去掉其搜索功能,因为我不知道该搜索功能的目的及显示效果 
+            <sidebar-search></sidebar-search>
+            -->
+           	<li ui-sref-active="active">
+                <a ui-sref="dashboard.home"><i class="fa fa-dashboard fa-fw"></i> 主页</a>
+            </li>
+            <!-- fa fa-bar-chart-o fa-fw -->
+			<li ng-class="{active: collapseVar=={{$index+1}}}" ng-repeat="module in moduleList">
+				<a ng-if="module.moduleList.length==0" ui-sref="dashboard.{{module.alias}}">
+					<i ng-if="$index+1==1" class="fa fa-table fa-fw"></i>
+	            	<i ng-if="$index+1==2" class="fa fa-edit fa-fw"></i>
+	            	<i ng-if="$index+1==3" class="fa fa-wrench fa-fw"></i>
+	            	<i ng-if="$index+1==4" class="fa fa-sitemap fa-fw"></i>
+	            	<i ng-if="$index+1==5" class="fa fa-files-o fa-fw"></i>
+				 {{module.modulename}}
+				</a>
+				<a ng-if="module.moduleList.length>0" href="" ng-click="check($index+1)">
+					<i ng-if="$index+1==1" class="fa fa-table fa-fw"></i>
+	            	<i ng-if="$index+1==2" class="fa fa-edit fa-fw"></i>
+	            	<i ng-if="$index+1==3" class="fa fa-wrench fa-fw"></i>
+	            	<i ng-if="$index+1==4" class="fa fa-sitemap fa-fw"></i>
+	            	<i ng-if="$index+1==5" class="fa fa-files-o fa-fw"></i>
+				 {{module.modulename}}<span class="fa arrow"></span>
+				</a>
+				<ul ng-if="module.moduleList.length>0" class="nav nav-second-level" collapse="collapseVar!={{$index+1}}">
+					<li ng-repeat="subModule in module.moduleList track by $index" ui-sref-active="active">
+			            <!-- 
+			            <a ui-sref="dashboard.{{subModule.alias}}" ng-click="getModuleId(subModule.moduleid)">{{subModule.modulename}}</a>
+			            -->
+			            <a ui-sref="dashboard.{{subModule.alias}}({moduleid:subModule.moduleid})">{{subModule.modulename}}</a>
+			        </li>
+				</ul>
+			</li>
+			<!-- 多级下拉菜单演示 start -->
+			<!--  
+			<li ng-class="{active: collapseVar==999}">
+                <a href="" ng-click="check(999)"><i class="fa fa-sitemap fa-fw"></i> 新闻管理<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=999">
+                    <li>
+                        <a href="">这个就二级</a>
+                    </li>
+                    <li ng-init="third=!third" ng-class="{active: multiCollapseVar==998}">
+                        <a href="" ng-click="multiCheck(998)">新闻 <span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level" collapse="multiCollapseVar!=998">
+                            <li>
+                                <a href="">国内新闻</a>
+                            </li>
+                            <li>
+                                <a href="">国际新闻</a>
+                            </li>
+                            <li>
+                                <a href="">社会评论</a>
+                            </li>
+                            <li>
+                                <a href="">财经报道</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            -->
+			<!-- 多级下拉菜单演示 end -->
+        </ul>
+    </div>
+</div>
