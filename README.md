@@ -39,4 +39,5 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS
 3.运用Java8改造代码           
 4.完成微信开发部分        
 5.完成支付部分         
-6.运行时插件(组件)式开发             
+6.运行时插件(组件)式开发
+7.补充部分单元测试代码      
