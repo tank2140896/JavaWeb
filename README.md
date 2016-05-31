@@ -3,9 +3,9 @@
 SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS  
 # 说明：
 # 一、本项目简介
-项目简介：本项目是一个JavaWeb基础框架，本项目为开源项目(Apache License V2.0) 
-特别说明：本项目前端框架运用了[SB Admin v2.0 rewritten in AngularJS]，并进行了小部分改造     
-（ github地址：https://github.com/start-angular/sb-admin-angular.git ）  
+项目简介：本项目是一个JavaWeb基础框架，本项目为开源项目(Apache License V2.0)     
+特别说明：本项目前端框架运用了[SB Admin v2.0 rewritten in AngularJS]，并进行了小部分改造       
+（ github地址：https://github.com/start-angular/sb-admin-angular.git ）    
 # 二、使用技术
 1.SpringMVC restful（latest）作为后端主体  
 2.Mybats（latest）作为数据库层的操作  
