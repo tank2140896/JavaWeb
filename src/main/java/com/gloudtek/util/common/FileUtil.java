@@ -15,11 +15,12 @@ import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -54,13 +55,9 @@ public class FileUtil {
     
 	//读取文件名
 	public static List<String> readFileName(String filePath){
-		List<String> fileNameList = new ArrayList<String>();
-		File f = new File(filePath);
-		File file[] = f.listFiles();
-		for(File ff:file){
-			fileNameList.add(ff.getName());
-		}
-		return fileNameList;
+		File file = new File(filePath);
+		File files[] = file.listFiles();
+		return Stream.of(files).map(File::getName).collect(Collectors.toList());
 	}
     
 	//写文件
