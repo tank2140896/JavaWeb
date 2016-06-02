@@ -21,6 +21,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
@@ -41,8 +43,6 @@ import com.gloudtek.util.self.Constant;
 import com.gloudtek.util.self.ShiroUtil;
 import com.gloudtek.web.rbac.service.UserService;
 import com.gloudtek.web.websocket.ChartController;
-
-import net.sf.json.JSONObject;
 
 //该路径下的访问对所有人开放
 @Controller
@@ -112,10 +112,10 @@ public class AllOpenController {
 			  			@RequestBody JsonNode jsonNode
 			  			/** @RequestBody User user */
 			  			/** @ModelAttribute User user */) {
-		String username = jsonNode.get("username").asText();
-		String password = jsonNode.get("password").asText();
+		String username = jsonNode.get("username").asText();//用户名
+		String password = jsonNode.get("password").asText();//密码
 		String code = jsonNode.get("code").asText();//这个是用户输入的验证码
-		String sessionCode = ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE)==null?"":ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE).toString();//这个是session中的验证码
+		String sessionCode = getSessionCode();//这个是session中的验证码
 		JSONObject jo = new JSONObject();
 		if(!code.equalsIgnoreCase(sessionCode)){//验证码校验忽略大小写
 			jo.put("message", "验证码错误");
@@ -198,7 +198,19 @@ public class AllOpenController {
 		return jo.toString();
 	}
 	
+	//获得session中的验证码信息
+	private String getSessionCode(){
+		String result = "";
+		Object sessionCode = ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE);
+		if(sessionCode!=null){
+			result = ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE).toString();
+		}
+		return result;
+	}
+	
+	//根据用户角色判断是否是顶级管理员
 	private int getSuperAdminFlag(List<Role> roleList){
+		/**
 		int superAdminFlag = 0;
 		for (int i = 0; i < roleList.size(); i++) {
 			if(roleList.get(i).getRoleid().equals(Constant.ROLE_ADMIN_ID)){
@@ -207,6 +219,14 @@ public class AllOpenController {
 			}
 		}
 		return superAdminFlag;
+		*/
+		boolean resultFlag = roleList.stream().anyMatch(AllOpenController::isRoleAdminId);
+		return resultFlag==true?1:0;
+	}
+	
+	//判断是否是顶级管理员
+	private static boolean isRoleAdminId(Role role){
+		return Constant.ROLE_ADMIN_ID.equals(role.getRoleid());
 	}
 	
 	private String getIpAddressAndPort(HttpServletRequest request){
