@@ -19,6 +19,7 @@ angular.module('webApp').controller('UserManageCtrl', function ($scope,$state,$h
     	 .success(function(data,status,headers,config){
 			 $scope.users = data.user;
 			 $scope.userRoleList = data.role;
+			 //$scope.userRoleList.push({roleid:123,rolename:'abc'});//可以向下拉框追加一条值
 			 $scope.currentPage = data.page.currentPage+1;//为什么+1,因为后端分页是从0开始的
 			 $scope.totalPage = data.page.totalPage;
     	 })
@@ -192,4 +193,3 @@ angular.module('webApp').controller('UserManageCtrl', function ($scope,$state,$h
     };
     
 });
-
