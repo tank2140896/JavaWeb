@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +43,35 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+/**
+ * 文件处理工具类
+ * 常用的一些其它方法
+ * 1.字符流:Writer out = new FileWriter(f,true);//加true的话,不会替换原来文件的内容,直接追加
+ *          Reader in = new FileReader(f);
+ * 2.字节流:OutputStream os = new FileOutputStream(f,true);
+ * 	    OutputStream os = new BufferedOutputStream(new FileOutputStream(new File(f)));
+ *          InputStream is = new FileInputStream(f);
+ *          InputStream is = new BufferedInputStream(new FileInputStream(new File(f)));
+ * 3.一行一行读:LineNumberReader reader = new LineNumberReader(new InputStreamReader(fis,charCode));
+ * 4.创建文件:new File(s).createNewFile();
+ * 5.创建文件夹:new File(s).mkdir();
+ * 6.列出文件:new File(s).list();new File(s).listFiles();
+ * 7.判断文件是不是目录:new File(s).isDirectory();
+ */
 public class FileUtil {
+	
+	//递归获得所有文件名称
+	public static void getAllFiles(File file){
+		if(file.isDirectory()){
+			File files[] = file.listFiles();
+			if(files!=null){
+				for (int i = 0; i < files.length; i++) {
+					getAllFiles(files[i]);
+					System.out.println(files[i]);
+				}
+			}
+		}
+	}
 
     //递归创建文件夹
     public static void makeDirs(File file){
@@ -98,6 +128,84 @@ public class FileUtil {
 		bw.write(context);
 		bw.close();
 	}
+	
+	//压缩文件
+	/** 
+	   参考1:
+	     public static void main(String[] args) throws Exception{ 
+    	 	//压缩文件的名称为
+        	//File file = new File("d:\\hello.zip"); 
+        	//ZipFile zipFile = new ZipFile(file); 
+        	//System.out.println("压缩文件的名称为：" + zipFile.getName()); 
+        	File file = new File("d:\\hello.zip"); 
+        	File outFile = new File("d:\\unZipFile.txt"); 
+        	ZipFile zipFile = new ZipFile(file); 
+        	ZipEntry entry = zipFile.getEntry("hello.txt"); 
+        	InputStream input = zipFile.getInputStream(entry); 
+        	OutputStream output = new FileOutputStream(outFile); 
+        	int temp = 0; 
+        	while((temp = input.read()) != -1){ 
+            	output.write(temp); 
+        	} 
+        	input.close(); 
+        	output.close(); 
+    	 } 
+	    参考2:
+	     public static void main(String[] args) throws IOException{ 
+         	File file = new File("d:\\hello.zip"); 
+        	File outFile = null; 
+        	ZipFile zipFile = new ZipFile(file); 
+        	ZipInputStream zipInput = new ZipInputStream(new FileInputStream(file)); 
+        	ZipEntry entry = null; 
+        	InputStream input = null; 
+        	OutputStream output = null; 
+        	while((entry = zipInput.getNextEntry()) != null){ 
+            	System.out.println("解压缩" + entry.getName() + "文件"); 
+            	outFile = new File("d:" + File.separator + entry.getName()); 
+            	if(!outFile.getParentFile().exists()){ 
+                	outFile.getParentFile().mkdir(); 
+            	} 
+            	if(!outFile.exists()){ 
+                	outFile.createNewFile(); 
+            	} 
+            	input = zipFile.getInputStream(entry); 
+            	output = new FileOutputStream(outFile); 
+            	int temp = 0; 
+            	while((temp = input.read()) != -1){ 
+                	output.write(temp); 
+           		} 
+            	input.close(); 
+            	output.close(); 
+            } 
+    	 } 
+	 */
+    public static void zipFile(File file,String zipFilePath) throws Exception { 
+        File zipFile = new File(zipFilePath); 
+        InputStream input = new FileInputStream(file); 
+        ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile)); 
+        zipOut.putNextEntry(new ZipEntry(file.getName())); 
+        //设置注释 
+        //zipOut.setComment("hello"); 
+        if(file.isDirectory()){ 
+            File[] files = file.listFiles(); 
+            for(int i = 0; i < files.length; ++i){ 
+                input = new FileInputStream(files[i]); 
+                zipOut.putNextEntry(new ZipEntry(file.getName() + File.separator + files[i].getName())); 
+                int temp = 0; 
+                while((temp = input.read()) != -1){ 
+                    zipOut.write(temp); 
+                } 
+                input.close(); 
+            } 
+        }else{
+        	 int temp = 0; 
+             while((temp = input.read()) != -1){ 
+                 zipOut.write(temp); 
+             } 
+             input.close(); 
+        }
+        zipOut.close(); 
+    } 
 	
 	//序列化输出
 	//实体类的属性加上transient表示不会被序列化,如:private transient String name;
