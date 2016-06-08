@@ -1,17 +1,17 @@
 package com.gloudtek.util.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class ArrayUtil {
 	
 	//获取两个数组的交集
-	//除去输出,最坏情况时间花费2n,空间花费4n;
-	//如果用嵌套for循环,最坏情况时间花费n*n,空间花费2n
-	//因此这是一个空间换时间的算法,当然嵌套for循环就是一个时间换空间的算法
 	public static int[] getArrayIntersection(int a[],int b[]) {
+		/**
+		//除去输出,最坏情况时间花费2n,空间花费4n;
+		//如果用嵌套for循环,最坏情况时间花费n*n,空间花费2n
+		//因此这是一个空间换时间的算法,当然嵌套for循环就是一个时间换空间的算法
 		Map<Integer,Integer> map = new HashMap<>();
 		Map<Integer,Integer> resultMap = new HashMap<>();
 		for (int i = 0; i < a.length; i++) {
@@ -31,6 +31,9 @@ public class ArrayUtil {
 			result[count++] = i;
 		}
 		return result;
+		*/
+		//使用java8的lambda表达式进行改造
+		return Arrays.stream(a).flatMap(i->Arrays.stream(b).filter(j->i==j)).distinct().toArray();
 	}
 	
 	//矩阵相乘(行乘以列)  
