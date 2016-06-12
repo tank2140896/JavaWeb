@@ -21,4 +21,10 @@ public class Constant {
 	public static final int COOKIE_MAXAGE = 60*60*24*7;//cookie生命周期
 	public static final String COOKIE_PATH = "/";//cookie作用路径
 	
+	/** **********华丽的分割线********** */
+	public static final String MESSAGE = "message";
+	public static final String STATUS = "status";
+	public static final String STATUS_FAIL = "fail";
+	public static final String STATUS_SUCCESS = "success";
+	
 }
