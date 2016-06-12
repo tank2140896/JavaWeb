@@ -21,8 +21,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
@@ -41,8 +39,11 @@ import com.gloudtek.entity.rbac.User;
 import com.gloudtek.handler.FunctionAndOperationHandler;
 import com.gloudtek.util.self.Constant;
 import com.gloudtek.util.self.ShiroUtil;
+import com.gloudtek.view.rbac.ModuleListVO;
 import com.gloudtek.web.rbac.service.UserService;
 import com.gloudtek.web.websocket.ChartController;
+
+import net.sf.json.JSONObject;
 
 //该路径下的访问对所有人开放
 @Controller
@@ -57,15 +58,15 @@ public class AllOpenController {
 	
 	/**
 	@Autowired
-    private Environment env;
-    //String environment = env.getProperty("jdbcDriverClassName");
+	 private Environment env;
+    	//String environment = env.getProperty("jdbcDriverClassName");
 	
 	@Value("classpath:config/props/jdbc.properties")
-    private org.springframework.core.io.Resource info;
-    //info.getInputStream()
+	 private org.springframework.core.io.Resource info;
+    	//info.getInputStream()
 	
 	@Value("#{ T(java.lang.Math).random() * 100.0 }")
-    private double randomNumber;
+    	private double randomNumber;
 
 	@Scheduled(cron = "0 22 11 ? * *"  )//每天上午11点22执行
 	@Scheduled(fixedRate = 5000)//服务器加载controller后每5秒执行一次
@@ -112,57 +113,46 @@ public class AllOpenController {
 			  			@RequestBody JsonNode jsonNode
 			  			/** @RequestBody User user */
 			  			/** @ModelAttribute User user */) {
-		String username = jsonNode.get("username").asText();//用户名
-		String password = jsonNode.get("password").asText();//密码
-		String code = jsonNode.get("code").asText();//这个是用户输入的验证码
-		String sessionCode = getSessionCode();//这个是session中的验证码
 		JSONObject jo = new JSONObject();
-		if(!code.equalsIgnoreCase(sessionCode)){//验证码校验忽略大小写
-			jo.put("message", "验证码错误");
-			jo.put("status", "fail");
-		}else{
-			Map<String,String> map = new HashMap<>();
-			map.put("username", username);
-			map.put("password", new SimpleHash("SHA-1", username, password).toString());
-			User user = userService.getUserByUsernameAndPassword(map);
-			if(user==null){
-				jo.put("message", "用户名或密码错误");
-				jo.put("status", "fail");
+		try{
+			String username = jsonNode.get("username").asText();//用户名
+			String password = jsonNode.get("password").asText();//密码
+			String code = jsonNode.get("code").asText();//这个是用户输入的验证码
+			String sessionCode = getSessionCode();//这个是session中的验证码
+			if(!code.equalsIgnoreCase(sessionCode)){//验证码校验忽略大小写
+				jo.put(Constant.MESSAGE, "验证码错误");
+				jo.put(Constant.STATUS, Constant.STATUS_FAIL);
 			}else{
-				//同一账号登录后不能再登录的实现,未经大量验证,效果有待后续观察
-				if(ChartController.user.get(username)!=null){
-					jo.put("message", "该账号已登录");
-			    	jo.put("status", "fail");
+				Map<String,String> map = new HashMap<>();
+				map.put("username", username);
+				map.put("password", new SimpleHash("SHA-1", username, password).toString());
+				User user = userService.getUserByUsernameAndPassword(map);
+				if(user==null){
+					jo.put(Constant.MESSAGE, "用户名或密码错误");
+					jo.put(Constant.STATUS, Constant.STATUS_FAIL);
 				}else{
-					//shiro加入身份验证
-				    UsernamePasswordToken token = new UsernamePasswordToken(map.get("username"), map.get("password")); 
-				    try { 
+					//同一账号登录后不能再登录的实现,未经大量验证,效果有待后续观察
+					if(ChartController.user.get(username)!=null){
+						jo.put(Constant.MESSAGE, "该账号已登录");
+				    	jo.put(Constant.STATUS, Constant.STATUS_FAIL);
+					}else{
+						//shiro加入身份验证
+					    UsernamePasswordToken token = new UsernamePasswordToken(map.get("username"), map.get("password")); 
 				    	ShiroUtil.getSubject().login(token);
 						//获得角色信息
 						List<Role> roleList = userService.getUserRoles(user.getUserid());
 						if(roleList.size()>0){
-							//获得当前角色左侧树形菜单列表
-							List<Module> moduleList = new ArrayList<>();
-							//获得当前角色右侧菜单对应的所有操作列表
-							List<Module> operationList = new ArrayList<>();
-							//获得顶层菜单列表,用于对关键操作进行路径检查
-							List<Module> topModuleList = new ArrayList<>();
 							int superAdminFlag = getSuperAdminFlag(roleList);
 							//moduleList = userService.getUserMenu(roleList,superAdminFlag);
 							//operationList = userService.getUserOperation(roleList,superAdminFlag);
 							List<Module> allModuleList = userService.getUserAllModule(roleList, superAdminFlag);
-							for(int i=0;i<allModuleList.size();i++){
-								Module module = allModuleList.get(i);
-								int type = module.getModuletype();
-								if(type==1){
-									moduleList.add(module);
-									if(module.getLevels()==1){
-										topModuleList.add(module);
-									}
-								}else if(type==2){
-									operationList.add(module);
-								}
-							}
+							ModuleListVO moduleListVO = getNeedList(allModuleList);
+							//获得当前角色左侧树形菜单列表
+							List<Module> moduleList = moduleListVO.getModuleList();
+							//获得当前角色右侧菜单对应的所有操作列表
+							List<Module> operationList = moduleListVO.getOperationList();
+							//获得顶层菜单列表,用于对关键操作进行路径检查
+							List<Module> topModuleList = moduleListVO.getTopModuleList();
 							moduleList = FunctionAndOperationHandler.setTreeList(moduleList, null);
 							//获得权限路径检查的正则表达式
 							String authorityChaekPath = getAuthorityChaekPath(topModuleList);
@@ -174,23 +164,23 @@ public class AllOpenController {
 							ShiroUtil.setAttribute(Constant.SESSION_OPERATION, operationList);
 							ShiroUtil.setAttribute(Constant.AUTHORITY_CHAEK_PATH, authorityChaekPath);
 							//ShiroUtil.setAttribute(Constant.IP_ADDRESS_PORT,ipAddressAndPort);
-							jo.put("message", "登录成功");
+							jo.put(Constant.MESSAGE, "登录成功");
 							jo.put("user", user);
 							jo.put("role", roleList);
 							jo.put("module", moduleList);
 							jo.put("operation", operationList);
 							jo.put("ipAddressPort", ipAddressAndPort);
-							jo.put("status", "success");
+							jo.put(Constant.STATUS, Constant.STATUS_SUCCESS);
 						}else{
-							jo.put("message", "该用户未分配角色");
-					    	jo.put("status", "fail");
+							jo.put(Constant.MESSAGE, "该用户未分配角色");
+					    	jo.put(Constant.STATUS, Constant.STATUS_FAIL);
 						}
-				    } catch (Exception e) { 
-				    	jo.put("message", "服务器内部异常");
-				    	jo.put("status", "fail");
-				    }
+					}
 				}
 			}
+		}catch(Exception e){
+			jo.put(Constant.MESSAGE, "服务器内部异常");
+	    	jo.put(Constant.STATUS, Constant.STATUS_FAIL);
 		}
 		//从后台代码获取国际化信息
 		//ResourceBundle resourceBundle = ResourceBundleHandler.getResourceBundle(request);
@@ -203,9 +193,36 @@ public class AllOpenController {
 		String result = "";
 		Object sessionCode = ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE);
 		if(sessionCode!=null){
-			result = ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE).toString();
+			result = sessionCode.toString();
 		}
 		return result;
+	}
+	
+	//获得需要的数据
+	private ModuleListVO getNeedList(List<Module> allModuleList){
+		//Map<Integer,Map<Integer,List<Module>>> streamMap = allModuleList.stream().collect(Collectors.groupingBy(Module::getModuletype,Collectors.collectingAndThen(Collectors.groupingBy(Module::getLevels),null)));
+		//获得当前角色左侧树形菜单列表
+		List<Module> moduleList = new ArrayList<>();
+		//获得当前角色右侧菜单对应的所有操作列表
+		List<Module> operationList = new ArrayList<>();
+		//获得顶层菜单列表,用于对关键操作进行路径检查
+		List<Module> topModuleList = new ArrayList<>();
+		allModuleList.stream().forEach(module->{
+			int type = module.getModuletype();
+			if(type==1){//type=1表示功能
+				moduleList.add(module);
+				if(module.getLevels()==1){//levels=1表示根节点
+					topModuleList.add(module);
+				}
+			}else if(type==2){//type=2表示操作
+				operationList.add(module);
+			}
+		});
+		ModuleListVO moduleListVO = new ModuleListVO();
+		moduleListVO.setModuleList(moduleList);
+		moduleListVO.setOperationList(operationList);
+		moduleListVO.setTopModuleList(topModuleList);
+		return moduleListVO;
 	}
 	
 	//根据用户角色判断是否是顶级管理员
@@ -229,6 +246,7 @@ public class AllOpenController {
 		return Constant.ROLE_ADMIN_ID.equals(role.getRoleid());
 	}
 	
+	//获得IPD地址和端口
 	private String getIpAddressAndPort(HttpServletRequest request){
 		String ipAddressAndPort = "";
 		try {
@@ -240,6 +258,7 @@ public class AllOpenController {
 		return ipAddressAndPort;
 	}
 	
+	//自定义权限路径检查规则
 	private String getAuthorityChaekPath(List<Module> topModuleList){
 		//"/web/sys.*|/web/wei.*|/web/tools.*"
 		String authorityChaekPath = "";
@@ -294,13 +313,14 @@ public class AllOpenController {
 		Object object = session.getAttribute(Constant.SESSION_USER);
 		JSONObject jsonObject = new JSONObject();
 		if(object==null){
-			jsonObject.put("status", "fail");
+			jsonObject.put(Constant.STATUS, Constant.STATUS_FAIL);
 		}else{
-			jsonObject.put("status", "success");
+			jsonObject.put(Constant.STATUS, Constant.STATUS_SUCCESS);
 		}
 		return jsonObject.toString();
 	}
 	
+	//生成图片
 	private String drawImg(ByteArrayOutputStream output){
 		//final int verifyCodeLength = 10;
 		final int verifyCodeLength = 4;
@@ -326,11 +346,12 @@ public class AllOpenController {
 		try {
 			ImageIO.write(bi, "jpg", output);
 		} catch (IOException e) {
-			e.printStackTrace();
+			//do nothing
 		}
 		return code;
 	}
 	
+	//获得验证码字符串
 	private String getVerifyCode(int verifyCodeLength){
 		//final String s = "Aa-Bb0=Cc+Dd1~Ee;Ff2@GgHh3#Jj:Kk4$Ll[Mm5%Nn]Pp6^Rr{Ss7&Tt}Uu8*Vv<Ww9(Xx>Yy?Zz)";
 		final String s = "ab1cd2ef3gh4jk5mn6op7qr8st9uv0wxyz";
@@ -343,6 +364,7 @@ public class AllOpenController {
 	}
 	
 	/**
+	//参考
 	//前端页面的路径写为:<img src="/identifyCode" />
 	@RequestMapping("/identifyCode")
 	public void login(HttpServletRequest request, HttpServletResponse response) throws Exception {
