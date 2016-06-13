@@ -27,9 +27,7 @@
     "angular-scenario": "1.2.16"
   },
   "resolutions":{
-      "bootstrap": "~3.1.1",
-      "bootstrap-datetimepicker": "latest",
-      "bootstrap-fileinput": "latest"
+      "bootstrap": "~3.1.1"
     },
   "appPath": "app"
 }
