@@ -21,12 +21,14 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS
 # 三、如何快速部署运行本项目
 1.安装jdk8或更高版本   
 2.安装tomcat7或更高版本    
-3.安装mysql5.6或更高版本  
+3.安装mysql5.6或更高版本    
 4.安装Maven较新版本   
 5.导入maven项目   
 6.进入项目目录运行：mvn clean install   
-7.进入项目下的target目录，找到JavaWeb.war    
-8.将JavaWeb.war拷贝至tomcat的webapp目录下，然后运行tomcat即可    
+7.进入项目下的target目录，找到JavaWeb.war   
+8.将/src/main/resources/config/sql/backup.sql导入数据库，数据库配置见：src/main/resources/config/props/jdbc.properties        
+9.将JavaWeb.war拷贝至tomcat的webapp目录下，然后运行tomcat即可       
+注：由于项目前端有些引用无法通过bower等安装，因此稍后将直接给出所有引用的JS库文件，以后将改进       
 # 四、其它说明
 1、关于框架   
 框架初搭还有很多不完善，功能会在以后有需要的情况下陆续添加，但是满足简单的功能要求还是没问题的    
