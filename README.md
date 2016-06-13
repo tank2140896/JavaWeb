@@ -26,9 +26,10 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS
 5.导入maven项目   
 6.进入项目目录运行：mvn clean install   
 7.进入项目下的target目录，找到JavaWeb.war   
-8.将/src/main/resources/config/sql/backup.sql导入数据库，数据库配置见：src/main/resources/config/props/jdbc.properties        
-9.将JavaWeb.war拷贝至tomcat的webapp目录下，然后运行tomcat即可       
-注：由于项目前端有些引用无法通过bower等安装，因此稍后将直接给出所有引用的JS库文件，以后将改进       
+8.将/src/main/resources/config/sql/backup.sql导入数据库，数据库配置见：src/main/resources/config/props/jdbc.properties   
+9.进入src/main/webapp/app下，运行npm install         
+注：我的项目已经包含了运行命令后的所有文件，但是实际运行后有四个文件是不包含的，是后来添加的，它们是：bootstrap-datetimepicker-master、bootstrap-fileinput、ng-infinite-scroll、zTree       
+10.将JavaWeb.war拷贝至tomcat的webapp目录下，然后运行tomcat即可          
 # 四、其它说明
 1、关于框架   
 框架初搭还有很多不完善，功能会在以后有需要的情况下陆续添加，但是满足简单的功能要求还是没问题的    
