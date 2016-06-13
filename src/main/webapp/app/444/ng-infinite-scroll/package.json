@@ -1,0 +1,97 @@
+{
+  "_args": [
+    [
+      "ng-infinite-scroll",
+      "E:\\Git"
+    ]
+  ],
+  "_from": "ng-infinite-scroll@*",
+  "_id": "ng-infinite-scroll@1.2.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/ng-infinite-scroll",
+  "_nodeVersion": "0.12.2",
+  "_npmUser": {
+    "email": "samuel.roze@gmail.com",
+    "name": "sroze"
+  },
+  "_npmVersion": "3.5.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "ng-infinite-scroll",
+    "raw": "ng-infinite-scroll",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "*",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/ng-infinite-scroll/-/ng-infinite-scroll-1.2.1.tgz",
+  "_shasum": "2c2642de6a6e238c0d055eb73e4ff25b34eff6a7",
+  "_shrinkwrap": null,
+  "_spec": "ng-infinite-scroll",
+  "_where": "E:\\Git",
+  "author": {
+    "email": "brandon@brandontilley.com",
+    "name": "Brandon Tilley",
+    "url": "http://brandontilley.com"
+  },
+  "browser": "build/ng-infinite-scroll.js",
+  "bugs": {
+    "url": "https://github.com/sroze/ngInfiniteScroll/issues"
+  },
+  "contributors": [
+    {
+      "name": "Samuel ROZE",
+      "email": "samuel.roze@gmail.com",
+      "url": "http://sroze.io"
+    }
+  ],
+  "dependencies": {},
+  "description": "Infinite scrolling for AngularJS",
+  "devDependencies": {
+    "coffee-script": "~1.8.0",
+    "grunt": "~0.4.5",
+    "grunt-coffeelint": "~0.0.13",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-coffee": "~0.12.0",
+    "grunt-contrib-concat": "~0.5.0",
+    "grunt-contrib-connect": "0.8.0",
+    "grunt-contrib-uglify": "~0.6.0",
+    "grunt-protractor-runner": "1.1.4",
+    "mkdirp": "0.5.0",
+    "protractor": "1.4.0",
+    "sauce-connect-launcher": "0.9.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "2c2642de6a6e238c0d055eb73e4ff25b34eff6a7",
+    "tarball": "https://registry.npmjs.org/ng-infinite-scroll/-/ng-infinite-scroll-1.2.1.tgz"
+  },
+  "gitHead": "c15c8fabba18f74629b3e0ddd9247a3fd790c4d0",
+  "homepage": "https://github.com/sroze/ngInfiniteScroll#readme",
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "binarymuse",
+      "email": "brandon@brandontilley.com"
+    },
+    {
+      "name": "sroze",
+      "email": "samuel.roze@gmail.com"
+    }
+  ],
+  "name": "ng-infinite-scroll",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sroze/ngInfiniteScroll.git"
+  },
+  "scripts": {
+    "test": "grunt test:protractor-local"
+  },
+  "version": "1.2.1"
+}
