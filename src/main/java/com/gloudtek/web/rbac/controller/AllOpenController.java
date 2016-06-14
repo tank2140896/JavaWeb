@@ -265,6 +265,7 @@ public class AllOpenController {
 	//自定义权限路径检查规则
 	private String getAuthorityChaekPath(List<Module> topModuleList){
 		//"/web/sys.*|/web/wei.*|/web/tools.*"
+		/**
 		String authorityChaekPath = "";
 		for(int i=0;i<topModuleList.size();i++){
 			authorityChaekPath+=topModuleList.get(i).getModuleurl()+".*|";
@@ -273,6 +274,8 @@ public class AllOpenController {
 			authorityChaekPath = authorityChaekPath.substring(0, authorityChaekPath.length()-1);
 		}
 		return authorityChaekPath;
+		*/
+		return topModuleList.stream().map(module->module.getModuleurl()).collect(Collectors.joining(".*|","",topModuleList.size()==0?"":".*"));
 	}
 	
 	//获取验证码
