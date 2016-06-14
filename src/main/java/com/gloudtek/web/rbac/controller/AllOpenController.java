@@ -275,7 +275,8 @@ public class AllOpenController {
 		}
 		return authorityChaekPath;
 		*/
-		return topModuleList.stream().map(module->module.getModuleurl()).collect(Collectors.joining(".*|","",topModuleList.size()==0?"":".*"));
+		return topModuleList.stream().map(module->module.getModuleurl())
+		                    .collect(Collectors.joining(".*|","",topModuleList.size()==0?"":".*"));
 	}
 	
 	//获取验证码
