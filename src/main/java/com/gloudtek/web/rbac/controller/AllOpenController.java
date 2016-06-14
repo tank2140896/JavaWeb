@@ -190,11 +190,15 @@ public class AllOpenController {
 	
 	//获得session中的验证码信息
 	private String getSessionCode(){
+		/**
 		String result = "";
 		Object sessionCode = ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE);
 		if(sessionCode!=null){
 			result = sessionCode.toString();
 		}
+		*/
+		String result = Optional.ofNullable(ShiroUtil.getAttribute(Constant.SESSION_SECURITY_CODE))
+					.map(Object::toString).orElse("");
 		return result;
 	}
 	
