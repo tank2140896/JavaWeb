@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.gloudtek.web.common.dao.CommonWebDao">
+<mapper namespace="com.javaweb.web.common.dao.CommonWebDao">
 
 	<!-- 在mybatis中#{}一般都是带上引号的字符串,${}一般都是不带引号直接使用的;而在jsp中${}表示立即计算；#{}表示延迟计算 -->
 
@@ -9,7 +9,7 @@
 		select count(1) from ${table} where delflag = 0
 	</select>
 	
-	<select id="descTable" parameterType="java.lang.String" resultType="com.gloudtek.view.common.TableStructureVO">
+	<select id="descTable" parameterType="java.lang.String" resultType="com.javaweb.view.common.TableStructureVO">
 		<!-- 单参数必须这么写 -->
 		desc ${_parameter}
 	</select>
@@ -28,7 +28,7 @@
 	public List<User> getAll(Map<String,String> map);
 	-->
 	<!-- mybatis的XML写为  
-	<select id="getAll" parameterType="java.util.Map" resultType="com.gloudtek.entity.rbac.User">
+	<select id="getAll" parameterType="java.util.Map" resultType="com.javaweb.entity.rbac.User">
 		CALL test(#{modulename});  
 	</select>
 	-->

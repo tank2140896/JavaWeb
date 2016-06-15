@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.gloudtek.web.rbac.dao.ModuleDao">
+<mapper namespace="com.javaweb.web.rbac.dao.ModuleDao">
 
 	<!-- 动态SQL片段 -->
 	<sql id="selectModuleIdByRoleIds" >
@@ -12,7 +12,7 @@
     	</foreach>
 	</sql>
 	
-	<insert id="createModule" parameterType="com.gloudtek.entity.rbac.Module">
+	<insert id="createModule" parameterType="com.javaweb.entity.rbac.Module">
 		<!--  
 		<foreach collection="list" index="index" item="item" open="" separator=";" close="">
 		-->
@@ -23,7 +23,7 @@
 		-->
 	</insert>
 	
-	<update id="modifyModule" parameterType="com.gloudtek.entity.rbac.Module">
+	<update id="modifyModule" parameterType="com.javaweb.entity.rbac.Module">
 		update module set modulename = #{modulename},
 						  moduleurl = #{moduleurl},
 						  parentid = #{parentid},
@@ -41,12 +41,12 @@
 		update module set delflag = 1,updateDate = now() where moduleid = #{moduleid}
 	</delete>
 	
-	<select id="getAllModules" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getAllModules" resultType="com.javaweb.entity.rbac.Module">
 		SELECT moduleid,modulename,moduleurl,parentid,levels,mark,alias
 		from module where delflag = 0 ORDER BY levels asc
 	</select>
 	
-	<select id="getRoleModuleOperations" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getRoleModuleOperations" parameterType="java.util.HashMap" resultType="com.javaweb.entity.rbac.Module">
 		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias,parentalias
 		from module where parentid = #{moduleId}
 		<if test="adminFlag==0">
@@ -58,12 +58,12 @@
 		AND moduletype = 2 AND delflag = 0 ORDER BY levels asc
 	</select>
 	
-	<select id="getModuleByModuleId" parameterType="java.lang.String" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getModuleByModuleId" parameterType="java.lang.String" resultType="com.javaweb.entity.rbac.Module">
 		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias
 		from module where moduleid = #{moduleId}
 	</select>
 	
-	<select id="getModules" parameterType="java.util.Map" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getModules" parameterType="java.util.Map" resultType="com.javaweb.entity.rbac.Module">
 		select moduleid,modulename,moduleurl,parentid,levels,moduletype,alias,parentalias,DATE_FORMAT(createDate,'%Y-%m-%d') as createDate
 		from module
 		<where>
@@ -90,7 +90,7 @@
 		</where>	   
 	</select>
 	
-	<select id="getModuleByRoleId" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getModuleByRoleId" parameterType="java.util.HashMap" resultType="com.javaweb.entity.rbac.Module">
 		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias,parentalias
 		from module where 1=1
 		<if test="adminFlag==0">

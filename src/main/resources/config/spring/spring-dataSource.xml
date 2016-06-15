@@ -118,7 +118,7 @@
 	</bean>
 	
 	<!-- 多数据源集合 -->
-	<bean id="multipleDataSource" class="com.gloudtek.handler.MultipleDataSourceManage">
+	<bean id="multipleDataSource" class="com.javaweb.handler.MultipleDataSourceManage">
     	<property name="defaultTargetDataSource" ref="dataSource"/>
         <property name="targetDataSources">
             <map>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.gloudtek.web.rbac.dao.UserDao">
+<mapper namespace="com.javaweb.web.rbac.dao.UserDao">
 
 	<!-- Mybatis操作BLOB start -->
 	<!--  
@@ -13,7 +13,7 @@
 		PRIMARY KEY (`filename`)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	2.创建对应实体类
-	package com.gloudtek.entity.rbac;
+	package com.javaweb.entity.rbac;
 	public class File {
 		private String filename;
 		private byte[] filecontent;
@@ -49,13 +49,13 @@
 	</insert>
 	4.Mybatis读BLOB
 	[public List<File> selectBlob();]
-	List<com.gloudtek.entity.rbac.File> list = userDao.selectBlob();
-	com.gloudtek.entity.rbac.File file = list.get(0);
+	List<com.javaweb.entity.rbac.File> list = userDao.selectBlob();
+	com.javaweb.entity.rbac.File file = list.get(0);
 	byte bytes[] = file.getFilecontent();
 	OutputStream outputStream = new FileOutputStream(new File("C:\\Users\\abc\\Desktop\\a.mp4"));
 	outputStream.write(bytes);
 	outputStream.close();
-	<select id="selectBlob" resultType="com.gloudtek.entity.rbac.File">
+	<select id="selectBlob" resultType="com.javaweb.entity.rbac.File">
 		select filename,filecontent from file
 	</select>
 	-->
@@ -126,19 +126,19 @@
 		from module where 1=1 
 	</sql>
 	
-	<select id="getUserByUsernameAndPassword" parameterType="Map" resultType="com.gloudtek.entity.rbac.User">
+	<select id="getUserByUsernameAndPassword" parameterType="Map" resultType="com.javaweb.entity.rbac.User">
 		select userid,username,password,personname,email,phone,portrait from user
 		where username = #{username} and password = #{password} and delflag = 0
 	</select>
 	
-	<select id="getUserRoles" parameterType="java.lang.String" resultType="com.gloudtek.entity.rbac.Role">
+	<select id="getUserRoles" parameterType="java.lang.String" resultType="com.javaweb.entity.rbac.Role">
 		select r.roleid,r.rolename from role r
 		where r.roleid = 
 		(select ur.roleid from user_role ur where ur.userid = #{userid})
 		and r.delflag = 0 
 	</select>
 	
-	<select id="getUserMenu" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getUserMenu" parameterType="java.util.HashMap" resultType="com.javaweb.entity.rbac.Module">
 		<if test="adminFlag==0">
 			<include refid="selectModuleByCondition"></include>
 		</if>
@@ -148,7 +148,7 @@
 		AND moduletype = 1 AND delflag = 0 ORDER BY levels asc
 	</select>
 	
-	<select id="getUserOperation" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getUserOperation" parameterType="java.util.HashMap" resultType="com.javaweb.entity.rbac.Module">
 		<if test="adminFlag==0">
 			<include refid="selectModuleByCondition"></include>
 		</if>
@@ -158,7 +158,7 @@
 		AND moduletype = 2 AND delflag = 0 ORDER BY levels asc
 	</select>
 	
-	<select id="getUserAllModule" parameterType="java.util.HashMap" resultType="com.gloudtek.entity.rbac.Module">
+	<select id="getUserAllModule" parameterType="java.util.HashMap" resultType="com.javaweb.entity.rbac.Module">
 		<if test="adminFlag==0">
 			<include refid="selectModuleByCondition"></include>
 		</if>
@@ -168,7 +168,7 @@
 		AND moduletype in(1,2) AND delflag = 0 ORDER BY levels asc
 	</select>
 	
-	<insert id="createUser" parameterType="com.gloudtek.entity.rbac.User">
+	<insert id="createUser" parameterType="com.javaweb.entity.rbac.User">
 		insert into user(userid,username,password,personname,email,phone,portrait,parentid,fcode,level,createDate,updateDate,delflag)
 		values(#{userid},#{username},#{password},#{personname},#{email},#{phone},#{portrait},#{parentid},#{fcode},${level},now(),null,0);
 	</insert>
@@ -177,7 +177,7 @@
 		select count(1) from user where username = #{_parameter}
 	</select>
 	
-	<update id="modifyUser" parameterType="com.gloudtek.entity.rbac.User">
+	<update id="modifyUser" parameterType="com.javaweb.entity.rbac.User">
 		update user set personname = #{personname},
 						email = #{email},
 						phone = #{phone},
@@ -193,7 +193,7 @@
 		update user set delflag = 1,updateDate = now() where userid = #{userid}
 	</delete>
 	
-	<select id="getUsers" parameterType="java.util.Map" resultType="com.gloudtek.view.rbac.UserVO">
+	<select id="getUsers" parameterType="java.util.Map" resultType="com.javaweb.view.rbac.UserVO">
 		select u.userid,u.username,u.password,u.personname,u.email,u.phone,u.portrait,u.parentid,u.fcode,
 		u.level,DATE_FORMAT(u.createDate,'%Y-%m-%d') as createDate,u.updateDate,r.rolename
 		from user u

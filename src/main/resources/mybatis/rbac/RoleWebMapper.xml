@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.gloudtek.web.rbac.dao.RoleDao">
+<mapper namespace="com.javaweb.web.rbac.dao.RoleDao">
 	
-	<insert id="createRole" parameterType="com.gloudtek.entity.rbac.Role">
+	<insert id="createRole" parameterType="com.javaweb.entity.rbac.Role">
 		insert into role(roleid,rolename,parentid,fcode,level,createDate,updateDate,delflag)
 		values(#{roleid},#{rolename},#{parentid},#{fcode},${level},now(),null,0);
 	</insert>
 	
-	<update id="modifyRole" parameterType="com.gloudtek.entity.rbac.Role">
+	<update id="modifyRole" parameterType="com.javaweb.entity.rbac.Role">
 		update role set rolename = #{rolename},
 						parentid = #{parentid},
 						fcode = #{fcode},
@@ -21,7 +21,7 @@
 		update role set delflag = 1,updateDate = now() where roleid = #{roleid}
 	</delete>
 	
-	<select id="getRoles" parameterType="java.util.Map" resultType="com.gloudtek.entity.rbac.Role">
+	<select id="getRoles" parameterType="java.util.Map" resultType="com.javaweb.entity.rbac.Role">
 		select roleid,rolename,parentid,fcode,level,DATE_FORMAT(createDate,'%Y-%m-%d') as createDate
 		from role
 		<where>
@@ -48,11 +48,11 @@
 		</where>	   
 	</select>
 	
-	<select id="getAllRoles" resultType="com.gloudtek.entity.rbac.Role">
+	<select id="getAllRoles" resultType="com.javaweb.entity.rbac.Role">
 		select roleid,rolename from role where delflag = 0
 	</select>
 	
-	<select id="getRolesByRoleName" resultType="com.gloudtek.entity.rbac.Role">
+	<select id="getRolesByRoleName" resultType="com.javaweb.entity.rbac.Role">
 		select roleid,rolename from role where delflag = 0 and rolename like CONCAT('%',#{rolename},'%')
 	</select>
 	

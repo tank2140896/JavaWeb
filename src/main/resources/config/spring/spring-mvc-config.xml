@@ -22,7 +22,7 @@
     <aop:aspectj-autoproxy/>
     -->
     
-   	<context:component-scan base-package="com.gloudtek" />
+   	<context:component-scan base-package="com.javaweb" />
    	<mvc:annotation-driven/>
    	<mvc:default-servlet-handler/>
     
@@ -49,7 +49,7 @@
 			<mvc:exclude-mapping path="/userWebLogin"/>
           	<mvc:exclude-mapping path="/userWebGetCode"/>
           	<!-- 用这种交由spring管理的方式的话,LoginHandlerInterceptor及<mvc:resources/>就都不要配置了 end -->
-			<bean class="com.gloudtek.interceptor.LoginHandlerInterceptor"/>
+			<bean class="com.javaweb.interceptor.LoginHandlerInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
@@ -90,12 +90,12 @@
     
     <!-- 日志AOP -->
     <!-- 使用日志请解注 
-    <bean id="logAspect" class="com.gloudtek.aspect.LogAspect"/> 
+    <bean id="logAspect" class="com.javaweb.aspect.LogAspect"/> 
     -->
     
     <!-- 多数据源AOP -->
     <!-- 使用多数据源请解注 
-    <bean id="dataSourceAspect" class="com.gloudtek.aspect.DataSourceAspect"/>
+    <bean id="dataSourceAspect" class="com.javaweb.aspect.DataSourceAspect"/>
     --> 
     
     <!-- spring定时任务(现在一般都用注解形式的写法,这种写法将渐渐不用了) -->

@@ -62,7 +62,7 @@
 	<!--  
 	<filter>
 	    <filter-name>DruidPathFilter</filter-name>
-	    <filter-class>com.gloudtek.filter.DruidFilter</filter-class>
+	    <filter-class>com.javaweb.filter.DruidFilter</filter-class>
   	</filter>
   	<filter-mapping>
 	    <filter-name>DruidPathFilter</filter-name>
