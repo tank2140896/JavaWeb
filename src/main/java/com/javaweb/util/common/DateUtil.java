@@ -1,6 +1,8 @@
 package com.javaweb.util.common;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,8 +11,12 @@ import java.util.List;
 
 public class DateUtil {
 	
+	//默认每月第一天是1号
+	private static final int FIRST_DAY_OF_MONTH = 1;
+	
 	//获得本月第一天
 	public static String getFirstDayOfMonth(int year,int month){
+		/**
 		Calendar cal = Calendar.getInstance();
         //设置年份
         cal.set(Calendar.YEAR,year);
@@ -23,10 +29,13 @@ public class DateUtil {
         //格式化日期
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         return sdf.format(cal.getTime());
+        */
+		return String.valueOf(FIRST_DAY_OF_MONTH);
 	}
 	
 	//获得本月最后一天
 	public static String getLastDayOfMonth(int year,int month){
+		/**
 		Calendar cal = Calendar.getInstance();
         //设置年份
         cal.set(Calendar.YEAR,year);
@@ -39,13 +48,19 @@ public class DateUtil {
         //格式化日期
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         return sdf.format(cal.getTime());
+        */
+		LocalDate localDate = LocalDate.of(year, month, FIRST_DAY_OF_MONTH);
+		return String.valueOf(localDate.lengthOfMonth());
 	}
 	
 	//根据指定格式得到当前日期的字符串
 	public static String getStringDate(String pattern){
+		/**
 		Date date = new Date();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		return simpleDateFormat.format(date);
+		*/
+		return LocalDate.now().format(DateTimeFormatter.ofPattern(pattern));
 	}
 	
 	//根据指定日期和格式得到当前日期的字符串
