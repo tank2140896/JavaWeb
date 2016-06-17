@@ -152,6 +152,13 @@
 			<version>0.19.0.RELEASE</version>
 		</dependency>
 		<!-- spring restful api end -->
+		<!-- spring整合redis start -->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-redis</artifactId>
+		    <version>1.7.2.RELEASE</version>
+		</dependency>
+		<!-- spring整合redis end -->
 		<!-- 原生websocket的API start -->
 		<dependency>
 			<groupId>javax.websocket</groupId>
