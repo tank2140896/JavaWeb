@@ -14,4 +14,6 @@ public interface BaseDao {
 	
 	//public MongoTemplate getMongoTemplate();
 	
+	//public RedisTemplate redisTemplate();
+	
 }
