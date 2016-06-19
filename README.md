@@ -27,9 +27,7 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS
 5.导入maven项目   
 6.将/src/main/resources/config/sql/backup.sql导入数据库，数据库配置见：src/main/resources/config/props/jdbc.properties   
 7.进入src/main/webapp/app下，运行npm install         
-注：我的项目未包含bower_components，但是如果你用npm或bower安装依赖JS文件，实际运行后有四个文件是不包含的，            
-它们是：bootstrap-datetimepicker-master、bootstrap-fileinput、ng-infinite-scroll、zTree，               
-因此一个简单做法可以直接从百度网盘"http://pan.baidu.com/s/1pKHoaaJ"下载已经编译好的bower_components，将其放在src/main/webapp/app下即可
+注：我的项目未包含bower\_components文件夹，但是如果你用npm或bower安装依赖JS文件，实际运行后有四个文件是不包含的，它们是：bootstrap-datetimepicker-master、bootstrap-fileinput、ng-infinite-scroll、zTree，因此一个简单做法可以直接从百度网盘_"http://pan.baidu.com/s/1pKHoaaJ"_下载已经编译好的bower_components，将其放在src/main/webapp/app下即可           
 8.进入项目目录运行：mvn clean install                                        
 9.进入项目下的target目录，找到JavaWeb.war                    
 10.将JavaWeb.war拷贝至tomcat的webapp目录下，然后运行tomcat即可          
