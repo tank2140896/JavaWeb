@@ -2,6 +2,7 @@
 angular.module('webApp').controller('AppTestCtrl', function ($scope,$state,$http,$stateParams) {
 	$scope.myOption = 'GET';
 	$scope.myOptions = ['GET','POST','PUT','DELETE'];
+	$scope.radioValue = 1;
 	$http.get("../web/main/getHostInfo")
 	 	 .success(function(data,status,headers,config){
 	 		 $scope.host = data.host;
