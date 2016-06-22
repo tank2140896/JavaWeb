@@ -9,16 +9,16 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS
 （ github地址：https://github.com/start-angular/sb-admin-angular.git ）    
 4.语言只是一种工具，以后本项目中有些地方将采用其它语言来实现，如：scala、C/C++、python等
 # 二、使用技术
-1.SpringMVC restful（latest）作为后端主体  
-2.Mybats（latest）作为数据库层的操作  
-3.Maven（latest）作为jar包管理    
-4.Tomcat（latest）作为应用服务器   
-5.Java8（latest）作为后端主体开发语言   
-6.Mysql5.6（latest）作为后端主体关系型数据库   
-7.MongoDB（latest）作为后端辅助非关系型数据库   
-8.Shiro（latest）作为后端权限管理框架   
-9.Bootstrap（latest）作为前端主要开发框架   
-10.AngularJS（latest）作为前端主要开发框架   
+1.SpringMVC restful作为后端主体  
+2.Mybats作为数据库层的操作  
+3.Maven作为jar包管理    
+4.Tomcat作为应用服务器   
+5.Java8作为后端主体开发语言   
+6.Mysql5.6作为后端主体关系型数据库   
+7.MongoDB作为后端辅助非关系型数据库   
+8.Shiro作为后端权限管理框架   
+9.Bootstrap作为前端主要开发框架   
+10.AngularJS作为前端主要开发框架   
 # 三、如何快速部署运行本项目
 1.安装jdk8或更高版本   
 2.安装tomcat7或更高版本    
