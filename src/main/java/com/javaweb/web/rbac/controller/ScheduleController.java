@@ -8,6 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,12 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.javaweb.entity.rbac.CompanySchedule;
+import com.javaweb.util.common.ConstantUtil;
 import com.javaweb.util.common.DateUtil;
 import com.javaweb.view.rbac.ScheduleReceiveDataVO;
 import com.javaweb.web.rbac.service.ScheduleService;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping(value="/web/sys/schedule")
@@ -44,7 +45,7 @@ public class ScheduleController {
 			String getYear = jsonNode.get("year").asText();
 			String getMonth = jsonNode.get("month").asText();
 			String yearMonth = getYear+"-"+getMonth+"-";
-			String startDate = yearMonth+DateUtil.getFirstDayOfMonth(Integer.parseInt(getYear),Integer.parseInt(getMonth));
+			String startDate = yearMonth+ConstantUtil.FIRST_DAY_OF_MONTH_STRING;
 			String endDate = yearMonth+DateUtil.getLastDayOfMonth(Integer.parseInt(getYear),Integer.parseInt(getMonth));
 			List<String> finalList = getDateList(startDate, endDate, pattern);
 			Map<String,String> map = new HashMap<String,String>();
@@ -106,10 +107,11 @@ public class ScheduleController {
 	//得到一个月的所有日期
 	private List<String> getDateList(String startDate,String endDate,String pattern) throws Exception {
 		List<String> list = DateUtil.getAllDates(startDate, endDate, pattern);
-		int startCount = DateUtil.getDayOfWeek(startDate, pattern);//作为开头,是几就往前推几天
-		int endCount = 6-DateUtil.getDayOfWeek(endDate, pattern);//作为结尾,(6-结尾)为后推的天数
-		List<String> beforeList = DateUtil.getBeforeDays(startDate, pattern, startCount);
-		List<String> afterList = DateUtil.getAfterDays(endDate, pattern, endCount);
+		//TODO 这里用的是旧方法,因为涉及到旧逻辑,暂时不改造,以后将改造
+		int startCount = com.javaweb.old.DateUtil.getDayOfWeek(startDate, pattern);//作为开头,是几就往前推几天
+		int endCount = 6-com.javaweb.old.DateUtil.getDayOfWeek(endDate, pattern);//作为结尾,(6-结尾)为后推的天数
+		List<String> beforeList = com.javaweb.old.DateUtil.getBeforeDays(startDate, pattern, startCount);
+		List<String> afterList = com.javaweb.old.DateUtil.getAfterDays(endDate, pattern, endCount);
 		List<String> finalList = new ArrayList<>();
 		finalList.addAll(beforeList);
 		finalList.addAll(list);
