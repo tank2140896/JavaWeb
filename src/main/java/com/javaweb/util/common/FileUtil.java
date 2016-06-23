@@ -49,11 +49,11 @@ import net.lingala.zip4j.util.Zip4jConstants;
  * 文件处理工具类
  * 常用的一些其它方法
  * 1.字符流:Writer out = new FileWriter(f,true);//加true的话,不会替换原来文件的内容,直接追加
- *          Reader in = new FileReader(f);
+ *        Reader in = new FileReader(f);
  * 2.字节流:OutputStream os = new FileOutputStream(f,true);
- * 	    OutputStream os = new BufferedOutputStream(new FileOutputStream(new File(f)));
- *          InputStream is = new FileInputStream(f);
- *          InputStream is = new BufferedInputStream(new FileInputStream(new File(f)));
+ * 	      OutputStream os = new BufferedOutputStream(new FileOutputStream(new File(f)));
+ *        InputStream is = new FileInputStream(f);
+ *        InputStream is = new BufferedInputStream(new FileInputStream(new File(f)));
  * 3.一行一行读:LineNumberReader reader = new LineNumberReader(new InputStreamReader(fis,charCode));
  * 4.创建文件:new File(s).createNewFile();
  * 5.创建文件夹:new File(s).mkdir();
@@ -75,15 +75,15 @@ public class FileUtil {
 		}
 	}
 
-        //递归创建文件夹
-	public static void makeDirs(File file){
-    		if(file.getParentFile().exists()){
-    			file.mkdir();
-    		}else{
-    			makeDirs(file.getParentFile());
-    			file.mkdir();//递归收尾
-    		}
+    //递归创建文件夹
+    public static void makeDirs(File file){
+    	if(file.getParentFile().exists()){
+    		file.mkdir();
+    	}else{
+    		makeDirs(file.getParentFile());
+    		file.mkdir();//递归收尾
     	}
+    }
     
 	//读取文件名
 	public static List<String> readFileName(String filePath){
@@ -132,28 +132,28 @@ public class FileUtil {
 	}
 	
 	//压缩文件
-	public static void zipFile(String sourceFilePath,String zipFilePath,boolean setPassword,String password) throws Exception { 
-	    	ZipFile zipFile = new ZipFile(zipFilePath);  
-	        ZipParameters parameters = new ZipParameters();
-	        parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);  
-	        parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
-	        if(setPassword){
-	        	parameters.setEncryptFiles(true);  
-	        	parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_AES);  
-	        	parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256); 
-	        	parameters.setPassword(password);
-	        }
-	        zipFile.addFolder(sourceFilePath, parameters); 
-	} 
+    public static void zipFile(String sourceFilePath,String zipFilePath,boolean setPassword,String password) throws Exception { 
+    	ZipFile zipFile = new ZipFile(zipFilePath);  
+        ZipParameters parameters = new ZipParameters();
+        parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);  
+        parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+        if(setPassword){
+        	parameters.setEncryptFiles(true);  
+        	parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_AES);  
+        	parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256); 
+        	parameters.setPassword(password);
+        }
+        zipFile.addFolder(sourceFilePath, parameters); 
+    } 
     
-        //解压文件
-    	public static void unZipFile(String zipFilePath,String sourceFilePath,boolean setPassword,String password) throws Exception {
-	    	ZipFile zipFile = new ZipFile(zipFilePath); 
-	    	if(setPassword){
-	    		zipFile.setPassword(password);
-	    	}
-	        zipFile.extractAll(sourceFilePath);
+    //解压文件
+    public static void unZipFile(String zipFilePath,String sourceFilePath,boolean setPassword,String password) throws Exception {
+    	ZipFile zipFile = new ZipFile(zipFilePath); 
+    	if(setPassword){
+    		zipFile.setPassword(password);
     	}
+        zipFile.extractAll(sourceFilePath);
+    }
 	
 	//序列化输出
 	//实体类的属性加上transient表示不会被序列化,如:private transient String name;
@@ -239,7 +239,7 @@ public class FileUtil {
 		response.setContentType("application/vnd.ms-excel");//文件格式,此处设置为excel
 		response.setHeader("Content-Disposition","attachment;filename=file.xls");//此处设置了下载文件的默认名称
 		ServletOutputStream sos = response.getOutputStream();
-	    	//创建一个新的excel
+	    //创建一个新的excel
 		XSSFWorkbook wb = new XSSFWorkbook();//XSSFWorkbook
 		/**
 		 * 采用现成Excel模板
@@ -269,9 +269,9 @@ public class FileUtil {
 		}
 		wb.write(sos);
 		wb.close();
-		sos.flush();
-		sos.close();
-		response.flushBuffer();
+	    sos.flush();
+	    sos.close();
+	    response.flushBuffer();
 	}
 	
 	//设置Excel模板
