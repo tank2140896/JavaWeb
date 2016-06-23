@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +40,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
 
 /**
  * 文件处理工具类
@@ -73,15 +75,15 @@ public class FileUtil {
 		}
 	}
 
-    //递归创建文件夹
-    public static void makeDirs(File file){
-    	if(file.getParentFile().exists()){
-    		file.mkdir();
-    	}else{
-    		makeDirs(file.getParentFile());
-    		file.mkdir();//递归收尾
+        //递归创建文件夹
+	public static void makeDirs(File file){
+    		if(file.getParentFile().exists()){
+    			file.mkdir();
+    		}else{
+    			makeDirs(file.getParentFile());
+    			file.mkdir();//递归收尾
+    		}
     	}
-    }
     
 	//读取文件名
 	public static List<String> readFileName(String filePath){
@@ -130,82 +132,28 @@ public class FileUtil {
 	}
 	
 	//压缩文件
-	/** 
-	   参考1:
-	     public static void main(String[] args) throws Exception{ 
-    	 	//压缩文件的名称为
-        	//File file = new File("d:\\hello.zip"); 
-        	//ZipFile zipFile = new ZipFile(file); 
-        	//System.out.println("压缩文件的名称为：" + zipFile.getName()); 
-        	File file = new File("d:\\hello.zip"); 
-        	File outFile = new File("d:\\unZipFile.txt"); 
-        	ZipFile zipFile = new ZipFile(file); 
-        	ZipEntry entry = zipFile.getEntry("hello.txt"); 
-        	InputStream input = zipFile.getInputStream(entry); 
-        	OutputStream output = new FileOutputStream(outFile); 
-        	int temp = 0; 
-        	while((temp = input.read()) != -1){ 
-            	output.write(temp); 
-        	} 
-        	input.close(); 
-        	output.close(); 
-    	 } 
-	    参考2:
-	     public static void main(String[] args) throws IOException{ 
-         	File file = new File("d:\\hello.zip"); 
-        	File outFile = null; 
-        	ZipFile zipFile = new ZipFile(file); 
-        	ZipInputStream zipInput = new ZipInputStream(new FileInputStream(file)); 
-        	ZipEntry entry = null; 
-        	InputStream input = null; 
-        	OutputStream output = null; 
-        	while((entry = zipInput.getNextEntry()) != null){ 
-            	System.out.println("解压缩" + entry.getName() + "文件"); 
-            	outFile = new File("d:" + File.separator + entry.getName()); 
-            	if(!outFile.getParentFile().exists()){ 
-                	outFile.getParentFile().mkdir(); 
-            	} 
-            	if(!outFile.exists()){ 
-                	outFile.createNewFile(); 
-            	} 
-            	input = zipFile.getInputStream(entry); 
-            	output = new FileOutputStream(outFile); 
-            	int temp = 0; 
-            	while((temp = input.read()) != -1){ 
-                	output.write(temp); 
-           		} 
-            	input.close(); 
-            	output.close(); 
-            } 
-    	 } 
-	 */
-    public static void zipFile(File file,String zipFilePath) throws Exception { 
-        File zipFile = new File(zipFilePath); 
-        InputStream input = new FileInputStream(file); 
-        ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile)); 
-        zipOut.putNextEntry(new ZipEntry(file.getName())); 
-        //设置注释 
-        //zipOut.setComment("hello"); 
-        if(file.isDirectory()){ 
-            File[] files = file.listFiles(); 
-            for(int i = 0; i < files.length; ++i){ 
-                input = new FileInputStream(files[i]); 
-                zipOut.putNextEntry(new ZipEntry(file.getName() + File.separator + files[i].getName())); 
-                int temp = 0; 
-                while((temp = input.read()) != -1){ 
-                    zipOut.write(temp); 
-                } 
-                input.close(); 
-            } 
-        }else{
-        	 int temp = 0; 
-             while((temp = input.read()) != -1){ 
-                 zipOut.write(temp); 
-             } 
-             input.close(); 
-        }
-        zipOut.close(); 
-    } 
+	public static void zipFile(String sourceFilePath,String zipFilePath,boolean setPassword,String password) throws Exception { 
+	    	ZipFile zipFile = new ZipFile(zipFilePath);  
+	        ZipParameters parameters = new ZipParameters();
+	        parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);  
+	        parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+	        if(setPassword){
+	        	parameters.setEncryptFiles(true);  
+	        	parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_AES);  
+	        	parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256); 
+	        	parameters.setPassword(password);
+	        }
+	        zipFile.addFolder(sourceFilePath, parameters); 
+	} 
+    
+        //解压文件
+    	public static void unZipFile(String zipFilePath,String sourceFilePath,boolean setPassword,String password) throws Exception {
+	    	ZipFile zipFile = new ZipFile(zipFilePath); 
+	    	if(setPassword){
+	    		zipFile.setPassword(password);
+	    	}
+	        zipFile.extractAll(sourceFilePath);
+    	}
 	
 	//序列化输出
 	//实体类的属性加上transient表示不会被序列化,如:private transient String name;
@@ -291,7 +239,7 @@ public class FileUtil {
 		response.setContentType("application/vnd.ms-excel");//文件格式,此处设置为excel
 		response.setHeader("Content-Disposition","attachment;filename=file.xls");//此处设置了下载文件的默认名称
 		ServletOutputStream sos = response.getOutputStream();
-	    //创建一个新的excel
+	    	//创建一个新的excel
 		XSSFWorkbook wb = new XSSFWorkbook();//XSSFWorkbook
 		/**
 		 * 采用现成Excel模板
@@ -321,9 +269,9 @@ public class FileUtil {
 		}
 		wb.write(sos);
 		wb.close();
-	    sos.flush();
-	    sos.close();
-	    response.flushBuffer();
+		sos.flush();
+		sos.close();
+		response.flushBuffer();
 	}
 	
 	//设置Excel模板
