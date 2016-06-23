@@ -1,14 +1,10 @@
 package com.javaweb.util.common;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class DateUtil {
@@ -104,51 +100,39 @@ public class DateUtil {
 		return System.nanoTime();
 	} 
 	
-	/******************** 以下暂未改造 ******************************/
-	
-	//根据指定日期获得该日期的前面N天的日期
-	public static List<String> getBeforeDays(String date,String pattern,int beforeDays) throws Exception {
-		List<String> list = new ArrayList<String>();
-		List<String> newList = new ArrayList<String>();
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		Date getDate = sdf.parse(date);
-		GregorianCalendar gc = new GregorianCalendar();
-		gc.setTime(getDate);
-		for(int i=0;i<beforeDays;i++){
-			gc.add(Calendar.DATE, -1);     
-			getDate = gc.getTime();	
-			list.add(sdf.format(getDate));
-		}
-		for (int i = (list.size()-1); i > -1; i--) {
-			newList.add(list.get(i));
-		}
-		return newList;
-	}
-	
-	//根据指定日期获得该日期的后面N天的日期
-	public static List<String> getAfterDays(String date,String pattern,int afterDays) throws Exception {
-		List<String> list = new ArrayList<String>();
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		Date getDate = sdf.parse(date);
-		GregorianCalendar gc = new GregorianCalendar();
-		gc.setTime(getDate);
-		for(int i=0;i<afterDays;i++){
-			gc.add(Calendar.DATE, 1);     
-			getDate = gc.getTime();	
-			list.add(sdf.format(getDate));
+	//根据指定日期(年月日)获得该日期的前面N天的日期(年月日)
+	public static List<String> getBeforeDays(String date,String pattern,int beforeDays) {
+		LocalDate localDate = getDate(date, pattern);
+		List<String> list = new ArrayList<>();
+		while(beforeDays!=0){
+			String day = localDate.minusDays(beforeDays--).format(DateTimeFormatter.ofPattern(pattern));
+			list.add(day);
 		}
 		return list;
 	}
 	
-	/**
-	//得到经过一定时间(以分钟为单位)后的日期
-	public static String countTimeAfter(String date,int minute) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		long ret = sdf.parse(date).getTime()+minute*60*1000;
-		Date now = sdf.parse(date);
-		now.setTime(ret);
-		return sdf.format(now);
+	//根据指定日期(年月日)获得该日期的后面N天的日期(年月日)
+	public static List<String> getAfterDays(String date,String pattern,int afterDays) throws Exception {
+		LocalDate localDate = getDate(date, pattern);
+		List<String> list = new ArrayList<>();
+		for (int i = 0; i < afterDays; i++) {
+			localDate = localDate.plusDays(1);
+			String day = localDate.format(DateTimeFormatter.ofPattern(pattern));
+			list.add(day);
+		}
+		return list;
 	}
-	*/
+	
+	//得到经过一定时间(以秒为单位)之前的日期(年月日时分秒)
+	public static String countTimeBefore(String date,String pattern,int second) throws Exception {
+		LocalDateTime localDateTime = getDateTime(date, pattern);
+		return localDateTime.minusSeconds(second).format(DateTimeFormatter.ofPattern(pattern));
+	}
+	
+	//得到经过一定时间(以秒为单位)后的日期(年月日时分秒)
+	public static String countTimeAfter(String date,String pattern,int second) throws Exception {
+		LocalDateTime localDateTime = getDateTime(date, pattern);
+		return localDateTime.plusSeconds(second).format(DateTimeFormatter.ofPattern(pattern));
+	}
 	
 }
