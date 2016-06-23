@@ -18,8 +18,6 @@ public class Constant {
 	public static final String TEXT = "text/html;charset=UTF-8";
 	public static final String XML = "application/xml;charset=UTF-8";
 	public static final String FILE = "multipart/form-data;charset=UTF-8";
-	public static final int COOKIE_MAXAGE = 60*60*24*7;//cookie生命周期
-	public static final String COOKIE_PATH = "/";//cookie作用路径
 	
 	/** **********华丽的分割线********** */
 	public static final String MESSAGE = "message";

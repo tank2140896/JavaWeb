@@ -17,4 +17,10 @@ public class ConstantUtil {
 	//日期格式(时分秒)
 	public static final String TIME_PATTERN = "HH:mm:ss";
 	
+	//默认cookie生命周期(7天)
+	public static final int COOKIE_MAXAGE = 60*60*24*7;
+	
+	//默认cookie作用路径
+	public static final String COOKIE_PATH = "/";
+	
 }
