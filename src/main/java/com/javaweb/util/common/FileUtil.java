@@ -88,35 +88,47 @@ public class FileUtil {
 	}
     
 	//写文件
-	public static void writeFile(InputStream is,Path path) throws Exception{
-		OutputStream os = Files.newOutputStream(path);
-		int bytesRead = 0;
+	public static void writeFile(InputStream inputStream,File file) throws Exception{
+		OutputStream outputStream = new FileOutputStream(file);
 		byte[] buffer = new byte[1024];//1KB
-		while ((bytesRead = is.read(buffer, 0, 1024)) != -1) {
-			os.write(buffer, 0, bytesRead);
+		while (inputStream.read(buffer) != -1) {
+			outputStream.write(buffer);
 		}
-		if(os!=null){
-			os.close();
+		outputStream.close();
+		inputStream.close();
+	}
+	
+	//写文件
+	public static void writeFile(InputStream inputStream,Path path) throws Exception{
+		OutputStream outputStream = Files.newOutputStream(path);
+		byte[] buffer = new byte[1024];//1KB
+		while (inputStream.read(buffer) != -1) {
+			outputStream.write(buffer);
 		}
-		if(is!=null){
-			is.close();
-		}
+		outputStream.close();
+		inputStream.close();
 	}
 	
 	//下文件
-	public static void downloadFile(OutputStream os,Path path) throws Exception{
-		InputStream is = Files.newInputStream(path);
-		int bytesRead = 0;
+	public static void downloadFile(OutputStream outputStream,File file) throws Exception{
+		InputStream inputStream = new FileInputStream(file);
 		byte[] buffer = new byte[1024];//1KB
-		while ((bytesRead = is.read(buffer, 0, 1024)) != -1) {
-			os.write(buffer, 0, bytesRead);
+		while (inputStream.read(buffer) != -1) {
+			outputStream.write(buffer);
 		}
-		if(os!=null){
-			os.close();
+		outputStream.close();
+		inputStream.close();
+	}
+	
+	//下文件
+	public static void downloadFile(OutputStream outputStream,Path path) throws Exception{
+		InputStream inputStream = Files.newInputStream(path);
+		byte[] buffer = new byte[1024];//1KB
+		while (inputStream.read(buffer) != -1) {
+			outputStream.write(buffer);
 		}
-		if(is!=null){
-			is.close();
-		}
+		outputStream.close();
+		inputStream.close();
 	}
 	
 	//追加文件并设置编码
