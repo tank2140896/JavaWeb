@@ -27,8 +27,20 @@ public class DateUtil {
 	
 	//根据指定日期和格式得到当前日期的字符串
 	public static String getStringDate(String date,String originPattern,String newPattern) {
+		return LocalDate.parse(date, DateTimeFormatter.ofPattern(originPattern))
+					    .format(DateTimeFormatter.ofPattern(newPattern));
+	}
+	
+	//根据指定日期和格式得到当前日期的字符串
+	public static String getStringDateTime(String date,String originPattern,String newPattern) {
 		return LocalDateTime.parse(date, DateTimeFormatter.ofPattern(originPattern))
-					    	.format(DateTimeFormatter.ofPattern(newPattern));
+					        .format(DateTimeFormatter.ofPattern(newPattern));
+	}
+	
+	//根据指定日期和格式得到当前日期的字符串
+	public static String getStringTime(String date,String originPattern,String newPattern) {
+		return LocalTime.parse(date, DateTimeFormatter.ofPattern(originPattern))
+					    .format(DateTimeFormatter.ofPattern(newPattern));
 	}
 	
 	//根据日期字符串和指定格式得到日期(年月日时分秒)

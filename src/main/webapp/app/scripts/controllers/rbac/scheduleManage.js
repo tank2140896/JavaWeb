@@ -8,24 +8,32 @@ angular.module('webApp').controller('ScheduleManageCtrl', function ($scope,$http
 	var currentDate = new Date();
 	var currentYear = currentDate.getFullYear(); 
 	var currentMonth = currentDate.getMonth()+1;
-	showDate($http,$scope,{'year':currentYear,'month':currentMonth});
+	showDate($http,$scope,{'year':currentYear,'month':currentMonth<10?('0'+currentMonth):currentMonth});
 	//上个月
 	$scope.preMonth = function(){
+		currentMonth = parseInt(currentMonth);
 		if(currentMonth==1){
 			currentMonth=12;
 			currentYear-=1;
 		}else{
 			currentMonth-=1;
+			if(currentMonth<10){
+				currentMonth='0'+currentMonth;
+			}
 		}
 		showDate($http,$scope,{'year':currentYear,'month':currentMonth});
 	};
 	//下个月
 	$scope.nextMonth = function(){
+		currentMonth = parseInt(currentMonth);
 		if(currentMonth==12){
-			currentMonth=1;
+			currentMonth='01';
 			currentYear+=1;
 		}else{
 			currentMonth+=1;
+			if(currentMonth<10){
+				currentMonth='0'+currentMonth;
+			}
 		}
 		showDate($http,$scope,{'year':currentYear,'month':currentMonth});
 	};
