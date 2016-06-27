@@ -7,12 +7,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,8 +22,6 @@ import com.javaweb.entity.common.Page;
 import com.javaweb.entity.rbac.Module;
 import com.javaweb.view.rbac.ModuleSearchVO;
 import com.javaweb.web.rbac.service.ModuleService;
-
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping(value="/web/sys/module")
@@ -31,7 +31,7 @@ public class ModuleController {
 	private ModuleService moduleService;
 	
 	//新增模块                                                                					  
-	@RequestMapping(method=RequestMethod.POST,value="/createModule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/createModule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String createlModule(HttpServletRequest request, 
 			  			        HttpServletResponse response,
@@ -47,7 +47,7 @@ public class ModuleController {
 	}
 	
 	//修改模块
-	@RequestMapping(method=RequestMethod.POST,value="/modifyModule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/modifyModule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String modifyModule(HttpServletRequest request, 
 			  			       HttpServletResponse response,
@@ -63,7 +63,7 @@ public class ModuleController {
 	}
 	
 	//删除模块
-	@RequestMapping(method=RequestMethod.POST,value="/deleteModule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/deleteModule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String deleteModule(HttpServletRequest request, 
 			  			       HttpServletResponse response,
@@ -79,7 +79,7 @@ public class ModuleController {
 	}
 	
 	//模块查询
-	@RequestMapping(method=RequestMethod.POST,value="/getModules",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/getModules",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getModules(HttpServletRequest request, 
 			  			     HttpServletResponse response,

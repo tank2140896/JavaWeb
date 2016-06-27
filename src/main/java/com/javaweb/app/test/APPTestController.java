@@ -3,18 +3,19 @@ package com.javaweb.app.test;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.javaweb.web.rbac.service.RoleService;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping(value="/app")
@@ -24,7 +25,7 @@ public class APPTestController {
 	private RoleService roleService;
 	
 	//GET方式测试
-	@RequestMapping(method=RequestMethod.GET,value="/testGet",produces={"application/json;charset=UTF-8"})
+	@GetMapping(value="/testGet",produces={"application/json;charset=UTF-8"})
 	@ResponseBody
 	public String testGet(HttpServletRequest request,
 						  HttpServletResponse response){
@@ -52,7 +53,7 @@ public class APPTestController {
 	}
 	
 	//GET方式测试
-	@RequestMapping(method=RequestMethod.GET,value="/testGet2",produces={"application/json;charset=UTF-8"})
+	@GetMapping(value="/testGet2",produces={"application/json;charset=UTF-8"})
 	@ResponseBody
 	public String testGet2(HttpServletRequest request,
 						  HttpServletResponse response){
@@ -62,7 +63,7 @@ public class APPTestController {
 	}
 	
 	//GET方式测试
-	@RequestMapping(method=RequestMethod.GET,value="/testGet3",produces={"application/json;charset=UTF-8"})
+	@GetMapping(value="/testGet3",produces={"application/json;charset=UTF-8"})
 	@ResponseBody
 	public String testGet3(HttpServletRequest request,
 						  HttpServletResponse response){
@@ -72,7 +73,7 @@ public class APPTestController {
 	}
 	
 	//POST方式测试
-	@RequestMapping(method=RequestMethod.POST,value="/testPost",produces={"application/json;charset=UTF-8"})
+	@PostMapping(value="/testPost",produces={"application/json;charset=UTF-8"})
 	@ResponseBody
 	public String testPost(HttpServletRequest request,
 						   HttpServletResponse response,

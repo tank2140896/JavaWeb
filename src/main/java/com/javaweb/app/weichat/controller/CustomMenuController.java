@@ -3,17 +3,18 @@ package com.javaweb.app.weichat.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping(value="/app/weichat/customMenu")
@@ -21,7 +22,7 @@ public class CustomMenuController {
 	
 	//自定义菜单创建接口
 	//https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.POST,value="/createMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/createMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String createMenu(HttpServletRequest request, 
   						     HttpServletResponse response){
@@ -74,7 +75,7 @@ public class CustomMenuController {
 	
 	//自定义菜单查询接口
 	//https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.GET,value="/getMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/getMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getMenu(HttpServletRequest request, 
   						  HttpServletResponse response){
@@ -90,7 +91,7 @@ public class CustomMenuController {
 	
 	//自定义菜单删除接口
 	//https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.GET,value="/deleteMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/deleteMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String deleteMenu(HttpServletRequest request, 
   						  HttpServletResponse response){
@@ -108,7 +109,7 @@ public class CustomMenuController {
 	
 	//TODO 个性化菜单接口
 	//https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.POST,value="/personalizedMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/personalizedMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String personalizedMenu(HttpServletRequest request, 
   						     	   HttpServletResponse response){
@@ -119,7 +120,7 @@ public class CustomMenuController {
 	
 	//删除个性化菜单
 	//https://api.weixin.qq.com/cgi-bin/menu/delconditional?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.POST,value="/deletePersonalizedMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/deletePersonalizedMenu",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String deletePersonalizedMenu(HttpServletRequest request, 
   						  	   	         HttpServletResponse response){
@@ -140,7 +141,7 @@ public class CustomMenuController {
 	
 	//测试个性化菜单匹配结果
 	//https://api.weixin.qq.com/cgi-bin/menu/trymatch?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.POST,value="/testPersonalizedMenuMatch",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/testPersonalizedMenuMatch",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String testPersonalizedMenuMatch(HttpServletRequest request, 
   						  	   	            HttpServletResponse response){
@@ -161,7 +162,7 @@ public class CustomMenuController {
 	
 	//获取自定义菜单配置接口
 	//https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.GET,value="/getCustomMenuConf",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/getCustomMenuConf",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getCustomMenuConf(HttpServletRequest request, 
   						  	        HttpServletResponse response){

@@ -9,11 +9,14 @@ import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,15 +25,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.javaweb.util.common.FileUtil;
 import com.javaweb.util.common.QRCodeUtil;
 
-import net.sf.json.JSONObject;
-
 @Controller
 @RequestMapping(value="/app")
 public class FileController {
 	
 	//文件上传页面端和手机APP端都是通用的[produces={"multipart/form-data;charset=UTF-8"},这个是response的返回]
 	//注意一点:String myData接收的是JSON格式的字符串,如果这里接收不到或报错,可以用最基本的request.getParameter(name)或request.getParameterMap()来接受
-	@RequestMapping(method=RequestMethod.POST,value="/fileUpload",produces={"application/json;charset=UTF-8"})
+	@PostMapping(value="/fileUpload",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String fileUpload(HttpServletRequest request, 
 					         HttpServletResponse response,
@@ -57,7 +58,7 @@ public class FileController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.GET,value="/fileDownload")
+	@GetMapping(value="/fileDownload")
 	//文件下载页面端和手机APP端都是通用的
 	public void fileDownload(HttpServletRequest request, 
 					         HttpServletResponse response) {
@@ -82,7 +83,7 @@ public class FileController {
 		}
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/getQRCode",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/getQRCode",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void getQRCode(HttpServletRequest request, 
 					      HttpServletResponse response,
@@ -91,7 +92,7 @@ public class FileController {
 		request.getSession().setAttribute("qrCode", qrCode);
 	}
 	
-	@RequestMapping(method=RequestMethod.GET,value="/createQRCode",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/createQRCode",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void createQRCode(HttpServletRequest request, 
 					         HttpServletResponse response) throws Exception {

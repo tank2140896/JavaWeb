@@ -7,13 +7,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,8 +28,6 @@ import com.javaweb.view.rbac.UserVO;
 import com.javaweb.web.rbac.service.RoleService;
 import com.javaweb.web.rbac.service.UserService;
 
-import net.sf.json.JSONObject;
-
 @Controller
 @RequestMapping(value="/web/sys/user")
 public class UserController {
@@ -38,7 +38,7 @@ public class UserController {
 	@Autowired
 	private RoleService roleService;
 	
-	@RequestMapping(method=RequestMethod.POST,value="/createUser",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/createUser",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String createUser(HttpServletRequest request, 
 			  			     HttpServletResponse response,
@@ -55,7 +55,7 @@ public class UserController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/modifyUser",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/modifyUser",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String modifyUser(HttpServletRequest request, 
 			  			     HttpServletResponse response,
@@ -71,7 +71,7 @@ public class UserController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/deleteUser",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/deleteUser",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String deleteUser(HttpServletRequest request, 
 			  			     HttpServletResponse response,
@@ -86,7 +86,7 @@ public class UserController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/getUsers",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/getUsers",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getUsers(HttpServletRequest request, 
 			  			   HttpServletResponse response,
@@ -128,7 +128,7 @@ public class UserController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/allotUserRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/allotUserRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String allotUserRole(HttpServletRequest request, 
 			  			        HttpServletResponse response,

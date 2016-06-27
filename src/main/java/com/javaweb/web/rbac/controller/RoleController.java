@@ -7,12 +7,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,8 +26,6 @@ import com.javaweb.view.rbac.RoleSearchVO;
 import com.javaweb.web.rbac.service.ModuleService;
 import com.javaweb.web.rbac.service.RoleService;
 
-import net.sf.json.JSONObject;
-
 @Controller
 @RequestMapping(value="/web/sys/role")
 public class RoleController {
@@ -36,7 +36,7 @@ public class RoleController {
 	@Autowired
 	private ModuleService moduleService;
 	
-	@RequestMapping(method=RequestMethod.POST,value="/createRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/createRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String createRole(HttpServletRequest request, 
 			  			     HttpServletResponse response,
@@ -52,7 +52,7 @@ public class RoleController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/modifyRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/modifyRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String modifyRole(HttpServletRequest request, 
 			  			     HttpServletResponse response,
@@ -67,7 +67,7 @@ public class RoleController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/deleteRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/deleteRole",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String deleteRole(HttpServletRequest request, 
 			  			     HttpServletResponse response,
@@ -82,7 +82,7 @@ public class RoleController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/getRoles",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/getRoles",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getRoles(HttpServletRequest request, 
 			  			   HttpServletResponse response,
@@ -123,7 +123,7 @@ public class RoleController {
 	}
 	
 	//查看某一角色所拥有的模块(菜单和操作)
-	@RequestMapping(method=RequestMethod.POST,value="/getModuleByRoleId",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/getModuleByRoleId",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getModuleByRoleId(HttpServletRequest request, 
 			  			            HttpServletResponse response,
@@ -142,7 +142,7 @@ public class RoleController {
 	}
 	
 	//给角色分配权限
-	@RequestMapping(method=RequestMethod.POST,value="/allotRoleAuthority",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/allotRoleAuthority",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String allotRoleAuthority(HttpServletRequest request, 
 			  			        	 HttpServletResponse response,

@@ -5,17 +5,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.javaweb.web.common.service.CommonWebService;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping(value="/web/tools/dbTable")
@@ -24,7 +24,7 @@ public class DBTableController {
 	@Autowired
 	private CommonWebService commonWebService;
 	
-	@RequestMapping(method=RequestMethod.GET,value="/descTable",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/descTable",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String descTable(HttpServletRequest request, 
 			  			    HttpServletResponse response) {

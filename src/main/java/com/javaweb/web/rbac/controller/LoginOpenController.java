@@ -7,14 +7,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.javaweb.entity.rbac.Module;
@@ -24,8 +27,6 @@ import com.javaweb.util.self.Constant;
 import com.javaweb.util.self.ShiroUtil;
 import com.javaweb.web.rbac.service.ModuleService;
 import com.javaweb.web.rbac.service.UserService;
-
-import net.sf.json.JSONObject;
 
 //该路径下的访问对所有登录的用户开放
 @Controller
@@ -41,7 +42,7 @@ public class LoginOpenController {
 	
 	//获得当前角色下的指定菜单下的所有操作
 	@SuppressWarnings("unchecked")
-	@RequestMapping(method=RequestMethod.GET,value="/getRoleModuleOperations/{moduleId}",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/getRoleModuleOperations/{moduleId}",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getRoleModuleOperations(HttpServletRequest request, 
   								          HttpServletResponse response,
@@ -61,7 +62,7 @@ public class LoginOpenController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/selectUserByUserName",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/selectUserByUserName",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	//判断用户名是否重复
 	public String selectUserNameByUserId(HttpServletRequest request,
@@ -79,7 +80,7 @@ public class LoginOpenController {
 	}
 	
 	//获得测试主机信息
-	@RequestMapping(method=RequestMethod.GET,value="/getHostInfo",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/getHostInfo",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getHostInfo(HttpServletRequest request,
 							  HttpServletResponse response){

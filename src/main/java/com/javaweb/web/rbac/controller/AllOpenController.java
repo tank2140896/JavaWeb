@@ -23,15 +23,18 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -44,8 +47,6 @@ import com.javaweb.util.self.ShiroUtil;
 import com.javaweb.view.rbac.ModuleListVO;
 import com.javaweb.web.rbac.service.UserService;
 import com.javaweb.web.websocket.ChartController;
-
-import net.sf.json.JSONObject;
 
 //该路径下的访问对所有人开放
 @Controller
@@ -60,15 +61,15 @@ public class AllOpenController {
 	
 	/**
 	@Autowired
-	 private Environment env;
-    	//String environment = env.getProperty("jdbcDriverClassName");
+	private Environment env;
+    //String environment = env.getProperty("jdbcDriverClassName");
 	
 	@Value("classpath:config/props/jdbc.properties")
-	 private org.springframework.core.io.Resource info;
-    	//info.getInputStream()
+	private org.springframework.core.io.Resource info;
+    //info.getInputStream()
 	
 	@Value("#{ T(java.lang.Math).random() * 100.0 }")
-    	private double randomNumber;
+    private double randomNumber;
 
 	@Scheduled(cron = "0 22 11 ? * *"  )//每天上午11点22执行
 	@Scheduled(fixedRate = 5000)//服务器加载controller后每5秒执行一次
@@ -108,7 +109,7 @@ public class AllOpenController {
 	}
 	*/
 	
-	@RequestMapping(method=RequestMethod.POST,value="/userWebLogin",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/userWebLogin",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String login(HttpServletRequest request, 
 			  			HttpServletResponse response,
@@ -282,7 +283,7 @@ public class AllOpenController {
 	}
 	
 	//获取验证码
-	@RequestMapping(method=RequestMethod.GET,value="/userWebGetCode")
+	@GetMapping(value="/userWebGetCode")
 	@ResponseBody
 	public void getCode(HttpServletRequest request, 
   			            HttpServletResponse response){
@@ -298,7 +299,7 @@ public class AllOpenController {
 	}
 	
 	//登出
-	@RequestMapping(method=RequestMethod.GET,value="/loginOut")
+	@GetMapping(value="/loginOut")
 	public void loginOut(HttpServletRequest request, 
   			             HttpServletResponse response){
 		Session session = ShiroUtil.getSession();
@@ -315,7 +316,7 @@ public class AllOpenController {
 	}
 	
 	//检查session是否在
-	@RequestMapping(method=RequestMethod.GET,value="/checkSessionExist")
+	@GetMapping(value="/checkSessionExist")
 	@ResponseBody
 	public String checkSessionExist(HttpServletRequest request, 
   			             	        HttpServletResponse response){

@@ -8,8 +8,9 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,7 +22,7 @@ public class CoreController {
     //private RestTemplate template;//远程调用
 	
 	//接入微信(GET验证接入)
-	@RequestMapping(method=RequestMethod.GET,/**method={RequestMethod.GET,RequestMethod.POST}*/value="/accessWeiChat",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(/**method={RequestMethod.GET,RequestMethod.POST}*/value="/accessWeiChat",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String accessWeiChatForGet(HttpServletRequest request, 
   						        	  HttpServletResponse response){
@@ -45,7 +46,7 @@ public class CoreController {
 	}
 	
 	//接入微信(POST处理各种消息)//TODO
-	@RequestMapping(method=RequestMethod.POST,value="/accessWeiChat",produces=MediaType.APPLICATION_XML_VALUE)
+	@PostMapping(value="/accessWeiChat",produces=MediaType.APPLICATION_XML_VALUE)
 	@ResponseBody
 	public String accessWeiChatForPost(HttpServletRequest request, 
   						        	   HttpServletResponse response){
@@ -64,7 +65,7 @@ public class CoreController {
 	
 	//获取微信服务器IP地址
 	//https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=ACCESS_TOKEN
-	@RequestMapping(method=RequestMethod.GET,value="/getWeiChatServerIpAddress",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="/getWeiChatServerIpAddress",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getWeiChatServerIpAddress(HttpServletRequest request, 
   						        	        HttpServletResponse response){

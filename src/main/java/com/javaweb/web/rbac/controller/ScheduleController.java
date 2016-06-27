@@ -14,9 +14,9 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,7 +33,7 @@ public class ScheduleController {
 	@Autowired
 	private ScheduleService scheduleService;
 	
-	@RequestMapping(method=RequestMethod.POST,value="/getSchedule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/getSchedule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getSchedule(HttpServletRequest request, 
 			  			      HttpServletResponse response,
@@ -82,7 +82,7 @@ public class ScheduleController {
 		return jo.toString();
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/saveSchedule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value="/saveSchedule",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String saveSchedule(HttpServletRequest request, 
 			  			       HttpServletResponse response,
