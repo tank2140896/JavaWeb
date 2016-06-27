@@ -75,14 +75,9 @@ public class FileUtil {
 		}
 	}
 
-    //递归创建文件夹
+    //创建文件夹(目录)
     public static void makeDirs(File file){
-    	if(file.getParentFile().exists()){
-    		file.mkdir();
-    	}else{
-    		makeDirs(file.getParentFile());
-    		file.mkdir();//递归收尾
-    	}
+    	file.mkdirs();
     }
     
 	//读取文件名
