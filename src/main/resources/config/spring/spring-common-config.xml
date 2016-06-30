@@ -146,10 +146,12 @@
     	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
     
-    <!-- 缓存管理器,使用Ehcache实现 -->  
+    <!-- 缓存管理器,使用Ehcache实现 --> 
+	<!--
 	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">  
-    	<property name="cacheManagerConfigFile" value="classpath:config/cache/ehcache.xml"/>  
+    	<property name="cacheManagerConfigFile" value="classpath:config/unused/ehcache.xml"/>  
 	</bean> 
+	-->
     
     <!-- shiro start -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
