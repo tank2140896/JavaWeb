@@ -257,11 +257,13 @@
 		-->
 		<!-- ehcache end -->
 		<!-- mybatis-ehcache start -->
+		<!--  
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-ehcache</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		-->
 		<!-- mybatis-ehcache end -->
 		<!-- spring with mongodb start -->
 		<dependency>
@@ -285,7 +287,6 @@
 		</dependency>
 		<!-- http client end -->
 		<!-- java操作redis start -->
-		<!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
 		<!-- Jedis jedis = new Jedis(IP地址,端口) -->
 		<dependency>
 		    <groupId>redis.clients</groupId>
