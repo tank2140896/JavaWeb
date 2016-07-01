@@ -293,6 +293,13 @@
 		    <version>2.8.1</version>
 		</dependency>
 		<!-- java操作redis end -->
+		<!-- java操memcached start -->
+		<dependency>
+		    <groupId>com.whalin</groupId>
+		    <artifactId>Memcached-Java-Client</artifactId>
+		    <version>3.0.2</version>
+		</dependency>
+		<!-- java操memcached end -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
