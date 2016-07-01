@@ -111,6 +111,44 @@
     -->
     <!-- redis end -->  
     
+    <!-- MemCached start -->
+    <!--
+    <bean id="memCachedPool" class="com.whalin.MemCached.SockIOPool" factory-method="getInstance" init-method="initialize" destroy-method="shutDown">
+    	<constructor-arg>  
+        	<value>memCachedPool</value>  
+    	</constructor-arg>
+    	<property name="servers">  
+	        <list>  
+	            <value>192.168.1.7:11211</value>  
+	        </list>  
+    	</property>  
+    	<property name="initConn">  
+            <value>20</value>  
+        </property>  
+        <property name="minConn">  
+            <value>10</value>  
+        </property>  
+        <property name="maxConn">  
+            <value>50</value>  
+        </property>  
+        <property name="maintSleep">  
+            <value>3000</value>  
+        </property>  
+        <property name="nagle">  
+            <value>false</value>  
+        </property>  
+        <property name="socketTO">  
+            <value>3000</value>  
+        </property>  
+	</bean>  
+    <bean id="memCachedClient" class="com.whalin.MemCached.MemCachedClient">  
+	<constructor-arg>  
+            <value>memCachedPool</value>  
+	</constructor-arg>  
+    </bean>
+    -->
+    <!-- MemCached end -->
+    
     <!-- jdbcTemplate -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="multipleDataSource"></property>
