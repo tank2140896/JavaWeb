@@ -107,6 +107,17 @@
   		<result property="userName" column="username"/>
   		<result property="passWord" column="password"/>
 	</resultMap>
+	<select id="getUserByUserId" parameterType="Map" resultMap="myUser">
+	那么返回的就是com.company.User对象，如果多条就是List<User>
+	-->
+	
+	<!-- 插入数据时能返回自增的ID
+	<insert id="insert" parameterType="某个对象">
+  		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+    			SELECT @@IDENTITY
+  		</selectKey>
+  		这里就是insert语句
+  	</insert>
 	-->
 	
 	<!-- 动态SQL片段 -->
