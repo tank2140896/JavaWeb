@@ -62,14 +62,14 @@ public class AllOpenController {
 	/**
 	@Autowired
 	private Environment env;
-    //String environment = env.getProperty("jdbcDriverClassName");
+        //String environment = env.getProperty("jdbcDriverClassName");
 	
 	@Value("classpath:config/props/jdbc.properties")
 	private org.springframework.core.io.Resource info;
-    //info.getInputStream()
+        //info.getInputStream()
 	
 	@Value("#{ T(java.lang.Math).random() * 100.0 }")
-    private double randomNumber;
+        private double randomNumber;
 
 	@Scheduled(cron = "0 22 11 ? * *"  )//每天上午11点22执行
 	@Scheduled(fixedRate = 5000)//服务器加载controller后每5秒执行一次
@@ -107,6 +107,12 @@ public class AllOpenController {
 			return null;
 		}
 	}
+	*/
+	
+	/**
+	httpServletRequest.getRequestURI()             /yuhong_server/app/html/home.html
+	httpServletRequest.getRequestURL().toString()  http://localhost:8080/yuhong_server/app/html/home.html 
+	httpServletRequest.getServletPath()            /app/html/home.html
 	*/
 	
 	@PostMapping(value="/userWebLogin",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
