@@ -18,14 +18,24 @@ public class WebBaseController {
 	}
 	
 	/**
-	@Autowired
-	private RequestMappingHandlerMapping handlerMapping;
-	Map map = handlerMapping.getHandlerMethods();
-	Iterator<?> iterator = map.entrySet().iterator();
-	while(iterator.hasNext()){
-		Map.Entry entry = (Map.Entry) iterator.next();
-		System.out.println(entry.getKey() +"\n" + entry.getValue());
-	}
+	 @Autowired
+	 private RequestMappingHandlerMapping handlerMapping;
+	 
+	 private static boolean stopFlag = true;
+	 
+	 @PostConstruct
+	 public void init(){
+		 if(stopFlag){
+			 Map<RequestMappingInfo,HandlerMethod> map =  handlerMapping.getHandlerMethods();
+			 Set<RequestMappingInfo> set = map.keySet();
+			 Iterator<RequestMappingInfo> iterator = set.iterator();
+			 while(iterator.hasNext()){
+				 RequestMappingInfo requestMappingInfo = iterator.next();
+				 System.out.println(requestMappingInfo.getPatternsCondition().toString().replace("[", "").replace("]", ""));
+			 }
+			 stopFlag = false;
+		 }
+	 }
 	*/
 	
 }
