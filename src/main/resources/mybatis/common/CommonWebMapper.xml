@@ -18,6 +18,23 @@
 		show TABLES
 	</select>
 	
+	<!-- mybatis分页机制写法
+	<resultMap type="com.xxx.xxx.XVO" id="a">  
+    		<result column="id" jdbcType="INTEGER" javaType="Integer" /> 
+    		<result column="menu_icon" jdbcType="VARCHAR" javaType="String" />  
+  	</resultMap>  
+
+ 	<resultMap type="Integer" id="b">   
+    		<result column="total" property="total" jdbcType="INTEGER" javaType="Integer"/>  
+  	</resultMap> 
+	
+	<select id="x" resultMap="a,b">
+		SELECT SQL_CALC_FOUND_ROWS id,menu_icon from c_menu WHERE menu_icon='项目地图' LIMIT 0,2;
+       		SELECT FOUND_ROWS() as total;
+	</select>
+	public List<List<?>> x();
+	-->
+	
 	<!-- 存储过程示例 
 	CREATE PROCEDURE test(IN modulename VARCHAR(22))  
 	BEGIN
