@@ -31,4 +31,12 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter{
 		}
 	}
 	
+	/* 下面是判断AJAX和非AJAX请求的判断，因为AJAX不受response.sendRedirect控制，受JS控制了
+	   String requestType = httpServletRequest.getHeader("X-Requested-With");
+	   XMLHttpRequest".equals(requestType)——进行比较
+	   
+	   httpServletResponse.setHeader("SESSION_STATUS", "SESSION_TIME_OUT");
+	   success:function(data,status,xhr){console.log(xhr.getResponseHeader("SESSION_STATUS"));}
+	*/
+	
 }
