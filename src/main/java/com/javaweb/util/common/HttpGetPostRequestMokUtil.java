@@ -59,6 +59,8 @@ public class HttpGetPostRequestMokUtil {
 	return httpResponse;
     }
     
+    /* 在用restTemplate时有点要注意，要对获得的结果进行转码：new String(result.getBytes("ISO-8859-1"),"UTF-8"); */
+    
     //restful json get 
     public String restTemplateForGet(String url){
     	return new RestTemplate().getForObject(url, String.class);
