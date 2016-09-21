@@ -55,6 +55,7 @@ import com.javaweb.web.websocket.ChartController;
 /**
 @Configuration//声明是一个配置类
 @PropertySource("classpath:config/props/jdbc.properties")
+@PropertySource(value = {"classpath:config/props/message.properties", "classpath:config/props/commonprops.properties"},ignoreResourceNotFound = true)
 */
 /**tomcat的server.xml中为防止中文乱码,可以加上:URIEncoding="UTF-8"*/
 public class AllOpenController {
