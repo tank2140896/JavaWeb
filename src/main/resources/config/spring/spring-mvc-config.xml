@@ -18,11 +18,27 @@
 		                   http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
 		                   http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
     
-    <!-- 使用AOP请解注 
-    <aop:aspectj-autoproxy/>
-    -->
+   	<!-- 使用AOP请解注 
+    	<aop:aspectj-autoproxy/>
+   	-->
     
    	<context:component-scan base-package="com.javaweb" />
+	<!-- 当有项目引用时（即一个项目分为两个项目，一个引用另一个项目）
+	<context:component-scan base-package="com.javaweb.controller" >
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>  
+	</context:component-scan>
+	事物回滚机制除了本单个项目结构，最简单的写法：@Transactional，还可以类似这么处理：
+	@Transactional(rollbackFor=Exception.class)
+	public void a() throws Exception {
+		try {
+			userDao.a();
+			System.out.println(1/0);
+		} catch (Exception e) {
+			//这里抛出的异常如果继承Exception也是可以的
+			throw new Exception();
+		}
+	}
+	-->
    	<mvc:annotation-driven/>
    	<mvc:default-servlet-handler/>
     
