@@ -17,7 +17,11 @@
 		                   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		                   http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
 		                   http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
-    
+    	
+	<!-- 当有项目引用时（即一个项目分为两个项目，一个引用另一个项目）需要添加下面一句：
+	<context:component-scan base-package="com.javaweb" />
+	-->
+	
    	<!-- 配置JDBC数据源,采用阿里巴巴druid -->
    	<import resource="spring-dataSource.xml"/>
 	
