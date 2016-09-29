@@ -64,6 +64,7 @@ public class AllOpenController {
 	@Autowired
 	private Environment env;
         //String environment = env.getProperty("jdbcDriverClassName");
+	//Environment亦可用在service或dao层
 	
 	@Value("classpath:config/props/jdbc.properties")
 	private org.springframework.core.io.Resource info;
