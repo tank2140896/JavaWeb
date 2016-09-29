@@ -20,6 +20,8 @@
     	
 	<!-- 当有项目引用时（即一个项目分为两个项目，一个引用另一个项目）需要添加下面一句：
 	<context:component-scan base-package="com.javaweb" />
+	<mvc:annotation-driven/>
+   	<mvc:default-servlet-handler/>
 	-->
 	
    	<!-- 配置JDBC数据源,采用阿里巴巴druid -->
