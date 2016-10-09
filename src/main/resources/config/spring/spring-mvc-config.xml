@@ -24,7 +24,7 @@
     
    	<context:component-scan base-package="com.javaweb" />
 	<!-- 当有项目引用时（即一个项目分为两个项目，一个引用另一个项目）
-	<context:component-scan base-package="com.javaweb.controller" >
+	<context:component-scan base-package="com.javaweb" >
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>  
 	</context:component-scan>
 	事物回滚机制除了本单个项目结构，最简单的写法：@Transactional，还可以类似这么处理：
