@@ -27,6 +27,41 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+/** 这是最简单的写法
+	public static String CHARSET = "UTF-8";
+	public static String FORMAT_NAME = "JPG";
+	public static int QRCODE_SIZE = 300;
+
+    private static BufferedImage createImage(String content, String imgPath) throws Exception {
+    	File file =new File(imgPath);   
+        if (!file.exists() && !file.isDirectory()) {
+            file.mkdirs();
+        }
+        Hashtable<EncodeHintType,Object> hints = new Hashtable<>();
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
+        hints.put(EncodeHintType.MARGIN, 1);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, QRCODE_SIZE, QRCODE_SIZE, hints);
+        int width = bitMatrix.getWidth();
+        int height = bitMatrix.getHeight();
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                image.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+            }
+        }
+        Graphics2D graph = image.createGraphics();
+        graph.setStroke(new BasicStroke(3f));
+        graph.dispose();
+        return image;
+    }
+
+    public static void encode(String content, String imgPath, String fileName) throws Exception {
+        BufferedImage image = QRCodeUtil.createImage(content, imgPath);
+        ImageIO.write(image, FORMAT_NAME, new File(imgPath+File.separator+fileName));
+    }
+*/
+
 public class QRCodeUtil {
 
     private static final String CHARSET = "utf-8";
