@@ -126,6 +126,7 @@ public class AllOpenController {
 			  			/** @ModelAttribute User user */) {
 		JSONObject jo = new JSONObject();
 		try{
+			//Xyz xyz = mapper.readValue(jsonNode.toString(), Xyz.class);
 			String username = jsonNode.get("username").asText();//用户名
 			String password = jsonNode.get("password").asText();//密码
 			String code = jsonNode.get("code").asText();//这个是用户输入的验证码
