@@ -127,6 +127,10 @@ public class AllOpenController {
 		JSONObject jo = new JSONObject();
 		try{
 			//Xyz xyz = mapper.readValue(jsonNode.toString(), Xyz.class);
+			/** JSONArray相关转化常用的方法如下：
+			    List<ProjectMaterialsOut> list = (List<ProjectMaterialsOut>)JSONArray.toCollection(ja, ProjectMaterialsOut.class);
+			    JSONArray ja = JSONArray.fromObject(JSONArray.toArray(ja,c));	
+			 */
 			String username = jsonNode.get("username").asText();//用户名
 			String password = jsonNode.get("password").asText();//密码
 			String code = jsonNode.get("code").asText();//这个是用户输入的验证码
