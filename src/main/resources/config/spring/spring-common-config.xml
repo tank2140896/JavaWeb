@@ -234,4 +234,29 @@
 	</bean>
 	<!-- shiro end -->
 	
+	<!-- 有时候我们需要在非标注为@Controller或@RestController的类中调用service或dao来与数据库交互处理，那么可以这么处理 start -->
+	<!-- 注入ApplicationContext -->
+	<!-- <bean id="SpringApplicationContext" class="com.javaweb.filter.ApplicationContextHelper"></bean> -->
+	<!--
+		public class ApplicationContextHelper implements ApplicationContextAware { 
+    			private static ApplicationContext ac;    
+    			public void setApplicationContext( ApplicationContext applicationContext ) throws BeansException {    
+    				ac = applicationContext;    
+    			}  
+			public static ApplicationContext getApplicationContext(){  
+				return ac;  
+			}  
+			public static Object getBean(String beanName) {    
+				return ac.getBean(beanName);    
+			}  
+		} 
+	-->
+	<!--
+		UserService userService = (UserService) ApplicationContextHelper.getBean("userServiceImpl");  
+		Map<String, Object> map = new HashMap<>();
+		map.put("pernr", userId);
+		UserInfo userInfo = userService.getUserInfo(map);
+	-->
+	<!-- 有时候我们需要在非标注为@Controller或@RestController的类中调用service或dao来与数据库交互处理，那么可以这么处理 end -->
+	
 </beans>
