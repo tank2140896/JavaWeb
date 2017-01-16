@@ -8,8 +8,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,8 +20,6 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONObject;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -42,11 +38,14 @@ import com.javaweb.entity.rbac.Module;
 import com.javaweb.entity.rbac.Role;
 import com.javaweb.entity.rbac.User;
 import com.javaweb.handler.FunctionAndOperationHandler;
+import com.javaweb.util.common.StringUtil;
 import com.javaweb.util.self.Constant;
 import com.javaweb.util.self.ShiroUtil;
 import com.javaweb.view.rbac.ModuleListVO;
 import com.javaweb.web.rbac.service.UserService;
 import com.javaweb.web.websocket.ChartController;
+
+import net.sf.json.JSONObject;
 
 //该路径下的访问对所有人开放
 @Controller
@@ -266,8 +265,28 @@ public class AllOpenController {
 		return Constant.ROLE_ADMIN_ID.equals(role.getRoleid());
 	}
 	
-	//获得IPD地址和端口
+	//获得IP地址和端口
 	private String getIpAddressAndPort(HttpServletRequest request){
+		String ipAddress = request.getHeader("x-forwarded-for");  
+        if(StringUtil.isEmptyOrNull(ipAddress)||"unknown".equalsIgnoreCase(ipAddress)){  
+        	ipAddress=request.getHeader("Proxy-Client-IP");  
+        }  
+        if(StringUtil.isEmptyOrNull(ipAddress)||"unknown".equalsIgnoreCase(ipAddress)){  
+        	ipAddress=request.getHeader("WL-Proxy-Client-IP");  
+        }  
+        if(StringUtil.isEmptyOrNull(ipAddress)||"unknown".equalsIgnoreCase(ipAddress)){  
+        	ipAddress=request.getRemoteAddr();  
+        }  
+        //多个路由时,取第一个非unknown的ip  
+        final String[] strArry = ipAddress.split(",");  
+        for(String str:strArry) {  
+            if (!"unknown".equalsIgnoreCase(str)) {  
+            	ipAddress = str;  
+                break;  
+            }  
+        }  
+        String ipAddressAndPort = ipAddress+":"+request.getServerPort();
+        /**		
 		String ipAddressAndPort = "";
 		try {
 			InetAddress addr = InetAddress.getLocalHost();
@@ -275,6 +294,7 @@ public class AllOpenController {
 		} catch (UnknownHostException e) {
 			ipAddressAndPort = request.getServerName()+":"+request.getServerPort();
 		}
+		*/
 		return ipAddressAndPort;
 	}
 	
