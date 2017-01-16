@@ -41,9 +41,9 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS1
 3、关于单元测试
 从controller->service->dao都可以分层测试，也有页面可以测试API返回的json数据  
 4、后期计划       
-1.完善补充现有代码      
-2.加入工作流的处理      
-3.运用Java8改造代码           
+1.完善补充现有代码                   
+2.加入工作流的处理                    
+3.运用Java8改造代码                         
 4.完成微信开发部分        
 5.完成支付部分         
 6.SpringBoot+AngularJS2重写        
