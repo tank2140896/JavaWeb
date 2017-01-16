@@ -1,6 +1,6 @@
 # JavaWeb V0.1
 # JavaWeb基础框架：
-SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS  
+SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS1  
 # 说明：
 # 一、本项目简介
 1.为什么会有这个项目：软件行业从事了几年，之前也正好在为公司搭建一个小小的框架，也正好借此机会，吸取公司搭建框架中的经验，慢慢运用Java8自己重新搭建项目。这是一个很菜的项目，很多地方写的很烂，但是作为程序员总想留下来点什么给大伙看看或者展现下自己，因此才会放到github上去。github我很少用，好多不会，好多还在摸索。本人才疏学浅，能力低微，不足之处尽管批评指正，但是你要喷，请你别来看了。            
@@ -20,7 +20,7 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS
 7.MongoDB作为后端辅助非关系型数据库   
 8.Shiro作为后端权限管理框架   
 9.Bootstrap作为前端主要开发框架   
-10.AngularJS作为前端主要开发框架   
+10.AngularJS1作为前端主要开发框架   
 # 三、如何快速部署运行本项目
 1.安装jdk8或更高版本   
 2.安装tomcat7或更高版本    
@@ -41,10 +41,9 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS
 3、关于单元测试
 从controller->service->dao都可以分层测试，也有页面可以测试API返回的json数据  
 4、后期计划       
-1.完善现有代码      
+1.完善补充现有代码      
 2.加入工作流的处理      
 3.运用Java8改造代码           
 4.完成微信开发部分        
 5.完成支付部分         
-6.spring boot运用    
-7.AngularJS2重构         
+6.SpringBoot+AngularJS2重写        
