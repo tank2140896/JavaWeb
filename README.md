@@ -9,7 +9,7 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS1
 （ github地址：https://github.com/start-angular/sb-admin-angular.git ）    
 4.语言只是一种工具，以后本项目中有些地方将采用其它语言来实现，如：scala、C/C++、python等           
 5.在src/main/java/com.javaweb下有个old包，该包下的都是Java8之前的旧写法，现在已不再继续维护，但为了兼容旧版本就保留旧写法以供参考         
-6.`本项目目前已不再维护，仅作为类似一个大杂烩，把平时项目中经常遇到的一些问题的解决，通过注释形式写进去`          
+6.本项目目前已不再维护，仅作为类似一个大杂烩，把平时项目中经常遇到的一些问题的解决，通过注释形式写进去          
 # 二、使用技术
 1.SpringMVC restful作为后端主体  
 2.Mybats作为数据库层的操作  
@@ -40,10 +40,5 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+AngularJS1
 你只需要关注controller(请求分发、跳转及异常处理)->service(业务逻辑处理)->dao(数据库访问)就可以了     
 3、关于单元测试
 从controller->service->dao都可以分层测试，也有页面可以测试API返回的json数据  
-4、后期计划       
-1.完善补充现有代码                        
-2.加入工作流的处理                    
-3.运用Java8改造代码                         
-4.完成微信开发部分        
-5.完成支付部分         
-6.SpringBoot+AngularJS2重写        
+4、后期计划    
+采用SpringBoot+AngularJS2重写(参见另一个项目JavaWeb2)
