@@ -70,6 +70,10 @@ angular.module('webApp').controller('ScheduleManageCtrl', function ($scope,$http
 		clickFlag = false;
 		$scope.show1 = true;
 		$scope.show2 = false;
+		currentMonth = parseInt(currentMonth);
+		if(currentMonth<10){
+			currentMonth='0'+currentMonth;
+		}
 		showDate($http,$scope,{'year':currentYear,'month':currentMonth});
 	};
 	//ng-dblclick="dblclick($event.target)"
