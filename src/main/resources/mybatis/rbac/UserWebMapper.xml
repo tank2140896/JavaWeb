@@ -119,6 +119,9 @@
   		这里就是insert语句
   	</insert>
 	-->
+	<!-- 或者
+	<insert id="insert" parameterType="某个对象" useGeneratedKeys="true" keyProperty="userId">
+	-->
 	
 	<!-- 动态SQL片段 -->
 	<sql id="selectModuleByCondition" >
