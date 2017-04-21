@@ -111,7 +111,7 @@
 	那么返回的就是com.company.User对象，如果多条就是List<User>
 	-->
 	
-	<!-- 插入数据时能返回自增的ID
+	<!-- 插入数据时能返回自增的ID，这样传入的实体类自动就有自增的ID值了
 	<insert id="insert" parameterType="某个对象">
   		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
     			SELECT @@IDENTITY
