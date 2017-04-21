@@ -10,7 +10,7 @@
 	</select>
 	
 	<select id="descTable" parameterType="java.lang.String" resultType="com.javaweb.view.common.TableStructureVO">
-		<!-- 单参数必须这么写 -->
+		<!-- 单参数推荐这么写，当然#{myValue}这样也可以，但是在有些版本下可能会报错 -->
 		desc ${_parameter}
 	</select>
 	
