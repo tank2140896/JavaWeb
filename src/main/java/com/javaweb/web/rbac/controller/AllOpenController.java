@@ -93,6 +93,19 @@ public class AllOpenController {
 	private UserService userService;
 	
 	/**
+	@RequestBody User user，比如user中有个Date日期，但是采用JSON的话，前端传来的日期就是字符串，那么可以采用以下形式转换：
+	@InitBinder 
+	public void initBinder(WebDataBinder binder) { 
+		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+		//dateFormat.setLenient(false); 
+		SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		datetimeFormat.setLenient(false); 
+		//binder.registerCustomEditor(java.sql.Timestamp.class, new CustomDateEditor(dateFormat, true)); 
+		binder.registerCustomEditor(java.util.Date.class,new CustomDateEditor(datetimeFormat, true)); 
+	} 
+	*/
+	
+	/**
 	@RequestMapping(method=RequestMethod.GET,value="/get/{number}",produces={DataFormat.JSON})
 	@ResponseBody
 	public ResponseEntity<Resource<Object>> getTest(HttpServletRequest request, 
