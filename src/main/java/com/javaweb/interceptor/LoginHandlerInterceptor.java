@@ -10,6 +10,7 @@ import com.javaweb.entity.rbac.User;
 import com.javaweb.util.self.Constant;
 import com.javaweb.util.self.ShiroUtil;
 
+//HandlerInterceptorAdapter是拦截器，HandlerExceptionResolver是异常处理的
 public class LoginHandlerInterceptor extends HandlerInterceptorAdapter{
 	
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
