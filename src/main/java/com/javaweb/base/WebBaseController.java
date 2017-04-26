@@ -1,5 +1,10 @@
 package com.javaweb.base;
 
+/**
+ 其它controller也可以继承本controller，那么只需如下配置即可做到提前拦截所有继承本controller的url：
+ @ModelAttribute  
+ public void pre(HttpServletRequest request) {  }
+*/
 public class WebBaseController {
 	
 	//public static final String REQUEST_MAPPING = "RequestMapping";//spring request mapping类名
