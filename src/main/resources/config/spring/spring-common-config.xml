@@ -207,6 +207,37 @@
 	-->
     
     <!-- shiro start -->
+    <!-- shiro的session同一时间只能一个人登录 
+    1、spring-shiro.xml
+	<bean id="userRealm" class="com.gloudtek.shiro.UserRealm"/>
+	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"></bean>  
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">    
+		<constructor-arg name="name" value="SHRIOSESSIONID"/>    
+	</bean>
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">  
+		<property name="sessionDAO" ref="sessionDAO"></property>  
+	</bean> 
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+		<property name="realm" ref="userRealm"/>
+	        <property name="sessionManager" ref="sessionManager"></property>  
+	</bean>
+	2、UserReam的protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException
+	@Autowired  
+	private SessionDAO sessionDAO;
+	Collection<Session> sessions = sessionDAO.getActiveSessions();  
+	for(Session session:sessions){
+	        SimplePrincipalCollection spc = (SimplePrincipalCollection)session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+	        	if(spc!=null){
+	        		SysUserEntity sue = (SysUserEntity)spc.getPrimaryPrincipal();
+	        		if(sue!=null){
+	                	if(username.equals(sue.getAccount())){
+	                		session.setTimeout(0);
+	                	}
+	                }
+	        }
+	}
+    -->
+    
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="ShiroRealm" />
 	</bean>
