@@ -21,6 +21,7 @@ import com.javaweb.web.rbac.service.RoleService;
 @RequestMapping(value="/app")
 public class APPTestController {
 	
+	
 	@Autowired
 	private RoleService roleService;
 	
