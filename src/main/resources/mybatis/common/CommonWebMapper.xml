@@ -10,7 +10,14 @@
 	</select>
 	
 	<select id="descTable" parameterType="java.lang.String" resultType="com.javaweb.view.common.TableStructureVO">
-		<!-- 单参数推荐这么写，当然#{myValue}这样也可以，但是在有些版本下可能会报错 -->
+		<!-- 单参数推荐这么写,当然#{myValue}这样也可以,但是在有些版本下可能会报错: 
+		<delete id="delete">
+			delete from app_version where id = #{value}
+		</delete>
+		<delete id="deleteRole" parameterType="java.lang.String">
+			update role set delflag = 1,updateDate = now() where roleid = #{roleid}
+		</delete>
+		-->
 		desc ${_parameter}
 	</select>
 	
@@ -91,8 +98,8 @@
 	Integer sqlUpdate(String sqlUpdate);
 	Integer sqlInsert(String sqlInsert);
 	Integer sqlDelete(String sqlDelete);
-        2.dao.xml
-        <mapper namespace="com.gloudtek.dao.SqlDao">
+    2.dao.xml
+    <mapper namespace="com.gloudtek.dao.SqlDao">
 		<select id="sqlSelect" parameterType="String" resultType="java.util.LinkedHashMap"> 
 			${value}
 		</select>
@@ -108,7 +115,7 @@
 	</mapper>
 	3.简单测试
 	List<Map<String,Object>> list = sqlDao.sqlSelect("select id,productor,equip_type as equipType,equip_no as equipNo,equipment_range as equipmentRange,"+
-		                                         "equipment_value as equipmentValue,accuracy_level as accuracyLevel,equipment_name as equipmentName,"+
+		                                             "equipment_value as equipmentValue,accuracy_level as accuracyLevel,equipment_name as equipmentName,"+
 	                                                 "check_date as checkDate,dead_date as deadDate from equip_info");
 	EquipDetailBean[] result = (EquipDetailBean[])JSONArray.toArray(JSONArray.fromObject(list),EquipDetailBean.class);
 	for (int i = 0; i < result.length; i++) {
@@ -116,7 +123,7 @@
 		System.out.println(equipDetailBean.getId()+","+equipDetailBean.getDeadDate());
 	}
 	int ret = sqlDao.sqlInsert("insert into app_version(id,type,version,url,create_by,create_time,update_by,update_time,isdelete )"+
-				   "values(uuid(),1,'1.12','/a/q/c',null,null,null,null,0)");
+				               "values(uuid(),1,'1.12','/a/q/c',null,null,null,null,0)");
 	System.out.println(ret);
 	-->
 	

@@ -24,14 +24,14 @@ public class DruidFilter implements Filter {
 			     ServletResponse response, 
 			     FilterChain chain) throws IOException, ServletException {
 		/** 跨域可以这么处理
-		 HttpServletResponse httpServletResponse = (HttpServletResponse) response;  
-        	 httpServletResponse.setHeader("Access-Control-Allow-Origin", "<请求方域名如:http://www.javaweb.com>");  
-        	 httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");  
-        	 httpServletResponse.setHeader("Access-Control-Max-Age", "3600");  
-        	 httpServletResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with, Content-Type");  
-        	 httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");  
-        	 chain.doFilter(req, res); 
-		 */
+		HttpServletResponse httpServletResponse = (HttpServletResponse) response;  
+	 	httpServletResponse.setHeader("Access-Control-Allow-Origin", "<请求方域名如:http://www.javaweb.com>");  
+	 	httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");  
+	 	httpServletResponse.setHeader("Access-Control-Max-Age", "3600");  
+	 	httpServletResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with, Content-Type");  
+	 	httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");  
+	 	chain.doFilter(req, res); 
+		*/
 		User user = (User)((HttpServletRequest)request).getSession().getAttribute(Constant.SESSION_USER);
 		if(user==null){
 			request.getRequestDispatcher(Constant.LOGIN).forward(request, response);

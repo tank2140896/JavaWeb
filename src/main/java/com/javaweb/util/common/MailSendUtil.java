@@ -39,7 +39,6 @@ public class MailSendUtil {
 		}
 		
 		public void run(){
-			
 			try{
 				Properties properties = new Properties();
 				//不同的邮件服务器有不同的写法

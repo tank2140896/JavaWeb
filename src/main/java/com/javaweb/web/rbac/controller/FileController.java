@@ -29,6 +29,92 @@ import com.javaweb.util.common.QRCodeUtil;
 @RequestMapping(value="/app")
 public class FileController {
 	
+	/**
+	  文件上传下载需要一个路径,但是Windows和Linux的路径是不一样的,一般程序可以这么判断:
+	 String os = System.getProperty("os.name");
+	 os.toLowerCase().startsWith("win")//Windows
+	  下面提供一段文件上传和下载的示例:
+	 //上传文件
+	 @ResponseBody
+	 @RequestMapping("/upload")
+	 @RequiresPermissions("appversion:upload")
+	 public R upload(HttpServletRequest request,HttpServletResponse response,
+	   			     @RequestParam MultipartFile multipartFile){
+	 	
+		try{
+			String uploadFileName = multipartFile.getOriginalFilename();//得到上传文件的文件名称
+			if((!uploadFileName.endsWith(".apk"))&&(!uploadFileName.endsWith(".ipa"))){
+				return R.error("上传的文件不是安卓或IOS安装包");
+			}
+			String os = System.getProperty("os.name");  
+			String rootPath;
+			String filPath;
+			if(os.toLowerCase().startsWith("win")){  
+				rootPath = WINDOWS_UPLOAD_PATH;
+			}else{
+				rootPath = LINUX_UPLOAD_PATH;
+			}
+			try {
+				String split[] = uploadFileName.split("\\.");
+				filPath = rootPath + UUID.randomUUID().toString() + "." + split[split.length-1];
+			} catch (Exception e) {
+				filPath = rootPath + UUID.randomUUID().toString() + "." + uploadFileName;
+			}
+			File file = new File(rootPath);
+			if(!file.exists()){
+				file.mkdirs();
+			}
+			FileUtil.writeFile(multipartFile.getInputStream(),new File(filPath));
+			return R.ok("文件上传成功").put("url",filPath).put("fileName",uploadFileName);
+		}catch(Exception e){
+			return R.error("文件上传失败");
+		}
+	}
+	//下载文件
+	@RequestMapping(value="/download/{type}",produces={"application/json;charset=UTF-8"})
+	public void download(HttpServletRequest request,HttpServletResponse response,@PathVariable("type")Integer type){
+		try {
+			VersionSearchBean versionSearchBean = new VersionSearchBean();
+			versionSearchBean.setType(type);
+			AppVersionBean ave = appVersionService.getVersionInfo(versionSearchBean);
+			if(ave!=null){
+				String url = ave.getUrl();
+				File file = new File(url);
+				if(file.exists()){
+					response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(ave.getFileName(),"UTF-8"));  
+					response.setContentType("application/OCTET-STREAM;charset=UTF-8");
+					OutputStream os = response.getOutputStream();
+					FileUtil.downloadFile(os,file);
+					response.flushBuffer();
+				}
+			}
+		} catch (Exception e) {
+			
+		}
+	}
+	//获取安卓和IOS的二维码扫码图片
+	@RequestMapping(value="/getQrCode/{type}",produces={"application/json;charset=UTF-8"})
+	public void getQrCode(HttpServletRequest request,HttpServletResponse response,@PathVariable("type")Integer type){
+		try {
+			VersionSearchBean versionSearchBean = new VersionSearchBean();
+			versionSearchBean.setType(type);
+			AppVersionBean ave = appVersionService.getVersionInfo(versionSearchBean);
+			if(ave!=null){
+				String path = request.getContextPath();
+				String basePath = null;
+				basePath = request.getScheme()+"://"+SERVER_IP_PORT+path+"/";
+				basePath+="api/outAuthority/download/"+ave.getType();
+				QRCodeUtil.encode(basePath,response.getOutputStream());
+				
+			}else{
+				
+			}
+		} catch (Exception e) {
+			
+		}
+	}  
+	*/
+	
 	//文件上传页面端和手机APP端都是通用的[produces={"multipart/form-data;charset=UTF-8"},这个是response的返回]
 	//注意一点:String myData接收的是JSON格式的字符串,如果这里接收不到或报错,可以用最基本的request.getParameter(name)或request.getParameterMap()来接受
 	@PostMapping(value="/fileUpload",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)

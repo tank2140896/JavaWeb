@@ -25,7 +25,7 @@ public class StringUtil {
 		return origin;
 	}
 	
-	//或取某个类的绝对路径
+	//获取某个类的绝对路径
 	public static String getClassAbsolutePath(Class<?> c){
 		//ArrayUtil.class.getClass().getResource("/").getPath();
 		String filePath = c.getProtectionDomain().getCodeSource().getLocation().getFile();
