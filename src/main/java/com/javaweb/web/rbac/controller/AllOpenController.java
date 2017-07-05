@@ -79,7 +79,8 @@ public class AllOpenController {
 		String sql = "mysqldump -P 3308 -h 101.37.84.120 -u root -proot myDataBase --default-character-set=utf8 --lock-tables=false --result-file=D:\\test.sql";
 		//String sql = "mysqldump -P 3306 -h localhost -u root -proot myDataBase --result-file=D:\\test.sql";
 		//String sql = "mysqldump -P 3306 -h localhost -u root -proot myDataBase>D:\\test.sql";
-		Runtime.getRuntime().exec(sql);//执行cmd命令
+		//String sql = Thread.currentThread().getContextClassLoader().getResource("mysql.sh").toString().replaceFirst("file:", "");  
+		Runtime.getRuntime().exec(sql);//执行cmd命令,mysql数据库数据导出
 	}
 	
 	@PostConstruct
