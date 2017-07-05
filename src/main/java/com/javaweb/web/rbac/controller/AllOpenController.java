@@ -62,20 +62,24 @@ public class AllOpenController {
 	/**
 	@Autowired
 	private Environment env;
-    //String environment = env.getProperty("jdbcDriverClassName");
+    	//String environment = env.getProperty("jdbcDriverClassName");
 	//Environment亦可用在service或dao层
 	
 	@Value("classpath:config/props/jdbc.properties")
 	private org.springframework.core.io.Resource info;
-    //info.getInputStream()
+    	//info.getInputStream()
 	
 	@Value("#{ T(java.lang.Math).random() * 100.0 }")
-    private double randomNumber;
+    	private double randomNumber;
 
 	@Scheduled(cron = "0 22 11 ? * *"  )//每天上午11点22执行
 	@Scheduled(fixedRate = 5000)//服务器加载controller后每5秒执行一次
 	public void schedule(){
 		System.out.println("定时任务被执行了");
+		String sql = "mysqldump -P 3308 -h 101.37.84.120 -u root -proot myDataBase --default-character-set=utf8 --lock-tables=false --result-file=D:\\test.sql";
+		//String sql = "mysqldump -P 3306 -h localhost -u root -proot myDataBase --result-file=D:\\test.sql";
+		//String sql = "mysqldump -P 3306 -h localhost -u root -proot myDataBase>D:\\test.sql";
+		Runtime.getRuntime().exec(sql);//执行cmd命令
 	}
 	
 	@PostConstruct
