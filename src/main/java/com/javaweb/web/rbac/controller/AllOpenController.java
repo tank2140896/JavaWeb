@@ -21,6 +21,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
@@ -45,8 +47,6 @@ import com.javaweb.view.rbac.ModuleListVO;
 import com.javaweb.web.rbac.service.UserService;
 import com.javaweb.web.websocket.ChartController;
 
-import net.sf.json.JSONObject;
-
 //该路径下的访问对所有人开放
 @Controller
 @RequestMapping(value="/")
@@ -62,25 +62,37 @@ public class AllOpenController {
 	/**
 	@Autowired
 	private Environment env;
-    	//String environment = env.getProperty("jdbcDriverClassName");
+    //String environment = env.getProperty("jdbcDriverClassName");
 	//Environment亦可用在service或dao层
 	
 	@Value("classpath:config/props/jdbc.properties")
 	private org.springframework.core.io.Resource info;
-    	//info.getInputStream()
+    //info.getInputStream()
 	
 	@Value("#{ T(java.lang.Math).random() * 100.0 }")
-    	private double randomNumber;
+    private double randomNumber;
 
 	@Scheduled(cron = "0 22 11 ? * *"  )//每天上午11点22执行
 	@Scheduled(fixedRate = 5000)//服务器加载controller后每5秒执行一次
 	public void schedule(){
 		System.out.println("定时任务被执行了");
+		//导出
 		String sql = "mysqldump -P 3308 -h 101.37.84.120 -u root -proot myDataBase --default-character-set=utf8 --lock-tables=false --result-file=D:\\test.sql";
 		//String sql = "mysqldump -P 3306 -h localhost -u root -proot myDataBase --result-file=D:\\test.sql";
 		//String sql = "mysqldump -P 3306 -h localhost -u root -proot myDataBase>D:\\test.sql";
 		//String sql = Thread.currentThread().getContextClassLoader().getResource("mysql.sh").toString().replaceFirst("file:", "");  
 		Runtime.getRuntime().exec(sql);//执行cmd命令,mysql数据库数据导出
+		//导入
+		String sql_1 = "mysql -P 3308 -h 101.37.84.120 -u root -proot test";
+		String sql_2 = "use test";
+		String sql_3 = "source D:\\test.sql";
+		Process process = Runtime.getRuntime().exec(sql_1);
+		OutputStream os = process.getOutputStream();  
+	    OutputStreamWriter writer = new OutputStreamWriter(os);  
+	    writer.write(sql_2 + "\r\n" + sql_3);  
+	    writer.flush();  
+	    writer.close();  
+	    os.close(); 
 	}
 	
 	@PostConstruct
