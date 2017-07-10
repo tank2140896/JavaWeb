@@ -83,7 +83,7 @@ public class AllOpenController {
 		//String sql = Thread.currentThread().getContextClassLoader().getResource("mysql.sh").toString().replaceFirst("file:", "");  
 		Runtime.getRuntime().exec(sql);//执行cmd命令,mysql数据库数据导出
 		//导入
-		String sql_1 = "mysql -P 3308 -h 101.37.84.120 -u root -proot test";
+		String sql_1 = "mysql -P 3308 -h 101.37.84.120 -u root -proot test --default-character-set=utf8";
 		String sql_2 = "use test";
 		String sql_3 = "source D:\\test.sql";
 		Process process = Runtime.getRuntime().exec(sql_1);
