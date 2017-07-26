@@ -192,6 +192,23 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
     	<property name="dataSource" ref="multipleDataSource"/>
     	<property name="mapperLocations" value="classpath:mybatis/*/*.xml"/>
+        <!--	
+	<property name="configLocation" value="classpath:mybatis.xml" />
+	<?xml version="1.0" encoding="UTF-8" ?>  
+	<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+	<configuration>
+	    <properties> 
+	    	<property name="dialect" value="mysql" />
+	    </properties>
+	    <settings>
+  		#驼峰实体类与SQL映射处理
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+ 		#打印输出SQL语句：SLF4J、Apache Commons Logging、Log4j 2、Log4j、JDK logging
+        	<setting name="logImpl" value="LOG4J" />     
+	    </settings>
+	</configuration>
+        -->
     </bean>
     <!-- spring与mybatis整合配置,扫描所有dao,接口代理,不用接口代理方式(无实现类)就注释掉 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
