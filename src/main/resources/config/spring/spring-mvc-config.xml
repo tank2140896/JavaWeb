@@ -19,7 +19,7 @@
 		                   http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
     
    	<!-- 使用AOP请解注 
-    	<aop:aspectj-autoproxy/>
+    	<aop:aspectj-autoproxy/>或<aop:aspectj-autoproxy proxy-target-class="true" />
    	-->
     
    	<context:component-scan base-package="com.javaweb" />
@@ -103,6 +103,11 @@
        <property name="prefix" value="/WEB-INF/html/"/> 
        <property name="suffix" value=".html"/>
     </bean>
+    
+    <!-- Controller方法拦截AOP -->
+    <!-- 使用Controller方法拦截请解注 
+    <bean id="controllerAspect" class="com.javaweb.aspect.ControllerAspect"/> 
+    -->
     
     <!-- 日志AOP -->
     <!-- 使用日志请解注 
