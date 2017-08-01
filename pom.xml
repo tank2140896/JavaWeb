@@ -36,11 +36,13 @@
 			    <typeHandler handler="org.apache.ibatis.type.ZonedDateTimeTypeHandler" />  
 			</typeHandlers> 
 		-->
+		<!--
 		<dependency>
 		    <groupId>org.mybatis</groupId>
 		    <artifactId>mybatis-typehandlers-jsr310</artifactId>
 		    <version>1.0.2</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
