@@ -23,6 +23,24 @@
 			<artifactId>mybatis</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+		<!-- 
+			mybatis对Java8新日期API的支持，但是需要3.4.0+ 
+			低于3.4.0还需要这么写：
+			<typeHandlers>  
+			    <typeHandler handler="org.apache.ibatis.type.InstantTypeHandler" />  
+			    <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />  
+			    <typeHandler handler="org.apache.ibatis.type.LocalDateTypeHandler" />  
+			    <typeHandler handler="org.apache.ibatis.type.LocalTimeTypeHandler" />  
+			    <typeHandler handler="org.apache.ibatis.type.OffsetDateTimeTypeHandler" />  
+			    <typeHandler handler="org.apache.ibatis.type.OffsetTimeTypeHandler" />  
+			    <typeHandler handler="org.apache.ibatis.type.ZonedDateTimeTypeHandler" />  
+			</typeHandlers> 
+		-->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis-typehandlers-jsr310</artifactId>
+		    <version>1.0.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
