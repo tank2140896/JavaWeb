@@ -36,7 +36,7 @@
 			    <typeHandler handler="org.apache.ibatis.type.ZonedDateTimeTypeHandler" />  
 			</typeHandlers> 
 		-->
-		<!--
+		<!-- mybatis对Java8新日期类型的支持
 		<dependency>
 		    <groupId>org.mybatis</groupId>
 		    <artifactId>mybatis-typehandlers-jsr310</artifactId>
