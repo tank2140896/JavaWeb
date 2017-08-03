@@ -450,6 +450,23 @@
 			<version>1.8.7</version>
 		</dependency>
 		<!-- AOP end -->
+		<!-- velocity模板代码生成 start -->
+		<dependency>
+		    <groupId>org.apache.velocity</groupId>
+		    <artifactId>velocity</artifactId>
+		    <version>1.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.velocity</groupId>
+		    <artifactId>velocity-tools</artifactId>
+		    <version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<!-- velocity模板代码生成 end -->
 	</dependencies>
 
 	<build>
