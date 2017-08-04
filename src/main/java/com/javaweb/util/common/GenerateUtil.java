@@ -1,10 +1,7 @@
 package com.javaweb.util.common;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -31,14 +30,12 @@ public class GenerateUtil {
 		return UUID.randomUUID().toString();
 	}
 	
-	public static void main(String[] args) throws Exception {
-		generateZipFile(null);
-	}
-	
+	//写法示例
+	/**
 	public static void generateZipFile(String tableNames[]) throws Exception {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ZipOutputStream zip = new ZipOutputStream(outputStream);
-		//for(String tableName : tableNames){
+		for(String tableName : tableNames){
 		    TableInfo tableInfo = new TableInfo();
 		    tableInfo.setTableName("sys_user");
 		    tableInfo.setTableComment("系统用户表");
@@ -56,27 +53,35 @@ public class GenerateUtil {
 		    generateConfigInfo.setAuthor("张三");
 		    generateConfigInfo.setEmail("abc@test.com");
 		    generateConfigInfo.setPackageName("com.javaweb");
-		    generateConfigInfo.setTablePrefix("");
-			generatorCode(tableInfo, tableColumns, generateConfigInfo, zip);
-		//}
+		    generatorCode(tableInfo, tableColumns, generateConfigInfo, zip);
+		}
 		IOUtils.closeQuietly(zip);
 		byte[] bytes = outputStream.toByteArray();
 		OutputStream zipOutputStream = new FileOutputStream(new File("F:/a.zip"));
 		zipOutputStream.write(bytes);
 		zipOutputStream.close();
 	}
+	*/
 	
-	private static void generatorCode(TableInfo tableInfo,
+	public static void generatorCode(TableInfo tableInfo,
 									 List<ColumnInfo> tableColumns,
 									 GenerateConfigInfo generateConfigInfo,
 									 ZipOutputStream zip) {
+		
 		tableColumns.stream().forEach(each->{
 			String dataType = each.getDataType();
+			if("decimal".equals(dataType)){
+				tableInfo.setHasBigDecimal(true);
+			}
+			if("date".equals(dataType)||"datetime".equals(dataType)||"timestamp".equals(dataType)){
+				tableInfo.setHasDate(true);
+			}
 			each.setAttrType(Constant.MYSQL_COLUMN_TYPE_MAPPER.get(dataType));
 			each.setAttrName(getAttrName(each.getColumnName()));
 			each.setAttrNameForTitleCase(getAttrNameForTitleCase(each.getAttrName()));
 		});
 		tableInfo.setClassName(getAttrNameForTitleCase(getAttrName(tableInfo.getTableName())));
+		tableInfo.setClassNameForLowerCase(getClassNameForLowerCase(getAttrName(tableInfo.getTableName())));
 		
 		//设置velocity资源加载器
 		Properties properties = new Properties();  
@@ -85,13 +90,15 @@ public class GenerateUtil {
 		
 		//封装模板数据
 		Map<String, Object> map = new HashMap<>();
-		map.put("hasBigDecimal",true);
+		map.put("hasBigDecimal",tableInfo.isHasBigDecimal());
+		map.put("hasDate",tableInfo.isHasDate());
 		map.put("tableComment",tableInfo.getTableComment());
 		map.put("packageName",generateConfigInfo.getPackageName());
 		map.put("author",generateConfigInfo.getAuthor());
 		map.put("email",generateConfigInfo.getEmail());
 		map.put("dateTime",DateUtil.getDefaultDate());
 		map.put("className",tableInfo.getClassName());
+		map.put("classNameForLowerCase",tableInfo.getClassNameForLowerCase());
 		map.put("columns", tableColumns);
 		
 		VelocityContext velocityContext = new VelocityContext(map);
@@ -129,23 +136,25 @@ public class GenerateUtil {
 	}
 	
 	private static String getAttrName(String columnName){
-		String str[] = columnName.split("_");
-		StringBuffer stringBuffer = new StringBuffer();
-		for (int i = 0; i < str.length; i++) {
-			String each = str[i];
-			if(i%2!=0){
-				stringBuffer.append(each.substring(0,1).toUpperCase())
-							.append(each.substring(1,each.length()));
-			}else{
-				stringBuffer.append(each);
-			}
+		columnName = columnName.replaceAll("^_", "");
+		columnName = columnName.replaceAll("_$", "");
+		Pattern pattern = Pattern.compile("_[a-z]");
+		Matcher matcher = pattern.matcher(columnName);
+		while(matcher.find()){
+			String temp = matcher.group();
+			columnName = columnName.replace(temp, temp.substring(1).toUpperCase());
 		}
-		return stringBuffer.toString();
+		return columnName;
 	}
 	
 	private static String getAttrNameForTitleCase(String attrName){
 		return attrName.substring(0,1).toUpperCase()+
 			   attrName.substring(1,attrName.length());
+	}
+	
+	private static String getClassNameForLowerCase(String className){
+		return className.substring(0,1).toLowerCase()+
+			className.substring(1,className.length());
 	}
 	
 }

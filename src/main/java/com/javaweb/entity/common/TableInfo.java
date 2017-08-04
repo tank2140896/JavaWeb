@@ -13,6 +13,12 @@ public class TableInfo {
 	
 	/** 下面这些不是数据库查出来的，是辅助字段 start */
 	private String className;
+	
+	private String classNameForLowerCase;
+	
+	private boolean hasBigDecimal = false;
+	
+	private boolean hasDate = false;
 	/** 下面这些不是数据库查出来的，是辅助字段 end */
 
 	public String getTableName() {
@@ -53,6 +59,30 @@ public class TableInfo {
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public String getClassNameForLowerCase() {
+		return classNameForLowerCase;
+	}
+
+	public void setClassNameForLowerCase(String classNameForLowerCase) {
+		this.classNameForLowerCase = classNameForLowerCase;
+	}
+
+	public boolean isHasBigDecimal() {
+		return hasBigDecimal;
+	}
+
+	public void setHasBigDecimal(boolean hasBigDecimal) {
+		this.hasBigDecimal = hasBigDecimal;
+	}
+
+	public boolean isHasDate() {
+		return hasDate;
+	}
+
+	public void setHasDate(boolean hasDate) {
+		this.hasDate = hasDate;
 	}
 
 }

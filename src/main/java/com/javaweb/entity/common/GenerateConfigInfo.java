@@ -10,9 +10,6 @@ public class GenerateConfigInfo {
 	
 	//Email
 	private String email;
-	
-	//表前缀（类名不会包含表前缀）
-	private String tablePrefix;
 
 	public String getPackageName() {
 		return packageName;
@@ -36,14 +33,6 @@ public class GenerateConfigInfo {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getTablePrefix() {
-		return tablePrefix;
-	}
-
-	public void setTablePrefix(String tablePrefix) {
-		this.tablePrefix = tablePrefix;
 	}
 	
 }

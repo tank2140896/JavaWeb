@@ -1,8 +1,9 @@
 package ${packageName}.entity;
 
 import java.io.Serializable;
+#if(${hasDate})
 import java.util.Date;
-
+#end
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
 #end
@@ -34,5 +35,4 @@ public class ${className}Entity implements Serializable {
 	}
 	
 #end
-	
 }
