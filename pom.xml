@@ -467,6 +467,22 @@
 			<version>2.5</version>
 		</dependency>
 		<!-- velocity模板生成代码 end -->
+		<!-- 百度业务逻辑验证框架fluent-validator start -->
+		<!-- 
+	             详细研究参考：https://github.com/neoremind/fluent-validator 
+		     本项目中使用简单参考：UserController和User
+		-->
+		<dependency>
+		    <groupId>com.baidu.unbiz</groupId>
+		    <artifactId>fluent-validator</artifactId>
+		    <version>1.0.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.baidu.unbiz</groupId>
+		    <artifactId>fluent-validator-jsr303</artifactId>
+		    <version>1.0.7</version>
+		</dependency>
+		<!-- 百度业务逻辑验证框架fluent-validator end -->
 	</dependencies>
 
 	<build>
