@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Validation;
 
 import net.sf.json.JSONObject;
 
@@ -18,6 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baidu.unbiz.fluentvalidator.FluentValidator;
+import com.baidu.unbiz.fluentvalidator.Result;
+import com.baidu.unbiz.fluentvalidator.ResultCollectors;
+import com.baidu.unbiz.fluentvalidator.ValidationError;
+import com.baidu.unbiz.fluentvalidator.Validator;
+import com.baidu.unbiz.fluentvalidator.ValidatorContext;
+import com.baidu.unbiz.fluentvalidator.ValidatorHandler;
+import com.baidu.unbiz.fluentvalidator.jsr303.HibernateSupportedValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.javaweb.entity.common.Page;
 import com.javaweb.entity.rbac.Role;
@@ -45,14 +54,37 @@ public class UserController {
 			  			     @RequestBody User user) {
 		JSONObject jo = new JSONObject();
 		try{
-			user.setUserid(GenerateUtil.getRandomUUID());
-			user.setPassword(new SimpleHash("SHA-1", user.getUsername(), user.getPassword()).toString());
-			userService.createUser(user);
-			jo.put("message", "新建用户成功");
+			Result result = FluentValidator.checkAll()
+						       .on(user, new HibernateSupportedValidator<User>().setHiberanteValidator(Validation.buildDefaultValidatorFactory().getValidator()))//常规校验
+                    				       .on(user.getUsername(), new UsernameValidator())//特殊校验
+                    				       //.on(user.getUsername(), new UsernameValidator())
+                    				       .doValidate()
+                    				       .result(ResultCollectors.toSimple());
+			if(result.isSuccess()){
+				user.setUserid(GenerateUtil.getRandomUUID());
+				user.setPassword(new SimpleHash("SHA-1", user.getUsername(), user.getPassword()).toString());
+				userService.createUser(user);
+				jo.put("message", "新建用户成功");
+			}else{
+				jo.put("message", result.getErrors().get(0));
+			}
 		}catch(Exception e){
 			jo.put("message", "新建用户失败");
 		}
+		//System.out.println(jo.toString());
 		return jo.toString();
+	}
+	
+	class UsernameValidator extends ValidatorHandler<String> implements Validator<String> {
+	    @Override
+	    public boolean validate(ValidatorContext context, String str) {
+	        if (str.startsWith("Mr")) {
+	            //context.addErrorMsg("用户名不能以Mr开头");
+	        	context.addError(ValidationError.create("用户名不能以Mr开头").setErrorCode(100));
+	            return false;
+	        }
+	        return true;
+	    }
 	}
 	
 	@PostMapping(value="/modifyUser",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
