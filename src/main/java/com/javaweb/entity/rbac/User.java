@@ -2,6 +2,10 @@ package com.javaweb.entity.rbac;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 3294223979079246956L;
@@ -10,6 +14,8 @@ public class User implements Serializable {
 	
 	private String username;//用户名(必填)
 	
+	@NotEmpty(message="密码不能为空")
+    	@Pattern(regexp="[0-9a-zA-Z]+",message="密码只能是数字和字母")
 	private String password;//用户密码(必填)
 	
 	private String personname;//用户姓名
