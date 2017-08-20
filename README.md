@@ -7,7 +7,7 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+Angularjs
 2.项目简介：本项目是一个JavaWeb基础框架，本项目为开源项目(Apache License V2.0)     
 3.特别说明：本项目前端框架运用了[SB Admin v2.0 rewritten in AngularJS]，并进行了小部分改造       
 （ github地址：https://github.com/start-angular/sb-admin-angular.git ）    
-4.语言只是一种工具，以后本项目中有些地方将采用其它语言来实现，如：scala、C/C++、python、Go等                       
+4.语言只是一种工具，以后本项目中有些地方将采用其它语言来实现，如：scala、C/C++、python、Go等                        
 5.在src/main/java/com.javaweb下有个old包，该包下的都是Java8之前的旧写法，现在已不再继续维护，但为了兼容旧版本就保留旧写法以供参考       
 6.兼容性可能较差，有些页面内容可能无法显示，有些按钮或操作可能由于Angularjs的兼容性导致事件、操作无效，因此推荐谷歌浏览器版本50左右，火狐浏览器版本50左右（本项目所有操作、功能均在火狐50.0.1版本下通过）     
 7.本项目目前功能性的已不再维护，仅作为类似一个大杂烩，把平时项目中经常遇到的一些问题的解决，通过注释形式写进去或解决一些发现的BUG      
