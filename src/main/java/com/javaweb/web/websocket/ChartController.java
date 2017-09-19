@@ -19,6 +19,22 @@ import org.springframework.stereotype.Controller;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+/**
+ 如果是采用SpringBoot的话，其它写法都与这里所差无几，唯一需要增加的两处为：
+ 1、pom.xml引入
+ <dependency>
+ 	<groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-websocket</artifactId>
+ </dependency>
+ 2、配置
+ @Configuration
+ public class WebSocketConfig {	
+	@Bean
+    	public ServerEndpointExporter serverEndpointExporter() {
+        	return new ServerEndpointExporter();
+    	}
+ }
+*/
 @Controller
 @ServerEndpoint(value = "/chart/{username}")
 public class ChartController {
