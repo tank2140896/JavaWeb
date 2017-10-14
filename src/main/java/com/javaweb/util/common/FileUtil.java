@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -160,6 +163,40 @@ public class FileUtil {
     		zipFile.setPassword(password);
     	}
         zipFile.extractAll(sourceFilePath);
+    }
+    
+    //根据图片URL下载图片并打成压缩包
+    public static void zipFileByImgUrl(ZipOutputStream zipOutputStream,List<URL> urlList) throws Exception {
+    	for(URL url:urlList){
+    		String splits[] = url.toString().split("/");
+    		int lastPosition = splits.length-1;
+    		zipOutputStream.putNextEntry(new ZipEntry(splits[lastPosition]));
+    		InputStream inputStream = url.openConnection().getInputStream();
+    		byte[] buffer = new byte[1024];//1KB 
+            int length = 0;    
+            while((length=inputStream.read(buffer))!=-1){    
+            	zipOutputStream.write(buffer,0,length);    
+          	} 
+            inputStream.close();
+    	}
+    	zipOutputStream.flush();    
+    	zipOutputStream.close();
+    }
+    
+    //根据图片路径下载图片并打成压缩包
+    public static void zipFileByImgFile(ZipOutputStream zipOutputStream,List<File> fileList) throws Exception {
+    	for(File file:fileList){
+    		zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
+    		InputStream inputStream = new FileInputStream(file);
+    		byte[] buffer = new byte[1024];//1KB 
+            int length = 0;    
+            while((length=inputStream.read(buffer))!=-1){    
+            	zipOutputStream.write(buffer,0,length);    
+          	} 
+            inputStream.close();
+    	}
+    	zipOutputStream.flush();    
+    	zipOutputStream.close();
     }
 	
 	//序列化输出
