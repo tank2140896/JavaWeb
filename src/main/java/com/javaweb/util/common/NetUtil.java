@@ -1,9 +1,5 @@
 package com.javaweb.util.common;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.net.InetAddress;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +7,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import com.javaweb.entity.common.IpCallForExec;
+import com.javaweb.entity.common.IpCallForInetAddress;
 
 public class NetUtil {
 	
@@ -58,88 +57,6 @@ public class NetUtil {
 		}
 		threadPoolExecutor.shutdown();
 		return map;
-	}
-	
-}
-
-class IpCallForExec implements Callable<Boolean> {
-	
-	private String ipAddress;
-	
-	public IpCallForExec(String ipAddress){
-		super();
-		this.ipAddress = ipAddress;
-	}
-	
-	public String getIpAddress() {
-		return ipAddress;
-	}
-
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-
-	public Boolean call() {
-        String line = null;
-        boolean result = false;
-        try {
-        	Process process = Runtime.getRuntime().exec("ping "+this.ipAddress);
-        	LineNumberReader lineNumberReader = new LineNumberReader(new InputStreamReader(process.getInputStream(),"gbk"));
-            int count = 1;
-        	while ((line = lineNumberReader.readLine()) != null) {
-        		if(line.contains("TTL")){
-        			result = true;
-        			break;
-        		}
-        		if(count>2){//只需尝试三次即可（为什么大于2？因为lineNumberReader.readLine()时就已经有一次了）
-        			break;
-        		}
-        		count++;
-            }
-            lineNumberReader.close();
-            process.destroy();
-        } catch (IOException e) {
-        	
-        }
-        return result;
-	}
-	
-}
-
-class IpCallForInetAddress implements Callable<Boolean> {
-	
-	private String ipAddress;
-	
-	private int timeOut;
-	
-	public IpCallForInetAddress(String ipAddress,int timeOut){
-		super();
-		this.ipAddress = ipAddress;
-		this.timeOut = timeOut;
-	}
-	
-	public String getIpAddress() {
-		return ipAddress;
-	}
-
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-
-	public int getTimeOut() {
-		return timeOut;
-	}
-
-	public void setTimeOut(int timeOut) {
-		this.timeOut = timeOut;
-	}
-
-	public Boolean call() {
-		try{
-			return InetAddress.getByName(this.ipAddress).isReachable(this.timeOut);
-		}catch(Exception e){
-			return false;
-		}
 	}
 	
 }
