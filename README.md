@@ -42,5 +42,5 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+Angularjs
 3、关于单元测试                
 从controller->service->dao都可以分层测试，也有页面可以测试API返回的json数据             
 4、未来计划                      
-采用Java9+SpringCloud微服务/SpringBoot+Angular重写(参见另一个项目JavaWeb2(孵化器中))                     
+用另一个项目JavaWeb2替换JavaWeb，同时该项目寻找前端Angular合作伙伴一起前后端分离开发                        
 5、这里的Angularjs指的是Angular1，而Angular指的是2及其以上   
