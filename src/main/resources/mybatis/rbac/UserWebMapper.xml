@@ -58,6 +58,8 @@
 	<select id="selectBlob" resultType="com.javaweb.entity.rbac.File">
 		select filename,filecontent from file
 	</select>
+	5.SQL直接操作
+	insert into tb_test(my_blob) values(UNHEX(HEX("abc")))
 	-->
 	<!-- Mybatis操作BLOB end -->
 	
