@@ -116,7 +116,7 @@ public class FileController {
 	*/
 	
 	//文件上传页面端和手机APP端都是通用的[produces={"multipart/form-data;charset=UTF-8"},这个是response的返回]
-	//注意一点:String myData接收的是JSON格式的字符串,如果这里接收不到或报错,可以用最基本的request.getParameter(name)或request.getParameterMap()来接受
+	//注意一点:String myData接收的是JSON格式的字符串,如果这里接收不到或报错,可以用最基本的request.getParameter(name)或request.getParameterMap()来接收
 	@PostMapping(value="/fileUpload",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String fileUpload(HttpServletRequest request, 
@@ -124,7 +124,7 @@ public class FileController {
 					         //如果面对N多个文件上传控件,似乎没有什么办法
 					         //@RequestParam MultipartFile file1,
 					         //@RequestParam MultipartFile file2,
-					         @RequestParam MultipartFile myFile,
+					         @RequestParam/*("myFile")*/ MultipartFile myFile,
 							 String myData) {
 		JSONObject jo = new JSONObject();
 		try{
@@ -137,6 +137,7 @@ public class FileController {
 			}
 			Path path = Paths.get(rootPath+"/"+uploadFileName);
 			FileUtil.writeFile(myFile.getInputStream(), path);
+			//myFile.transferTo(file);
 			jo.put("status", "文件上传成功");
 		}catch(Exception e){
 			jo.put("status", "文件上传失败,"+e.getMessage());
