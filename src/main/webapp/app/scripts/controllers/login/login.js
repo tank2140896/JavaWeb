@@ -112,4 +112,21 @@ $.ajax({
 		//一些处理
 	}
 });
+//文件上传参考:https://www.cnblogs.com/WarBlog/p/4838255.html
+前端要点:
+<input type="file" id="imageFile"/><!-- 多文件上传时加上:multiple="multiple" -->
+var files = $("#imageFile").get(0).files[0]; //获取file控件中的内容
+var formData = new FormData();
+formData.append("uploadFile",files);
+$.ajax({
+	type: "POST",
+    contentType:false, 
+    processData: false,
+    url: '/a/b',
+    data: formData,
+    success: function (data) {...},
+    error: function (data) {...}
+});
+后端要点:
+@RequestParam("uploadFile") MultipartFile myFile
 */
