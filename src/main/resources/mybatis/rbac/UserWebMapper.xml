@@ -125,6 +125,13 @@
 	<insert id="insert" parameterType="某个对象" useGeneratedKeys="true" keyProperty="userId">
 	-->
 	
+	<!-- mybatis单参写法 
+	1、参数如String userId，xml写为：#{userId}
+	2、参数如String userId，xml写为：#{_parameter}
+	3、参数如@Param("aaa")String userId，xml写为：#{aaa}
+	个人推荐第2种写法
+	-->
+	
 	<!-- 动态SQL片段 -->
 	<sql id="selectModuleByCondition" >
 		SELECT moduleid,modulename,moduleurl,parentid,levels,orders,mark,alias,moduletype
