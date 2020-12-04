@@ -1,4 +1,4 @@
-# JavaWeb V0.1
+# JavaWeb V1.0
 # JavaWeb基础框架：
 SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+Angularjs  
 # 说明：
@@ -41,6 +41,6 @@ SpringMVC+Mybatis+Mysql+Tomcat+Java8+Bootstrap+Angularjs
 你只需要关注controller(请求分发、跳转及异常处理)->service(业务逻辑处理)->dao(数据库访问)就可以了              
 3、关于单元测试                
 从controller->service->dao都可以分层测试，也有页面可以测试API返回的json数据             
-4、未来计划                      
-用另一个项目JavaWeb2替换JavaWeb，详见https://github.com/tank2140896/JavaWeb2                            
+4、项目升级                                   
+另一个项目JavaWeb2已经替换了JavaWeb，详见https://github.com/tank2140896/JavaWeb2                            
 5、这里的Angularjs指的是Angular1，而Angular指的是2及其以上   
