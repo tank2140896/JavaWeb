@@ -1,6 +1,5 @@
 package com.javaweb.util.common;
 
-import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -33,9 +32,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -317,44 +313,5 @@ public class FileUtil {
 	    sos.close();
 	    response.flushBuffer();
 	}
-	
-	//设置Excel模板
-	public static XSSFCellStyle setStyle(XSSFWorkbook workbook) {  
-        //设置字体;  
-        XSSFFont font = workbook.createFont();  
-        //设置字体大小;  
-        font.setFontHeightInPoints((short) 20);  
-        //设置字体名字;  
-        font.setFontName("Courier New");  
-        //font.setItalic(true);  
-        //font.setStrikeout(true);  
-        //设置样式;  
-        XSSFCellStyle style = workbook.createCellStyle();  
-        //设置底边框;  
-        style.setBorderBottom(XSSFCellStyle.BORDER_THIN);  
-        //设置底边框颜色;  
-        style.setBottomBorderColor(new XSSFColor(Color.BLACK));  
-        //设置左边框;  
-        style.setBorderLeft(XSSFCellStyle.BORDER_THIN);  
-        //设置左边框颜色;  
-        style.setLeftBorderColor(new XSSFColor(Color.BLACK));  
-        //设置右边框;  
-        style.setBorderRight(XSSFCellStyle.BORDER_THIN);  
-        //设置右边框颜色;  
-        style.setRightBorderColor(new XSSFColor(Color.BLACK));  
-        //设置顶边框;  
-        style.setBorderTop(XSSFCellStyle.BORDER_THIN);  
-        //设置顶边框颜色;  
-        style.setTopBorderColor(new XSSFColor(Color.BLACK));  
-        //在样式用应用设置的字体;  
-        style.setFont(font);  
-        //设置自动换行;  
-        style.setWrapText(false);  
-        //设置水平对齐的样式为居中对齐;  
-        style.setAlignment(XSSFCellStyle.ALIGN_CENTER);  
-        //设置垂直对齐的样式为居中对齐;  
-        style.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);  
-        return style;  
-    }
 	
 }

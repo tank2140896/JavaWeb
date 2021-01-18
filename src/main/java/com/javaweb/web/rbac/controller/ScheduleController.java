@@ -107,11 +107,10 @@ public class ScheduleController {
 	//得到一个月的所有日期
 	private List<String> getDateList(String startDate,String endDate,String pattern) throws Exception {
 		List<String> list = DateUtil.getAllDates(startDate, endDate, pattern);
-		//TODO 这里用的是旧方法,因为涉及到旧逻辑,暂时不改造,以后将改造
-		int startCount = com.javaweb.old.DateUtil.getDayOfWeek(startDate, pattern);//作为开头,是几就往前推几天
-		int endCount = 6-com.javaweb.old.DateUtil.getDayOfWeek(endDate, pattern);//作为结尾,(6-结尾)为后推的天数
-		List<String> beforeList = com.javaweb.old.DateUtil.getBeforeDays(startDate, pattern, startCount);
-		List<String> afterList = com.javaweb.old.DateUtil.getAfterDays(endDate, pattern, endCount);
+		int startCount = DateUtil.getDayOfWeek(startDate, pattern);//作为开头,是几就往前推几天
+		int endCount = 6-DateUtil.getDayOfWeek(endDate, pattern);//作为结尾,(6-结尾)为后推的天数
+		List<String> beforeList = DateUtil.getBeforeDays(startDate, pattern, startCount);
+		List<String> afterList = DateUtil.getAfterDays(endDate, pattern, endCount);
 		List<String> finalList = new ArrayList<>();
 		finalList.addAll(beforeList);
 		finalList.addAll(list);
