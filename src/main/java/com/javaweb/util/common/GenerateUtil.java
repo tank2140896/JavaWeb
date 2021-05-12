@@ -63,6 +63,7 @@ public class GenerateUtil {
 	}
 	*/
 	
+	@SuppressWarnings("deprecation")
 	public static void generatorCode(TableInfo tableInfo,
 									 List<ColumnInfo> tableColumns,
 									 GenerateConfigInfo generateConfigInfo,
